@@ -33,6 +33,30 @@ class VioraMpv(
 ) {
   private val main = Handler(Looper.getMainLooper())
 
+  /**
+   * Runs a verb on the main thread without letting it take the app down.
+   *
+   * See the twin of this in VioraPlayer.kt. It matters more here: libmpv is
+   * driven by string properties, so a call that would be a type error in a
+   * typed API is a runtime throw in this one — and an uncaught throw on a
+   * posted Runnable ends the process rather than the verb.
+   */
+  private fun post(body: () -> Unit) {
+    main.post {
+      try {
+        body()
+      } catch (t: Throwable) {
+        lastError = "bridge: ${t.javaClass.simpleName}: ${t.message ?: ""}"
+        lastErrorKind = "unknown"
+        try {
+          refresh()
+        } catch (ignored: Throwable) {
+          // Nothing further can be reported; throwing here defeats the point.
+        }
+      }
+    }
+  }
+
   private companion object {
     /** How long mpv gets to open a stream before an idle engine reads as failure. */
     const val OPEN_GRACE_MS = 4_000L
@@ -65,7 +89,13 @@ class VioraMpv(
 
   private val tick = object : Runnable {
     override fun run() {
-      refresh()
+      // Five times a second, reading properties off an engine that may be
+      // mid-teardown. One bad read here would end the process mid-film.
+      try {
+        refresh()
+      } catch (t: Throwable) {
+        lastError = "state: ${t.javaClass.simpleName}: ${t.message ?: ""}"
+      }
       if (ticking) main.postDelayed(this, 200)
     }
   }
@@ -99,11 +129,11 @@ class VioraMpv(
   }
 
   fun onActivityStopped() {
-    main.post { mpv?.setPropertyBoolean("pause", true) }
+    post { mpv?.setPropertyBoolean("pause", true) }
   }
 
   fun destroy() {
-    main.post { teardown() }
+    post { teardown() }
   }
 
   private fun teardown() {
@@ -269,7 +299,7 @@ class VioraMpv(
         headers[k] = h.optString(k)
       }
     }
-    main.post {
+    post {
       lastError = null
       lastErrorKind = null
       trackCount = -1
@@ -318,7 +348,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun play() {
-    main.post {
+    post {
       mpv?.setPropertyBoolean("pause", false)
       refresh()
     }
@@ -326,7 +356,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun pause() {
-    main.post {
+    post {
       mpv?.setPropertyBoolean("pause", true)
       refresh()
     }
@@ -334,7 +364,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun seek(sec: Double) {
-    main.post {
+    post {
       mpv?.setPropertyDouble("time-pos", sec.coerceAtLeast(0.0))
       refresh()
     }
@@ -342,7 +372,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun setVolume(v: Double) {
-    main.post {
+    post {
       mpv?.setPropertyDouble("volume", (v * 100.0).coerceIn(0.0, 600.0))
       refresh()
     }
@@ -350,7 +380,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun setMuted(m: Boolean) {
-    main.post {
+    post {
       mpv?.setPropertyBoolean("mute", m)
       refresh()
     }
@@ -358,7 +388,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun setRate(r: Double) {
-    main.post {
+    post {
       mpv?.setPropertyDouble("speed", r.coerceIn(0.01, 100.0))
       refresh()
     }
@@ -366,7 +396,7 @@ class VioraMpv(
 
   @JavascriptInterface
   fun setAudioTrack(id: String) {
-    main.post {
+    post {
       mpv?.setPropertyString("aid", if (id.isEmpty()) "no" else id)
       trackCount = -1
       refresh()
@@ -376,7 +406,7 @@ class VioraMpv(
   /** The empty string means off; a binder call cannot carry null. */
   @JavascriptInterface
   fun setSubtitleTrack(id: String) {
-    main.post {
+    post {
       mpv?.setPropertyString("sid", if (id.isEmpty()) "no" else id)
       trackCount = -1
       refresh()
@@ -393,12 +423,12 @@ class VioraMpv(
    */
   @JavascriptInterface
   fun setSubVisible(on: Boolean) {
-    main.post { mpv?.setPropertyBoolean("sub-visibility", false) }
+    post { mpv?.setPropertyBoolean("sub-visibility", false) }
   }
 
   @JavascriptInterface
   fun setSubDelay(sec: Double) {
-    main.post {
+    post {
       mpv?.setPropertyDouble("sub-delay", sec)
       refresh()
     }
@@ -407,7 +437,7 @@ class VioraMpv(
   /** Unlike ExoPlayer, mpv can shift the audio clock in either direction. */
   @JavascriptInterface
   fun setAudioDelay(sec: Double) {
-    main.post {
+    post {
       mpv?.setPropertyDouble("audio-delay", sec)
       refresh()
     }
@@ -422,7 +452,7 @@ class VioraMpv(
    */
   @JavascriptInterface
   fun setGeometry(mode: String, aspect: Double, zoom: Double) {
-    main.post {
+    post {
       val m = mpv ?: return@post
       m.setPropertyBoolean("keepaspect", mode != "stretch")
       m.setPropertyDouble("panscan", if (mode == "fill") 1.0 else 0.0)
@@ -434,12 +464,12 @@ class VioraMpv(
   /** libplacebo shader chain, for Anime4K and anything like it. */
   @JavascriptInterface
   fun setShaders(paths: String) {
-    main.post { mpv?.setPropertyString("glsl-shaders", paths) }
+    post { mpv?.setPropertyString("glsl-shaders", paths) }
   }
 
   @JavascriptInterface
   fun setAudioNormalize(on: Boolean) {
-    main.post {
+    post {
       mpv?.command(
         *(if (on) arrayOf("af", "set", "dynaudnorm=g=5:f=250:r=0.9:p=0.5")
         else arrayOf("af", "set", "")),
@@ -452,6 +482,6 @@ class VioraMpv(
 
   @JavascriptInterface
   fun release() {
-    main.post { teardown() }
+    post { teardown() }
   }
 }

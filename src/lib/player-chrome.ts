@@ -15,7 +15,6 @@ export type PlayerControlId =
   | "time-start"
   | "time-end"
   | "volume"
-  | "dvr"
   | "download"
   | "prev-episode"
   | "seek-back"
@@ -28,7 +27,6 @@ export type PlayerControlId =
   | "subtitle-menu"
   | "speed-menu"
   | "aspect-menu"
-  | "anime4k-menu"
   | "hdr-toggle"
   | "draw-toggle"
   | "screenshot"
@@ -95,7 +93,6 @@ export const CONTROL_STATES: Partial<Record<PlayerControlId, readonly string[]>>
   "fullscreen": ["fullscreen", "windowed"],
   "draw-toggle": ["active", "inactive"],
   cast: ["connected", "idle"],
-  dvr: ["recording", "idle"],
   pip: ["active", "inactive"],
   download: ["idle", "downloading", "complete", "error"],
 };
@@ -144,7 +141,6 @@ export const ICON_REPLACEABLE_CONTROLS: readonly PlayerControlId[] = [
   "prev-episode",
   "next-episode",
   "pick-another",
-  "dvr",
   "download",
   "draw-toggle",
   "pip",
@@ -174,7 +170,6 @@ export const DEFAULT_DEFAULT_CONFIG: PlayerChromeConfig = {
     { id: "time-start", slot: "seek-leading", order: 0 },
     { id: "time-end", slot: "seek-trailing", order: 0 },
     { id: "volume", slot: "bottom-left", order: 0 },
-    { id: "dvr", slot: "bottom-left", order: 10 },
     { id: "download", slot: "bottom-left", order: 20 },
     { id: "prev-episode", slot: "bottom-center", order: 0 },
     { id: "seek-back", slot: "bottom-center", order: 10 },
@@ -186,7 +181,6 @@ export const DEFAULT_DEFAULT_CONFIG: PlayerChromeConfig = {
     { id: "audio-menu", slot: "bottom-right", order: 10 },
     { id: "subtitle-menu", slot: "bottom-right", order: 20 },
     { id: "aspect-menu", slot: "bottom-right", order: 25 },
-    { id: "anime4k-menu", slot: "bottom-right", order: 27 },
     { id: "hdr-toggle", slot: "bottom-right", order: 28, hidden: true },
     { id: "speed-menu", slot: "bottom-right", order: 30 },
     { id: "draw-toggle", slot: "bottom-right", order: 40 },
@@ -212,7 +206,6 @@ export const DEFAULT_STREMIO_CONFIG: PlayerChromeConfig = {
     { id: "volume", slot: "bottom-left", order: 10 },
     { id: "time-start", slot: "bottom-left", order: 20 },
     { id: "time-end", slot: "bottom-left", order: 30 },
-    { id: "dvr", slot: "bottom-left", order: 40 },
     { id: "prev-episode", slot: "bottom-center", order: 0 },
     { id: "seek-back", slot: "bottom-center", order: 10 },
     { id: "seek-forward", slot: "bottom-center", order: 20 },
@@ -221,7 +214,6 @@ export const DEFAULT_STREMIO_CONFIG: PlayerChromeConfig = {
     { id: "audio-menu", slot: "bottom-right", order: 10 },
     { id: "subtitle-menu", slot: "bottom-right", order: 20 },
     { id: "aspect-menu", slot: "bottom-right", order: 25 },
-    { id: "anime4k-menu", slot: "bottom-right", order: 27 },
     { id: "hdr-toggle", slot: "bottom-right", order: 28, hidden: true },
     { id: "draw-toggle", slot: "bottom-right", order: 30 },
     { id: "screenshot", slot: "bottom-right", order: 35, hidden: true },
@@ -246,7 +238,6 @@ export const CONTROL_META: Record<
   "time-start": { label: "Time elapsed", group: "info", defaultSlot: "seek-leading" },
   "time-end": { label: "Time remaining or duration", group: "info", defaultSlot: "seek-trailing" },
   volume: { label: "Volume", group: "transport", defaultSlot: "bottom-left" },
-  dvr: { label: "DVR record (Live TV)", group: "actions", defaultSlot: "bottom-left" },
   download: { label: "Download", group: "actions", defaultSlot: "bottom-left" },
   "prev-episode": { label: "Previous episode", group: "transport", defaultSlot: "bottom-center" },
   "seek-back": { label: "Seek back", group: "transport", defaultSlot: "bottom-center" },
@@ -259,7 +250,6 @@ export const CONTROL_META: Record<
   "subtitle-menu": { label: "Subtitles", group: "menus", defaultSlot: "bottom-right" },
   "speed-menu": { label: "Playback speed", group: "menus", defaultSlot: "bottom-right" },
   "aspect-menu": { label: "Aspect ratio", group: "menus", defaultSlot: "bottom-right" },
-  "anime4k-menu": { label: "Anime4K", group: "menus", defaultSlot: "bottom-right" },
   "hdr-toggle": { label: "HDR to SDR toggle", group: "menus", defaultSlot: "bottom-right" },
   "draw-toggle": { label: "Draw on video", group: "actions", defaultSlot: "bottom-right" },
   screenshot: { label: "Screenshot", group: "actions", defaultSlot: "bottom-right" },

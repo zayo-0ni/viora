@@ -1,6 +1,6 @@
-import { convertFileSrc, invoke } from "@tauri-apps/api/core";
-import type { PlayerBridge, PlayerSnapshot } from "@/lib/player/bridge";
-import { fetchAndParse, parseSubtitle, type SubCue } from "./parser";
+import { convertFileSrc } from "@tauri-apps/api/core";
+import type { PlayerBridge } from "@/lib/player/bridge";
+import { fetchAndParse, type SubCue } from "./parser";
 
 export type CueSource = { cues: SubCue[]; format: "srt" | "vtt" };
 export type AnySourceResult = { ok: true; source: CueSource } | { ok: false; reason: string };
@@ -26,28 +26,7 @@ export function detectFormatFromUrl(url: string): "srt" | "vtt" {
   return ext === "vtt" ? "vtt" : "srt";
 }
 
-function snapshotOf(bridge: PlayerBridge): PlayerSnapshot | null {
-  let snap: PlayerSnapshot | null = null;
-  const unsub = bridge.subscribe((s) => {
-    snap = s;
-  });
-  unsub();
-  return snap;
-}
-
-function selectedEmbeddedIndex(bridge: PlayerBridge): number {
-  const snap = snapshotOf(bridge);
-  if (!snap) return 0;
-  const embedded = snap.subtitleTracks.filter((t) => !t.external && !t.url);
-  const idx = embedded.findIndex((t) => t.selected);
-  return idx >= 0 ? idx : 0;
-}
-
-export async function getCuesAnySource(
-  bridge: PlayerBridge,
-  sourceUrl: string | null,
-  headers?: Record<string, string>,
-): Promise<AnySourceResult> {
+export async function getCuesAnySource(bridge: PlayerBridge): Promise<AnySourceResult> {
   const loaded = bridge.getSelectedTrackCues();
   if (loaded && loaded.length > 0) return { ok: true, source: { cues: loaded, format: "srt" } };
 
@@ -64,21 +43,8 @@ export async function getCuesAnySource(
     }
   }
 
-  if (sourceUrl && isTauri()) {
-    const streamIndex = selectedEmbeddedIndex(bridge);
-    try {
-      const srt = await invoke<string>("subtitle_extract", {
-        source: sourceUrl,
-        streamIndex,
-        headers: headers ?? null,
-      });
-      const cues = parseSubtitle(srt, "srt");
-      if (cues.length > 0) return { ok: true, source: { cues, format: "srt" } };
-      return { ok: false, reason: "extract-empty" };
-    } catch (e) {
-      return { ok: false, reason: `extract-failed: ${e instanceof Error ? e.message : String(e)}` };
-    }
-  }
-
+  // A subtitle muxed into the container used to be recovered here by handing
+  // the stream to an ffmpeg sidecar. Android cannot spawn one, so an embedded
+  // track that the engine does not surface on its own is out of reach.
   return { ok: false, reason: "no-cues" };
 }

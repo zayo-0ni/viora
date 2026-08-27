@@ -1,14 +1,19 @@
 name: Android
 
-# Builds an installable APK on every push and attaches one to a release when a
-# version tag lands. Linux runners have no symlink restriction, so the official
+# Builds an APK on every push to main, as a check that the tree compiles on a
+# clean machine. Linux runners have no symlink restriction, so the official
 # `tauri android build` works here — the local build-apk.mjs workaround is only
 # needed on Windows hosts.
+#
+# It publishes nothing. Releases are made by hand with نشر_الإصدار.bat; see the
+# note on the removed publish step at the foot of this file.
+#
+# `tags: ["v*"]` is deliberately absent. A release tag would only start a build
+# whose output goes nowhere, sixteen minutes after the release it cannot join.
 
 on:
   push:
     branches: [main]
-    tags: ["v*"]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -26,10 +31,12 @@ jobs:
   apk:
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    # The workflow token is read-only by default, so publishing a release 403s
-    # at the very last step — after a nine-minute build has already succeeded.
+    # Read-only. This was `contents: write`, which the removed publish step
+    # needed to attach assets to a release. Nothing here writes to the
+    # repository any more, and a token that can publish is a token that can
+    # publish by accident.
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -138,27 +145,18 @@ jobs:
           path: ${{ steps.apk.outputs.path }}
           retention-days: 30
 
-      # A tag publishes a release, which gives the TV a plain URL to fetch
-      # through the Downloader app instead of a login-gated artifact.
-      - name: Publish the release
-        if: github.ref_type == 'tag'
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            ${{ steps.apk.outputs.path }}
-            Viora-android.apk
-            Viora-arm64.apk
-          generate_release_notes: true
-          body: |
-            Carries both arm64 and armv7, so it installs on 32-bit TV boxes too.
-
-            **Install on Android TV** — open Downloader and enter this address,
-            which always resolves to the newest release:
-
-            `https://github.com/${{ github.repository }}/releases/latest/download/Viora-android.apk`
-
-            Set it once; every future update arrives at the same address. Allow
-            installation from unknown sources when prompted.
-
-            Builds are signed with the standard Android debug key, so a newer
-            build installs over an older one without uninstalling first.
+      # Releases are published by hand, from نشر_الإصدار.bat, and by the owner
+      # only. There used to be a softprops/action-gh-release step here that
+      # attached APKs whenever a v* tag landed.
+      #
+      # It had to go because `gh release create` creates the tag, so publishing
+      # locally woke this workflow and the two of them wrote to the same release
+      # at once. On v1.0.3 that cost the arm64 asset outright: the local upload
+      # of 180 MB was still in flight when the runner finished and attached its
+      # own build under the same name, and what survived was one file out of
+      # four. The address in README points at Viora-android.apk, so the release
+      # was left un-installable for every arm64 viewer.
+      #
+      # The build above still runs, as a check that the tree compiles on a clean
+      # machine. It attaches its APK to the workflow run, where only the repo
+      # can reach it, and publishes nothing.

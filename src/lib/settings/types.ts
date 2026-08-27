@@ -1,5 +1,4 @@
 import type { ThemeSettings } from "@/lib/theme";
-import type { CustomList } from "@/lib/lists/types";
 import type { SourceRow } from "@/lib/custom-sources";
 import type { CustomStreamFilter } from "@/lib/streams/custom-filters";
 
@@ -17,7 +16,6 @@ export type StreamingService =
 export type WebhookTrigger =
   | { event: "newMovie" }
   | { event: "newSeries" }
-  | { event: "newAnime" }
   | { event: "fromTrackedPerson"; personIds?: number[] }
   | { event: "fromGenre"; genreIds: number[]; mediaType: "movie" | "tv" }
   | { event: "fromProvider"; providerIds: number[] }
@@ -26,7 +24,7 @@ export type WebhookTrigger =
   | { event: "fromTraktWatchlist" }
   | { event: "liveTvEvent"; channelIds?: string[]; favoritesOnly?: boolean; leadMinutes?: number };
 
-export type ContentCategory = "anime" | "liveTv" | "sports" | "adult";
+export type ContentCategory = "liveTv" | "sports" | "adult";
 
 export type ContentFilters = Record<ContentCategory, boolean>;
 
@@ -50,10 +48,6 @@ export interface SimklGranularFilters {
     watching: boolean;
     plantowatch: boolean;
   };
-  anime: {
-    watching: boolean;
-    plantowatch: boolean;
-  };
 }
 
 export type Settings = {
@@ -70,13 +64,21 @@ export type Settings = {
   pmKey: string;
   dlKey: string;
   region: string;
+  /**
+   * The one language answer, and the only one stored.
+   *
+   * Everything below that mentions a language — subtitles, audio, artwork,
+   * metadata, how add-on sources are ranked, which rows the home screen keeps —
+   * is computed from this by `deriveLanguages` when settings are read. None of
+   * them is written, none appears in the settings screen, and an empty list
+   * means no preference rather than English.
+   */
+  contentLanguages: string[];
   preferredLanguages: string[];
   requirePreferredLanguage: boolean;
   showImdbBadge: boolean;
   showTmdbBadge: boolean;
   showRtBadge: boolean;
-  showMalBadge: boolean;
-  animeCardRating: "mal" | "imdb";
   showMetacriticBadge: boolean;
   showLetterboxdBadge: boolean;
   showMdblistBadge: boolean;
@@ -84,7 +86,6 @@ export type Settings = {
   showDetailRatings: boolean;
   showImdbDetail: boolean;
   showTmdbDetail: boolean;
-  showMalDetail: boolean;
   showRtDetail: boolean;
   showRtAudienceDetail: boolean;
   showLetterboxdDetail: boolean;
@@ -108,9 +109,6 @@ export type Settings = {
   playerTitleSeriesFirst: boolean;
   uiScale: number;
   serveWebUi: boolean;
-  trailerQuality: "auto" | "360p" | "720p" | "1080p" | "best";
-  detailTrailerAutoplay: boolean;
-  detailTrailerAudio: boolean;
   heroShadow: number;
   heroFull: boolean;
   heroFullQuality: boolean;
@@ -136,16 +134,9 @@ export type Settings = {
   tvdbOrderPanel: boolean;
   harborAvatar: string | null;
   harborColor: string;
-  anilistAutoSync: boolean;
-  malAutoSync: boolean;
-  anilistBlurComments: boolean;
-  showAnilistComments: boolean;
-  useAnilistAvatar: boolean;
   useTraktAvatar: boolean;
   useSimklAvatar: boolean;
-  useMalAvatar: boolean;
   traktClientId: string;
-  traktClientSecret: string;
   traktAccessToken: string | null;
   traktRefreshToken: string | null;
   traktExpiresAt: number;
@@ -168,12 +159,7 @@ export type Settings = {
   rememberLastStream: boolean;
   keepSourceNextEpisode: boolean;
   playerHdrToSdr: boolean;
-  playerRtxHdr: boolean;
-  playerDisplayPanel: "auto" | "oled" | "lcd";
   playerMotionInterp: boolean;
-  playerAnime4k: boolean;
-  playerAnime4kAnimeOnly: boolean;
-  playerAnime4kIndicator: boolean;
   playerMpvEmbed: boolean;
   playerP2pChip: boolean;
   showQualityInfo: boolean;
@@ -187,11 +173,6 @@ export type Settings = {
   streamCacheDir: string;
   remoteStreamServerUrl: string;
   remoteStreamServerStrict: boolean;
-  playerAnime4kShaders: string[];
-  playerAnime4kMode: string;
-  playerAnime4kTier: string;
-  playerAnime4kFolder: string;
-  playerAnime4kOverride: string;
   preferredSubLangs: string[];
   preferredAudioLangs: string[];
   subFontSize: number;
@@ -245,21 +226,13 @@ export type Settings = {
   aiGroqKey: string;
   jinaKey: string;
   aiWebSearch: boolean;
-  mpvExtraOptions: string;
-  mpvQuality: "balanced" | "performance" | "quality";
-  mpvHwdec: "auto" | "on" | "off";
-  mpvBufferBoost: boolean;
-  mpvDownmixStereo: boolean;
   mpvTweaks: Record<string, string>;
   playerSvp: boolean;
   svpVpyPath: string;
-  svpScope: "all" | "anime" | "non-anime";
   seekBackStepSec: number;
   seekForwardStepSec: number;
-  playerHdrOpaqueWindow: boolean;
   playerEscExitsFullscreen: boolean;
   playerConfirmLeave: boolean;
-  playerHdrStage: "auto" | "off" | "always";
   audioNormalize: boolean;
   audioProfile: "off" | "bass" | "voice" | "bass-reduce" | "night";
   audioDevice: string;
@@ -293,9 +266,7 @@ export type Settings = {
   libraryBookmarkedOnly: boolean;
   librarySort: "recent" | "title" | "year";
   preferCustomMetaAddon: boolean;
-  animeOnlyInAnimeRoom: boolean;
   cwAdvanceNext: boolean;
-  useNativeTitleBar: boolean;
   closeToTray: boolean;
   trayAlwaysOnTop: boolean;
   pauseMinimized: boolean;
@@ -318,10 +289,6 @@ export type Settings = {
     renamed: Record<string, string>;
   };
   hotkeys: Record<string, string>;
-  animeFavoriteGenres: number[];
-  animePicksDismissedAt: number;
-  animeAnilistRowsHidden: string[];
-  animeMalRowsHidden: string[];
   pickerLayout: "condensed" | "stremio";
   streamSort: "harbor" | "addon";
   fullStreamDescription: boolean;
@@ -344,7 +311,6 @@ export type Settings = {
     telegramUrl: string;
     notifyMovies: boolean;
     notifyTv: boolean;
-    notifyAnime: boolean;
     sources: {
       library: boolean;
       all: boolean;
@@ -364,7 +330,6 @@ export type Settings = {
   simklHomeRailsEnabled: boolean;
   simklUpNextRailEnabled: boolean;
   simklTrendingRailEnabled: boolean;
-  simklAnimeTitleLanguage: "english" | "romaji" | "native";
   weekStartsMonday: boolean;
   customCalendar: {
     trackedPeople: Array<{
@@ -378,7 +343,7 @@ export type Settings = {
     genres: Array<{ id: number; name: string; mediaType: "movie" | "tv" }>;
     watchProviders: Array<{ id: number; name: string }>;
     originCountries: string[];
-    mediaTypes: { movie: boolean; tv: boolean; anime: boolean };
+    mediaTypes: { movie: boolean; tv: boolean };
   };
   webhookRules: Array<{
     id: string;
@@ -409,7 +374,6 @@ export type Settings = {
   uiLanguage: "en" | "ar" | "pt";
   arabicWelcomeSeen: boolean;
   cropMode: string;
-  customLists: CustomList[];
   pauseListStatusOnPause: boolean;
   translateTitles: boolean;
   translateDescriptions: boolean;

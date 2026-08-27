@@ -1,12 +1,7 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { Check, ChevronDown, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import anilistLogo from "@/assets/anilist.png";
 import simklLogo from "@/assets/simkl.png";
-import { deleteListEntry, fetchListEntry, saveListEntry } from "@/lib/anilist/mutations";
-import { useAnilist } from "@/lib/anilist/provider";
-import { resolveAnilistMediaId } from "@/lib/anilist/sync";
-import type { MediaListStatus } from "@/lib/anilist/types";
 import { resolveSimklTarget } from "@/lib/simkl/ids";
 import {
   clearSimklStatus,
@@ -25,23 +20,6 @@ import { useTrakt } from "@/lib/trakt/provider";
 import { pushWatched } from "@/lib/trakt/history";
 import { useT } from "@/lib/i18n";
 
-const ANILIST_LABELS: Record<MediaListStatus, string> = {
-  CURRENT: "Watching",
-  PLANNING: "Plan to Watch",
-  COMPLETED: "Completed",
-  REPEATING: "Rewatching",
-  PAUSED: "On Hold",
-  DROPPED: "Dropped",
-};
-
-const ANILIST_ORDER: MediaListStatus[] = [
-  "CURRENT",
-  "PLANNING",
-  "COMPLETED",
-  "REPEATING",
-  "PAUSED",
-  "DROPPED",
-];
 
 function GroupRow({
   logo,
@@ -185,95 +163,6 @@ export function SimklMenuItems({
               onAction();
             }}
           />
-        </>
-      )}
-    </>
-  );
-}
-
-export function AnilistMenuItems({
-  harborId,
-  onAction,
-}: {
-  harborId: string;
-  onAction: () => void;
-}) {
-  const t = useT();
-  const { isConnected } = useAnilist();
-  const [mediaId, setMediaId] = useState<number | null>(null);
-  const [entryId, setEntryId] = useState<number | null>(null);
-  const [status, setStatus] = useState<MediaListStatus | null>(null);
-  const [ready, setReady] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isConnected) return;
-    let cancelled = false;
-    (async () => {
-      const id = await resolveAnilistMediaId(harborId);
-      if (cancelled) return;
-      if (id == null) {
-        setReady(false);
-        return;
-      }
-      setMediaId(id);
-      const info = await fetchListEntry(id).catch(() => null);
-      if (cancelled) return;
-      setEntryId(info?.entry?.id ?? null);
-      setStatus(info?.entry?.status ?? null);
-      setReady(true);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [harborId, isConnected]);
-
-  if (!isConnected || !ready || mediaId == null) return null;
-
-  if (status == null) {
-    return (
-      <GroupRow
-        logo={anilistLogo}
-        label={t("Add to AniList")}
-        open={false}
-        onClick={() => {
-          void saveListEntry({ mediaId, status: "PLANNING" }).catch(() => {});
-          onAction();
-        }}
-      />
-    );
-  }
-  return (
-    <>
-      <GroupRow
-        logo={anilistLogo}
-        label={`AniList  ·  ${t(ANILIST_LABELS[status])}`}
-        open={open}
-        onClick={() => setOpen((v) => !v)}
-      />
-      {open && (
-        <>
-          {ANILIST_ORDER.map((s) => (
-            <StatusRow
-              key={s}
-              label={t(ANILIST_LABELS[s])}
-              active={s === status}
-              onClick={() => {
-                void saveListEntry({ mediaId, status: s }).catch(() => {});
-                onAction();
-              }}
-            />
-          ))}
-          {entryId != null && (
-            <StatusRow
-              label={t("Remove from list")}
-              danger
-              onClick={() => {
-                void deleteListEntry(entryId).catch(() => {});
-                onAction();
-              }}
-            />
-          )}
         </>
       )}
     </>

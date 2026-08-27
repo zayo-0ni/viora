@@ -10,7 +10,6 @@ import { useView } from "@/lib/view";
 import { toggleWatchlist, useInWatchlist } from "@/lib/watchlist";
 import { useLiveImdbRating } from "@/lib/live-imdb";
 import { ImdbIcon } from "./icons/imdb-icon";
-import { MetaAwardsCorner } from "./meta-awards-corner";
 import { Poster } from "./poster";
 
 export function FeedHero({
@@ -63,7 +62,6 @@ export function FeedHero({
           className="pointer-events-none absolute inset-y-0 start-0 w-[58%] bg-gradient-to-r from-[oklch(0.10_0.02_260_/_0.62)] to-transparent rtl:bg-gradient-to-l"
         />
 
-        <MetaAwardsCorner meta={meta} imdbId={resolvedImdb} />
 
         <div className="absolute inset-0 flex flex-col justify-between px-6 pt-5 pb-7 sm:px-10 sm:pb-9">
           <div className="flex shrink-0 items-center justify-between gap-4">

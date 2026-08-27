@@ -36,7 +36,7 @@ export function BackupsPanel({
   return (
     <div className="flex flex-col gap-4 p-5">
       <p className="text-[12.5px] leading-relaxed text-ink-muted">
-        {t("A safety copy of your addon order. One is saved automatically before Harbor writes any change, and you can save one yourself any time. The five most recent are kept.")}
+        {t("A safety copy of your addon order. One is saved automatically before Viora writes any change, and you can save one yourself any time. The five most recent are kept.")}
       </p>
       <FocusButton
         onClick={onBackupNow}

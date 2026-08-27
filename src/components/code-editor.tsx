@@ -113,7 +113,7 @@ export function CodeEditor({
   };
 
   return (
-    <div className={`harbor-code relative flex overflow-hidden bg-[#282c34] ${className ?? ""}`}>
+    <div className={`viora-code relative flex overflow-hidden bg-[#282c34] ${className ?? ""}`}>
       <div
         ref={gutterRef}
         aria-hidden

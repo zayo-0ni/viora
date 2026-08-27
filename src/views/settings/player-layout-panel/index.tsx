@@ -285,7 +285,7 @@ export function PlayerLayoutPanel() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `harbor-${theme}-${safeName}.json`;
+    a.download = `viora-${theme}-${safeName}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

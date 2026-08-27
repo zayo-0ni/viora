@@ -105,7 +105,11 @@ export function CategorySidebar({
           )}
         </div>
       </div>
-      <div ref={listRef} className="flex-1 overflow-y-auto py-1.5">
+      {/* Room for the ring, and scroll padding to match.
+          The rows sat flush against the ends of this column, and a focus
+          outline is painted outside the element it belongs to — so the frame on
+          the first and last category was cut off by the clip. */}
+      <div ref={listRef} className="flex-1 overflow-y-auto px-1 py-2 scroll-py-6">
         {showFavs && (
           <CategoryItem
             idx={favIdx}
@@ -217,6 +221,9 @@ function CategoryItem({
     <div className="group/cat relative">
       <FocusButton
         data-cat-idx={idx}
+        // The column reveals a row once it is fully outside, which leaves the
+        // one at the edge sitting half over it with its frame cut.
+        onFocus={(e) => e.currentTarget.scrollIntoView({ block: "nearest" })}
         role="option"
         aria-selected={active}
         tabIndex={active ? 0 : -1}
@@ -257,10 +264,20 @@ function CategoryItem({
           {count.toLocaleString()}
         </span>
       </FocusButton>
+      {/* Pin and hide belong to the pointer, not to the remote.
+
+          They live in an overlay drawn at zero opacity until a mouse hovers the
+          row, and they were FocusButtons — so the D-pad walked onto controls
+          that could not be seen. Measured on the emulator: pressing left out of
+          the channels landed on a 24px pin icon rather than on the category
+          beside it. Plain buttons keep them working under a pointer and take
+          them out of the remote's path, so the column is one stop per
+          category. */}
       {hasActions && (
         <div className="absolute end-2 top-1/2 flex -translate-y-1/2 items-center gap-1 opacity-0 transition-opacity group-hover/cat:opacity-100">
-          <FocusButton
+          <button
             type="button"
+            tabIndex={-1}
             onClick={(e) => {
               e.stopPropagation();
               toggleGroupPin(sourceId!, groupName!);
@@ -272,9 +289,10 @@ function CategoryItem({
             }`}
           >
             <Pin size={12} strokeWidth={2.2} className={pinned ? "fill-current" : ""} />
-          </FocusButton>
-          <FocusButton
+          </button>
+          <button
             type="button"
+            tabIndex={-1}
             onClick={(e) => {
               e.stopPropagation();
               toggleGroupHidden(sourceId!, groupName!);
@@ -284,7 +302,7 @@ function CategoryItem({
             className="flex h-6 w-6 items-center justify-center rounded-md bg-canvas/90 text-ink-muted hover:text-ink"
           >
             <EyeOff size={12} strokeWidth={2.2} />
-          </FocusButton>
+          </button>
         </div>
       )}
     </div>

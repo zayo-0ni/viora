@@ -2,7 +2,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { useSettings } from "@/lib/settings";
 import { customHoverVersion, getCustomHover, subscribeCustomHovers } from "@/lib/custom-hover";
 
-const STYLE_ID = "harbor-custom-hover-css";
+const STYLE_ID = "viora-custom-hover-css";
 
 export function CustomHoverCssMount() {
   const { settings } = useSettings();

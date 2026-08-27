@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackChrome } from "@/chrome/back-chrome";
 import { isDpadPrimary } from "@/lib/platform";
-import { HarborMark } from "@/components/icons/harbor-mark";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { TogetherPopover } from "@/components/together-modal";
 import { DownloadsButton } from "@/components/downloads-popover";
-import { RecordingPill } from "@/chrome/recording-pill";
 import {
   effectiveBinding,
   eventToBinding,
@@ -20,13 +19,8 @@ import { useSearch } from "@/lib/search-context";
 import { useSettings } from "@/lib/settings";
 import { useTogether } from "@/lib/together/provider";
 import { useSelfIdentity } from "@/lib/together/use-self-identity";
-import { activeLayout } from "@/lib/theme";
-import { useThemePreview } from "@/lib/theme-preview";
 import { useView } from "@/lib/view";
-import { close } from "@/lib/window";
-import { can } from "@/lib/capabilities";
 
-const HAS_WINDOW_CHROME = can("customTitlebar");
 
 export function Topbar({ connecting = false }: { connecting?: boolean } = {}) {
   const { chromeHidden, canGoBack, view, setView, topKind } = useView();
@@ -34,30 +28,22 @@ export function Topbar({ connecting = false }: { connecting?: boolean } = {}) {
   const kid = useActiveKid();
   const t = useT();
   const [closeConfirm, setCloseConfirm] = useState(false);
-  const preview = useThemePreview();
   if (chromeHidden && !connecting) return null;
-  const layout = kid ? "sidebar" : preview ? preview.layout : activeLayout(settings.theme);
   const onLiveRoot = topKind === "live";
   const sidebarHidden = connecting || view === "settings" || onLiveRoot || topKind === "picker";
   const hideSearch = view === "addons" || connecting || topKind === "picker";
-  const sidebarOffset =
-    layout === "stremio"
-      ? "ps-[80px]"
-      : settings.sidebarCollapsed
-        ? "ps-[84px]"
-        : "ps-[84px] lg:ps-[260px]";
+  const sidebarOffset = settings.sidebarCollapsed
+    ? "ps-[84px]"
+    : "ps-[84px] lg:ps-[260px]";
   const searchWidth = canGoBack
     ? "w-[14rem] sm:w-[18rem] lg:w-[22rem] xl:w-[24rem]"
     : "w-[14rem] sm:w-[20rem] lg:w-[24rem] xl:w-[28rem] hover:w-[18rem] sm:hover:w-[24rem] lg:hover:w-[28rem] xl:hover:w-[34rem] focus-within:w-[18rem] sm:focus-within:w-[24rem] lg:focus-within:w-[28rem] xl:focus-within:w-[34rem]";
-  const dragProps = HAS_WINDOW_CHROME ? { "data-tauri-drag-region": true } : {};
   return (
     <header className={`fixed inset-x-0 top-0 ${topKind === "picker" || connecting ? "z-[130]" : "z-[55]"} h-20`}>
       <div
-        {...dragProps}
         className="relative z-10 grid h-full grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:px-8"
       >
         <div
-          {...dragProps}
           className={
             sidebarHidden
               ? "flex h-full min-w-0 items-center justify-start gap-3"
@@ -76,7 +62,7 @@ export function Topbar({ connecting = false }: { connecting?: boolean } = {}) {
           )}
           {onLiveRoot && (
             <div className="flex items-center gap-1.5 text-ink">
-              <HarborMark className="h-7 w-7" />
+              <VioraMark className="h-7 w-7" />
               <span className="font-display text-[18px] font-semibold leading-none tracking-tight">
                 {t("Live")}
               </span>
@@ -85,17 +71,14 @@ export function Topbar({ connecting = false }: { connecting?: boolean } = {}) {
           {!onLiveRoot && !connecting && <BackChrome />}
         </div>
         <div
-          {...dragProps}
           className={`min-w-0 max-w-full transition-[width] duration-200 ease-out ${searchWidth}`}
         >
           {/* On a remote the search entry lives in the sidebar. */}
           {!hideSearch && !kid && !isDpadPrimary() && <SearchPill />}
         </div>
         <div
-          {...dragProps}
           className="flex h-full min-w-0 items-center justify-end gap-2"
         >
-          <RecordingPill />
           <DownloadsButton />
           {!onLiveRoot && !kid && <TogetherButton />}
         </div>
@@ -124,7 +107,7 @@ function CloseConfirmKids({ onConfirm, onCancel }: { onConfirm: () => void; onCa
           className="pointer-events-none absolute -bottom-2 -right-2 h-20 w-auto opacity-85"
           style={{ transform: "scaleX(-1)" }}
         />
-        <h2 className="relative font-display text-[32px] font-bold">{t("Close Harbor?")}</h2>
+        <h2 className="relative font-display text-[32px] font-bold">{t("Close Viora?")}</h2>
         <p className="relative mt-2 text-[16px] font-medium text-white/85">
           {t("Ask a grown-up before you close.")}
         </p>
@@ -222,17 +205,17 @@ function TogetherButtonImpl({
         : "bg-elevated/70 text-ink-muted hover:bg-elevated hover:text-ink"
   }`;
   const chrome = modalOpen
-    ? `z-[51] harbor-together-surface border border-edge text-ink ${
+    ? `z-[51] viora-together-surface border border-edge text-ink ${
         above ? "rounded-t-none rounded-b-lg border-t-0" : "rounded-b-none rounded-t-lg border-b-0"
       }`
     : idleChrome;
 
   return (
-    <div ref={wrapRef} className={`relative ${modalOpen && !above ? "harbor-wt-wrap flex flex-col self-stretch justify-end" : ""}`}>
+    <div ref={wrapRef} className={`relative ${modalOpen && !above ? "viora-wt-wrap flex flex-col self-stretch justify-end" : ""}`}>
       <FocusButton
         aria-label={t("chrome.watchTogether")}
         onClick={() => (modalOpen ? closeModal() : openModal())}
-        className={`harbor-together-btn relative flex items-center transition-colors duration-150 ${modalOpen && !above ? "harbor-wt-tab" : ""} ${sizing} ${chrome}`}
+        className={`viora-together-btn relative flex items-center transition-colors duration-150 ${modalOpen && !above ? "viora-wt-tab" : ""} ${sizing} ${chrome}`}
       >
         {live ? (
           <>
@@ -286,7 +269,7 @@ function TogetherButtonImpl({
       </FocusButton>
       {modalOpen && (
         <div
-          className={`harbor-wt-modal absolute z-50 ${
+          className={`viora-wt-modal absolute z-50 ${
             above ? "bottom-[calc(100%-1px)] start-0" : "end-0 top-[calc(100%-1px)]"
           }`}
         >
@@ -325,7 +308,7 @@ function SearchPill() {
       type="button"
       data-tauri-drag-region="false"
       onClick={() => setOpen(true)}
-      className="harbor-search-pill flex h-11 w-full items-center gap-3 rounded-full border border-edge-soft/60 bg-elevated/80 px-5 text-start opacity-80 transition-[opacity,background-color] duration-200 hover:bg-elevated hover:opacity-100"
+      className="viora-search-pill flex h-11 w-full items-center gap-3 rounded-full border border-edge-soft/60 bg-elevated/80 px-5 text-start opacity-80 transition-[opacity,background-color] duration-200 hover:bg-elevated hover:opacity-100"
     >
       <Search size={16} strokeWidth={1.75} className="text-ink-subtle" />
       <span className="flex-1 truncate text-[14px] text-ink-subtle">{t("search.placeholder")}</span>

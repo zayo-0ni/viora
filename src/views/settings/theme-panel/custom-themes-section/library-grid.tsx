@@ -90,7 +90,7 @@ function ImportTile({ onUpload }: { onUpload: (file: File) => void }) {
   const pick = () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".harborstyle,.json,.txt,.harbortheme.json,application/json,text/plain";
+    input.accept = ".viorastyle,.json,.txt,.harbortheme.json,application/json,text/plain";
     input.onchange = () => {
       const f = input.files?.[0];
       if (f) onUpload(f);

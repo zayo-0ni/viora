@@ -263,7 +263,7 @@ function LayoutDialog({ dialog, onClose }: { dialog: Dialog; onClose: () => void
 
   return createPortal(
     <div
-      className="harbor-layout-dialog fixed inset-0 z-[400] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
+      className="viora-layout-dialog fixed inset-0 z-[400] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
       onPointerDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

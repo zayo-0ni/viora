@@ -166,7 +166,7 @@ function StrokesSvg({ strokes }: { strokes: Stroke[] }) {
             vectorEffect="non-scaling-stroke"
             style={{
               filter: "drop-shadow(0 0 4px rgba(0,0,0,0.55))",
-              animation: `harbor-stroke-fade ${STROKE_LIFETIME_MS}ms cubic-bezier(0.32, 0.72, 0.24, 1) forwards`,
+              animation: `viora-stroke-fade ${STROKE_LIFETIME_MS}ms cubic-bezier(0.32, 0.72, 0.24, 1) forwards`,
             }}
           />
         );

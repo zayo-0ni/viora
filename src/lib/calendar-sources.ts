@@ -129,11 +129,6 @@ function inMonth(iso: string, year: number, month: number): boolean {
   return y === year && (m ?? 0) - 1 === month;
 }
 
-function isAnimationGenre(genres: string[] | undefined): boolean {
-  if (!genres) return false;
-  const wanted = ["animation", "anime"];
-  return genres.some((g) => wanted.includes(g.toLowerCase()));
-}
 
 export async function fetchTraktCalendar(
   year: number,
@@ -182,7 +177,6 @@ export async function fetchTraktCalendar(
       poster: vid?.thumbnail ?? meta?.poster ?? null,
       background: meta?.background ?? null,
       releaseDate: date,
-      isAnime: isAnimationGenre(meta?.genres),
       overview: meta?.description ?? "",
       voteAverage: parseFloat(meta?.imdbRating ?? "0") || 0,
     });
@@ -200,7 +194,6 @@ export async function fetchTraktCalendar(
       poster: meta?.poster ?? null,
       background: meta?.background ?? null,
       releaseDate: date,
-      isAnime: isAnimationGenre(meta?.genres),
       overview: meta?.description ?? "",
       voteAverage: parseFloat(meta?.imdbRating ?? "0") || 0,
     });
@@ -244,7 +237,6 @@ export async function fetchAnticipatedCalendar(
       poster: meta?.poster ?? s.poster,
       background: meta?.background ?? null,
       releaseDate: s.firstAired,
-      isAnime: false,
       overview: meta?.description ?? s.overview,
       voteAverage: parseFloat(meta?.imdbRating ?? "0") || 0,
     });
@@ -261,7 +253,6 @@ export async function fetchAnticipatedCalendar(
       poster: meta?.poster ?? m.poster,
       background: meta?.background ?? null,
       releaseDate: m.released,
-      isAnime: false,
       overview: meta?.description ?? m.overview,
       voteAverage: parseFloat(meta?.imdbRating ?? "0") || 0,
     });

@@ -232,36 +232,6 @@ export function DisplaySection() {
         </div>
       </Section>
 
-      <Section
-        title={t("Trailer quality")}
-        subtitle={t("How sharp the trailer is when you hit the preview button. Auto picks from your connection speed. 1080p and Best merge separate video and audio with the bundled ffmpeg, so they take a beat longer to start.")}
-      >
-        <Segmented
-          value={settings.trailerQuality}
-          options={[
-            { value: "auto", label: "Auto" },
-            { value: "360p", label: "360p" },
-            { value: "720p", label: "720p" },
-            { value: "1080p", label: "1080p" },
-            { value: "best", label: "Best" },
-          ]}
-          onChange={(v) => update({ trailerQuality: v })}
-        />
-        <ToggleRow
-          label={t("Autoplay trailer on detail pages")}
-          sub={t("Plays a muted trailer in the backdrop when you open a title. Click the speaker to unmute. Falls back to the image when no trailer is available.")}
-          value={settings.detailTrailerAutoplay}
-          onChange={(v) => update({ detailTrailerAutoplay: v })}
-        />
-        {settings.detailTrailerAutoplay && (
-          <ToggleRow
-            label={t("Start trailers with audio")}
-            sub={t("Detail page trailers begin unmuted. Falls back to muted if the browser blocks sound until you interact.")}
-            value={settings.detailTrailerAudio}
-            onChange={(v) => update({ detailTrailerAudio: v })}
-          />
-        )}
-      </Section>
     </>
   );
 }

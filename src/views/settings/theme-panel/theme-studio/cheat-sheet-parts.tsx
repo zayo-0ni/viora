@@ -108,7 +108,7 @@ export function CodeBlock({ code, filename, compact }: { code: string; filename?
   };
   const download = () => {
     const name = filename ?? "snippet.txt";
-    void downloadText(name, code, [name.split(".").pop() ?? "txt"], "Harbor snippet");
+    void downloadText(name, code, [name.split(".").pop() ?? "txt"], "Viora snippet");
   };
   return (
     <div className={`overflow-hidden rounded-lg border border-edge-soft bg-elevated ${compact ? "mt-2.5" : ""}`}>

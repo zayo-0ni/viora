@@ -14,8 +14,8 @@ import {
   type CustomHoverConfig,
 } from "@/lib/custom-hover";
 
-const PREVIEW_SCOPE = "harbor-ch-editing";
-const EDITOR_STYLE_ID = "harbor-ch-editor-css";
+const PREVIEW_SCOPE = "viora-ch-editing";
+const EDITOR_STYLE_ID = "viora-ch-editor-css";
 import { useT } from "@/lib/i18n";
 
 export function CustomHoverEditor({
@@ -132,14 +132,14 @@ export function CustomHoverEditor({
           <div className="mt-4 flex flex-col gap-1.5">
             <span className="text-[13px] text-ink">{t("Custom CSS")}</span>
             <span className="text-[11px] leading-snug text-ink-subtle">
-              {t("Advanced. Target .harbor-custom-hover for the poster, .group:hover for the hover state. Shows live in the preview.")}
+              {t("Advanced. Target .viora-custom-hover for the poster, .group:hover for the hover state. Shows live in the preview.")}
             </span>
             <textarea
               value={draft.css}
               onChange={(e) => set({ css: e.target.value })}
               spellCheck={false}
               rows={5}
-              placeholder={".group:hover .harbor-custom-hover img { transform: rotate(2deg) scale(1.08); }"}
+              placeholder={".group:hover .viora-custom-hover img { transform: rotate(2deg) scale(1.08); }"}
               className="mt-1 w-full rounded-lg border border-edge-soft bg-canvas p-2.5 font-mono text-[11.5px] leading-relaxed text-ink outline-none focus:border-ink-subtle [scrollbar-width:thin]"
             />
           </div>

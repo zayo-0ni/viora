@@ -1,4 +1,4 @@
-import { HarborMark } from "@/components/icons/harbor-mark";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { APP_AUTHOR, APP_NAME } from "@/lib/brand";
 
 /**
@@ -21,7 +21,7 @@ export function VioraWordmark({
 }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className ?? ""}`}>
-      <HarborMark className={markClassName ?? "h-9 w-9"} />
+      <VioraMark className={markClassName ?? "h-9 w-9"} />
       <span className="flex flex-col leading-none">
         <span
           className="text-[26px] font-semibold tracking-tight text-ink"

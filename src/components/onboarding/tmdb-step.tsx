@@ -115,7 +115,7 @@ export function TmdbStep() {
         </FocusButton>
       </div>
       <p className="text-[13px] text-ink-subtle">
-        {t("Skip if you'd rather just use Cinemeta. Harbor still works, you'll just see fewer rails.")}
+        {t("Skip if you'd rather just use Cinemeta. Viora still works, you'll just see fewer rails.")}
       </p>
     </div>
   );

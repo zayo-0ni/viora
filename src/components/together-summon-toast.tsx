@@ -50,7 +50,7 @@ export function TogetherSummonToast() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-6 z-[125] flex justify-center px-6">
-      <div className="harbor-together-pill pointer-events-auto flex items-center gap-3 rounded-full border border-edge bg-surface/98 py-2 ps-2 pe-2 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)] animate-popover-in">
+      <div className="viora-together-pill pointer-events-auto flex items-center gap-3 rounded-full border border-edge bg-surface/98 py-2 ps-2 pe-2 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.75)] animate-popover-in">
         <span
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold text-canvas"
           style={{ backgroundColor: tint }}

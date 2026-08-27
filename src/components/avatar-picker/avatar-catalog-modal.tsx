@@ -213,7 +213,7 @@ function Disclaimer() {
         <div className="animate-popover-in absolute start-0 top-full z-20 mt-1.5 w-[290px] rounded-xl border border-edge-soft bg-elevated/97 px-3.5 py-3 text-start shadow-[0_18px_50px_-15px_rgba(0,0,0,0.7)] backdrop-blur-md">
           <p className="text-[12px] leading-relaxed text-ink-muted">
             {t(
-              "Fan-made avatars for personal use. Harbor claims no rights to these characters; they belong to their creators and studios, shown here under fair use. Every one is optimized down to a tiny WebP.",
+              "Fan-made avatars for personal use. Viora claims no rights to these characters; they belong to their creators and studios, shown here under fair use. Every one is optimized down to a tiny WebP.",
             )}
           </p>
         </div>

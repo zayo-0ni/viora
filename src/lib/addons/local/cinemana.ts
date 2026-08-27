@@ -39,7 +39,7 @@ function toMeta(item: CinemanaItem, arabic: boolean) {
     type: series ? "series" : "movie",
     name: api.titleOf(item, arabic),
     poster: api.posterOf(item),
-    background: api.posterOf(item),
+    background: api.backdropOf(item),
     posterShape: "poster",
     description: api.descriptionOf(item, arabic),
     releaseInfo: item.year || undefined,

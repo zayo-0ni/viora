@@ -22,6 +22,33 @@
     @android.webkit.JavascriptInterface <methods>;
 }
 
+# The mpv library, all of it, because its callers are in C.
+#
+# This is the same lesson as the bridges above and it cost a great deal more to
+# learn. libmpv calls back into Java by name — `MPV.eventProperty(String)` and
+# `MPV.eventProperty(String, boolean)` among them — and no Java code calls them
+# at all, so R8 concluded they were dead and removed them. The native side then
+# looked them up at runtime, did not find them, and the failure was not an
+# exception anyone could catch: ART threw NoSuchMethodError, then threw a second
+# error on top of the first while it was still pending, and aborted the process
+# with SIGABRT. The player took the whole app with it.
+#
+# Read on the television:
+#
+#   Abort message: 'Throwing new exception 'no non-static method
+#   "Lis/xyz/mpv/MPV;.eventProperty(Ljava/lang/String;Z)V"' with unexpected
+#   pending exception: java.lang.NoSuchMethodError'
+#
+# And this is why it only ever happened on the set: minification runs for
+# release builds and not for debug ones, so the emulator was perfect while the
+# television crashed on the same code. Anything reached over JNI has to be kept
+# by name, and the whole package is kept rather than the two methods that were
+# caught, because the next version of the library may call a third.
+-keep class is.xyz.mpv.** { *; }
+-keepclassmembers class is.xyz.mpv.** {
+    native <methods>;
+}
+
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable

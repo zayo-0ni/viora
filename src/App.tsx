@@ -1,29 +1,16 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
-import { FloatingBack } from "@/chrome/floating-back";
-import { MinUIDock } from "@/chrome/minui-dock";
 import { Sidebar } from "@/chrome/sidebar";
-import { DraculaSidebar } from "@/chrome/dracula-sidebar";
-import { NordSidebar } from "@/chrome/nord-sidebar";
-import { ForestSidebar } from "@/chrome/forest-sidebar";
-import { RoyalTopbar } from "@/chrome/royal-topbar";
-import { SideRail } from "@/chrome/siderail";
-import { StremioRail } from "@/chrome/stremio-rail";
-import { TopDock } from "@/chrome/topdock";
-import { CinematicOverlay } from "@/chrome/cinematic-overlay";
 import { Topbar } from "@/chrome/topbar";
 import { startMaintenance, subscribeMemoryPressure } from "@/lib/maintenance";
 import { MiddleClickScroll } from "@/lib/use-middle-click-scroll";
 import { flushCloudSync } from "@/views/player/hooks/use-stremio-sync";
 import { useOverlayPinned } from "@/lib/overlay-pin";
-import { isDpadPrimary, isMobileDevice, isWeb } from "@/lib/platform";
-import { useIsPhone } from "@/lib/use-form-factor";
-import { MobileTabBar } from "@/chrome/mobile-tabbar";
-import { installLongPressContextMenu } from "@/lib/long-press-context-menu";
+import { isDpadPrimary } from "@/lib/platform";
 import { activeLayout } from "@/lib/theme";
 import { useThemePreview } from "@/lib/theme-preview";
 import { DevErrorTrigger } from "@/components/dev-error-trigger";
 import { ErrorView } from "@/components/error-view";
-import { HarborErrorBoundary } from "@/components/error-boundary";
+import { VioraErrorBoundary } from "@/components/error-boundary";
 import { ContextMenu } from "@/components/context-menu";
 import { WatchLocalModal } from "@/components/player/watch-local-modal";
 import { LocalEpisodesModal } from "@/components/player/local-episodes-modal";
@@ -33,7 +20,6 @@ import { CustomHoverCssMount } from "@/components/custom-hover-css-mount";
 import { EmbedViewportRoot } from "@/components/embed-viewport";
 import { CustomCodeMount } from "@/components/custom-code-mount";
 import { OfflineBanner } from "@/chrome/offline-banner";
-import { MobileNotice } from "@/components/mobile-notice";
 import { WebhookLoopMount } from "@/components/webhook-loop-mount";
 import { ListToastHost } from "@/components/lists/list-toast";
 import { TogetherChatToast } from "@/components/together-chat-toast";
@@ -42,10 +28,6 @@ import { TogetherHostLeavingPrompt } from "@/components/together-host-leaving-pr
 import { TogetherInviteToast } from "@/components/together-invite-toast";
 import { TogetherSummonToast } from "@/components/together-summon-toast";
 import { TogetherParticipantLeftToast } from "@/components/together-participant-left-toast";
-import { AnilistSyncToast } from "@/components/anilist/anilist-sync-toast";
-import { AnilistAvatarSync } from "@/components/anilist/anilist-avatar-sync";
-import { MalAvatarSync } from "@/components/mal/mal-avatar-sync";
-import { MalSyncToast } from "@/components/mal/mal-sync-toast";
 import { TogetherLeaveForLiveModal } from "@/components/together-leave-for-live-modal";
 import { ThemeBackdrop } from "@/components/theme-backdrop";
 import { TopRankModal } from "@/components/top-rank-modal";
@@ -65,7 +47,6 @@ import { SearchProvider, useSearch } from "@/lib/search-context";
 import { SearchOverlay } from "@/components/search/search-overlay";
 import { SearchHotkey } from "@/components/search/search-hotkey";
 import { TogetherProvider, useTogether } from "@/lib/together/provider";
-import { DvrProvider } from "@/lib/dvr/provider";
 import { FavoritesProvider } from "@/lib/iptv/favorites";
 import { MediaFavoritesProvider } from "@/lib/media-favorites";
 import { LocalWatchlistProvider } from "@/lib/local-watchlist";
@@ -80,19 +61,15 @@ import { SHOWS_HERO } from "@/components/peek-hero";
 import { SETTINGS_NAV } from "@/views/settings/nav";
 import { ParentalProvider } from "@/lib/parental";
 import { TraktProvider } from "@/lib/trakt/provider";
-import { AnilistProvider } from "@/lib/anilist/provider";
-import { MalProvider } from "@/lib/mal/provider";
 import { SimklProvider } from "@/lib/simkl/provider";
 import { LetterboxdProvider } from "@/lib/stremboxd/provider";
 import { FocusLayer, FocusSection, focusKeys, setFocusSafely, useBackHandler } from "@/lib/tv-focus";
 
-const importAnime = () => import("@/views/anime");
 const importCalendar = () => import("@/views/calendar");
 const importDetail = () => import("@/views/detail");
 const importAddons = () => import("@/views/addons");
 const importDiscover = () => import("@/views/discover");
 const importAward = () => import("@/views/award");
-const importAnimeAward = () => import("@/views/anime-award");
 const importFilter = () => import("@/views/filter");
 const importGrid = () => import("@/views/grid");
 const importPerson = () => import("@/views/person");
@@ -113,13 +90,11 @@ const importDownloads = () => import("@/views/downloads");
 const importMatchDetail = () => import("@/views/live/match-detail-view");
 const importOnboarding = () => import("@/components/onboarding");
 
-const AnimeView = lazy(() => importAnime().then((m) => ({ default: m.AnimeView })));
 const CalendarView = lazy(() => importCalendar().then((m) => ({ default: m.CalendarView })));
 const DetailView = lazy(() => importDetail().then((m) => ({ default: m.DetailView })));
 const AddonsView = lazy(() => importAddons().then((m) => ({ default: m.AddonsView })));
 const Discover = lazy(() => importDiscover().then((m) => ({ default: m.Discover })));
 const AwardView = lazy(() => importAward().then((m) => ({ default: m.AwardView })));
-const AnimeAwardView = lazy(() => importAnimeAward().then((m) => ({ default: m.AnimeAwardView })));
 const FilterView = lazy(() => importFilter().then((m) => ({ default: m.FilterView })));
 const GridView = lazy(() => importGrid().then((m) => ({ default: m.GridView })));
 const PersonView = lazy(() => importPerson().then((m) => ({ default: m.PersonView })));
@@ -169,10 +144,8 @@ function useViewPreloader() {
       void importMovies();
       void importShows();
       void importLive();
-      void importAnime();
       void importQueue();
       void importAward();
-      void importAnimeAward();
       void importService();
       void importMatchDetail();
       void importOnboarding();
@@ -231,14 +204,11 @@ function useIdleEvict(active: boolean, pin = false): boolean {
 }
 
 export function App() {
-  if (isWeb() && isMobileDevice()) return <MobileNotice />;
   return (
     <SettingsProvider>
       <ProfilesProvider>
       <ParentalProvider>
       <TraktProvider>
-      <AnilistProvider>
-      <MalProvider>
       <SimklProvider>
       <LetterboxdProvider>
       <RankingsProvider>
@@ -247,18 +217,15 @@ export function App() {
             <TogetherProvider>
               <ViewProvider>
                 <SearchProvider>
-                <DvrProvider>
                 <FavoritesProvider>
                 <MediaFavoritesProvider>
                 <LocalWatchlistProvider>
                 <ContextMenuProvider>
                   <TopRankModalProvider>
-                    <HarborErrorBoundary>
+                    <VioraErrorBoundary>
                       <ProfileIdentitySync />
                       <SettingsProfileBridge />
                       <TrackerProfileBridge />
-                      <AnilistAvatarSync />
-                      <MalAvatarSync />
                       <MiddleClickScroll />
                       <ThemeBackdrop />
                       <WatchlistSync />
@@ -271,8 +238,6 @@ export function App() {
                       <TogetherHostLeavingPrompt />
                       <TogetherSummonToast />
                       <TogetherParticipantLeftToast />
-                      <AnilistSyncToast />
-                      <MalSyncToast />
                       <ListToastHost />
                       <TogetherLeaveForLiveModal />
                       <TogetherLocationPublisher />
@@ -288,7 +253,7 @@ export function App() {
                       <SearchOverlay />
                       <SearchHotkey />
                       <EmbedViewportRoot />
-                    </HarborErrorBoundary>
+                    </VioraErrorBoundary>
                     <ErrorView />
                     <DevErrorTrigger />
                   </TopRankModalProvider>
@@ -296,7 +261,6 @@ export function App() {
                 </LocalWatchlistProvider>
                 </MediaFavoritesProvider>
                 </FavoritesProvider>
-                </DvrProvider>
                 </SearchProvider>
               </ViewProvider>
             </TogetherProvider>
@@ -305,8 +269,6 @@ export function App() {
       </RankingsProvider>
       </LetterboxdProvider>
       </SimklProvider>
-      </MalProvider>
-      </AnilistProvider>
       </TraktProvider>
       </ParentalProvider>
       </ProfilesProvider>
@@ -371,7 +333,6 @@ function TogetherLocationPublisher() {
         return { kind: "addon-detail" as const, addonId: addonDetailId };
       if (topKind === "home") return { kind: "home" };
       if (topKind === "discover") return { kind: "discover" };
-      if (topKind === "anime") return { kind: "anime" };
       if (topKind === "queue") return { kind: "queue" };
       if (topKind === "addons") return { kind: "addons" };
       if (topKind === "library") return { kind: "home" };
@@ -418,7 +379,7 @@ function parseDeepLinkEpisode(videoId?: string): { season: number; episode: numb
 }
 
 function Shell() {
-  const { topKind, service, meta, metaLiveContext, metaEpisodeHint, episodeDetail, personId, collectionId, filter, grid, awardType, animeAwardSource, picker, player, setView, canGoBack, goBack, canGoForward, goForward, openMeta, openPlayer, stackKinds, chromeHidden } = useView();
+  const { topKind, service, meta, metaLiveContext, metaEpisodeHint, episodeDetail, personId, collectionId, filter, grid, awardType, picker, player, setView, canGoBack, goBack, canGoForward, goForward, openMeta, openPlayer, stackKinds, chromeHidden } = useView();
   const { settings, update } = useSettings();
   const { setOpen: setSearchOpen } = useSearch();
   const uiScaleRef = useRef(settings.uiScale);
@@ -429,24 +390,30 @@ function Shell() {
     () => (preview ? preview.layout : activeLayout(settings.theme)),
     [preview, settings.theme],
   );
-  // Every desktop layout puts navigation at the top or in a side rail, both out
-  // of thumb reach at phone width. Phones get a bottom tab bar instead, which
-  // means none of the ten themed chromes render there.
-  const phoneLayout = useIsPhone();
-  const layout = phoneLayout ? "mobile" : kid ? "sidebar" : baseLayout;
-  const themeHasTopbar =
-    layout === "sidebar" ||
-    layout === "dracula" ||
-    layout === "nord" ||
-    layout === "forest" ||
-    layout === "stremio";
+  // The phone build had an eleventh layout here — a bottom tab bar, because a
+  // top bar and a side rail are both out of thumb reach at phone width. A
+  // television is all rail, so the themed chromes are the whole set again.
+  const layout = kid ? "sidebar" : baseLayout;
+  const themeHasTopbar = layout === "sidebar";
   useViewPreloader();
-
-  useEffect(() => installLongPressContextMenu(), []);
 
   // Outermost Back handler: pop the view stack while there is one, otherwise
   // fall back to the sidebar so Back never leaves the user with nowhere to go.
   useBackHandler(() => {
+    /*
+      The screen on top answers first.
+
+      `harbor:local-back` already existed as the way a screen says "this press
+      is mine" — Live uses it to step out of a category, the player to close its
+      overlays. It was only ever dispatched for the mouse's fourth button, so
+      from a remote no screen was ever asked: Back went straight to the global
+      rules, and a viewer inside a category came out somewhere else entirely.
+
+      Nothing about those rules changes. They run exactly as before whenever the
+      screen declines the press, which is every screen that does not listen.
+    */
+    const local = new Event("harbor:local-back", { cancelable: true });
+    if (!window.dispatchEvent(local)) return true;
     if (player) return false;
     // Live is entered by switching view, not by pushing onto the stack, so
     // there is nothing for goBack to pop — and Live hides the sidebar, which
@@ -464,24 +431,117 @@ function Shell() {
       return true;
     }
 
-    // The end of the stack: Screen → rail. Arrows cannot reach the rail any
-    // more — every screen is a closed region — so this press is the only way
-    // back to it, and it lands on the entry the viewer left from because the
-    // rail remembers its own last child.
-    const inSidebar = !!document.activeElement?.closest("aside");
-    if (!inSidebar && document.querySelector("aside") && setFocusSafely(focusKeys.sidebar)) {
-      return true;
-    }
-
+    // Back no longer detours through the rail.
+    //
+    // It used to be the only way there, because arrows cannot leave a screen.
+    // The owner asked for the rail to be reached the way a television viewer
+    // expects — by pressing towards it — and once that exists, sending Back
+    // there as well makes Back mean two different things depending on where the
+    // highlight happens to be. So Back is now only ever "leave where I am":
+    // out of a pushed page, out of a screen, and out of the app from the root.
     if (topKind !== "home") {
       goBack();
       return true;
     }
-    // At the root with focus already on the rail there is nowhere further to go,
-    // so the press is declined and Android closes the app — the behaviour a TV
-    // viewer expects from Back on a home screen.
+    // At the root there is nowhere further to go, so the press is declined and
+    // Android closes the app — the behaviour a TV viewer expects from Back on a
+    // home screen.
     return false;
   }, !player);
+
+  // Pressing towards the rail reaches it.
+  //
+  // A screen is still a closed region: the boundary is untouched, and no arrow
+  // walks out of one. What happens instead is that the engine is allowed to
+  // answer first, and only if it found nothing at all in that direction — the
+  // highlight did not move — is the press understood as "I am at the edge and I
+  // want the menu". That is why this cannot leak: anywhere with somewhere to go,
+  // it goes there, and this never runs.
+  //
+  // The direction follows the interface, not the keycap. The rail sits on the
+  // left in English and on the right in Arabic, so the key that opens it is
+  // whichever one points at it — as the owner pointed out when he asked for
+  // this.
+  useEffect(() => {
+    if (!isDpadPrimary()) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const towardsRail =
+        document.documentElement.dir === "rtl" ? "ArrowRight" : "ArrowLeft";
+      if (e.key !== towardsRail) return;
+      // Not from inside the rail, and not while anything is over the screen: a
+      // dialog or the player owns its own edges.
+      if (document.activeElement?.closest("aside")) return;
+      if (document.querySelector("[role=dialog]")) return;
+      const rail = document.querySelector("aside");
+      if (!rail) return;
+      // Decided before the press is allowed to mean anything, by looking at
+      // what is actually there.
+      //
+      // Two attempts to decide this *afterwards* both failed the same way, and
+      // the failure is worth recording. Comparing the focused element a frame
+      // later called an ordinary step between cards "nothing happened", because
+      // a press in a row scrolls it first and the highlight settles after that.
+      // Waiting for a focusin instead, with a timer behind it, failed for the
+      // same reason at a different length — the move simply takes longer than
+      // any number worth hard-coding. Measured on the emulator both times, two
+      // cards into a row: "one step back: RAIL". A rail you fall into.
+      //
+      // There is nothing to time. Whether a press has anywhere to go is a fact
+      // about the screen at the moment it is pressed: is there a focusable
+      // thing beside this one, on the side the rail is on. If there is, this is
+      // ordinary navigation and the engine handles it. If there is not, the
+      // viewer is at the edge and asking for the menu.
+      const active = document.activeElement as HTMLElement | null;
+      if (!active) return;
+      // Something on the screen that handles this key itself gets it first. The
+      // hero says so while it still has an earlier slide to show; once it is on
+      // the first one it stops saying it, and the press arrives here.
+      if (active.closest("[data-hero-can-step-back]")) return;
+      const box = active.getBoundingClientRect();
+      if (box.width === 0 && box.height === 0) return;
+      const rtl = towardsRail === "ArrowRight";
+      const candidates = document.querySelectorAll<HTMLElement>(
+        "[role=gridcell], button, a[href], [tabindex]",
+      );
+      for (const el of candidates) {
+        if (el === active || rail.contains(el)) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) continue;
+        // Only things on the same line: a card above or below is reached with
+        // Up and Down, and says nothing about whether this row has run out.
+        if (r.bottom <= box.top + 4 || r.top >= box.bottom - 4) continue;
+        const beside = rtl ? r.left >= box.right - 4 : r.right <= box.left + 4;
+        if (beside) return;
+      }
+      // The rail's own entry for this screen, not whatever sits closest.
+      //
+      // Handing the highlight to the rail as a whole lets it choose, and from
+      // the hero — which is at the top of the page — the closest thing is
+      // Search at the head of the rail. The viewer leaving the home screen
+      // should arrive on Home. The marked entry says which that is; the rail as
+      // a whole remains the fallback for a screen that has no entry of its own.
+      const entry = rail.querySelector<HTMLElement>("[data-rail-active]");
+      if (entry) {
+        entry.focus();
+        return;
+      }
+      setFocusSafely(focusKeys.sidebar);
+    };
+    // Capture, and this is the whole of it working.
+    //
+    // On the bubble phase the focus engine has already answered the press by
+    // the time this runs, so `document.activeElement` is where the highlight
+    // has *arrived*, not where it was. Pressing left from the second card of a
+    // row therefore asked "is there anything to the left of the first card" —
+    // there is not — and opened the rail on top of a move that had just
+    // succeeded. Reproduced on the emulator: card #1, press left, "RAIL".
+    //
+    // Capturing reads the screen as the viewer left it, which is the only state
+    // the question makes sense against.
+    window.addEventListener("keydown", onKeyDown, true);
+    return () => window.removeEventListener("keydown", onKeyDown, true);
+  }, []);
   
   useEffect(() => startMaintenance(), []);
 
@@ -650,8 +710,7 @@ function Shell() {
   }, [setView, openMeta, openPlayer]);
 
   useEffect(() => {
-    if (topKind === "anime" && settings.hideContent.anime) setView("home");
-  }, [topKind, settings.hideContent.anime, setView]);
+  }, [topKind, setView]);
 
   useEffect(() => {
     if (!kid || player) return;
@@ -684,9 +743,7 @@ function Shell() {
   const filterTop = topKind === "filter";
   const gridTop = topKind === "grid";
   const awardTop = topKind === "award";
-  const animeAwardTop = topKind === "anime-award";
   const settingsTop = topKind === "settings";
-  const animeTop = topKind === "anime";
   const discoverTop = topKind === "discover";
   const addonsTop = topKind === "addons" || topKind === "addon-detail";
   const calendarTop = topKind === "calendar";
@@ -728,8 +785,8 @@ function Shell() {
   }, [playerActive, pickerTop, immersive, settingsTop, chromeHidden]);
 
   useEffect(() => {
-    document.querySelectorAll("[data-harbor-nav]").forEach((el) => {
-      el.toggleAttribute("data-active", el.getAttribute("data-harbor-nav") === topKind);
+    document.querySelectorAll("[data-viora-nav]").forEach((el) => {
+      el.toggleAttribute("data-active", el.getAttribute("data-viora-nav") === topKind);
     });
   }, [topKind]);
 
@@ -745,12 +802,11 @@ function Shell() {
 
   const overlayPinned = useOverlayPinned();
   const settingsAlive = useIdleEvict(settingsTop, overlayPinned);
-  const animeAlive = useIdleEvict(animeTop);
   const discoverAlive = useIdleEvict(discoverTop);
   const addonsAlive = useIdleEvict(addonsTop);
   const calendarAlive = useIdleEvict(calendarTop);
   const queueAlive = useKeepAlive(queueTop, queueTop);
-  const serviceAlive = useKeepAlive(serviceTop, serviceTop && !!service);
+  const serviceAlive = useKeepAlive(serviceTop, !!service, stackKinds.includes("service"));
   const detailAlive = useKeepAlive(detailTop, !!meta);
   const personAlive = useKeepAlive(personTop, personId !== null);
   const collectionAlive = useKeepAlive(
@@ -768,7 +824,6 @@ function Shell() {
   const filterAlive = useKeepAlive(filterTop, !!filter);
   const gridAlive = useKeepAlive(gridTop, !!grid, stackKinds.includes("grid"));
   const awardAlive = useKeepAlive(awardTop, awardTop);
-  const animeAwardAlive = useKeepAlive(animeAwardTop, animeAwardTop && !!animeAwardSource);
   const pickerAlive = useKeepAlive(pickerTop, !!picker);
   const moviesAlive = useIdleEvict(moviesTop);
   const kidsAlive = useIdleEvict(kidsTop);
@@ -780,22 +835,7 @@ function Shell() {
 
   return (
     <div data-kids={kidsTop || kid ? "on" : undefined} className="relative flex h-full">
-      {!playerActive && !pickerTop && layout === "mobile" && <MobileTabBar />}
       {!settingsTop && !playerActive && !liveHidesRail && !pickerTop && layout === "sidebar" && <Sidebar />}
-      {!settingsTop && !playerActive && !liveHidesRail && !pickerTop && layout === "dracula" && <DraculaSidebar />}
-      {!settingsTop && !playerActive && !liveHidesRail && !pickerTop && layout === "nord" && <NordSidebar />}
-      {!settingsTop && !playerActive && !liveHidesRail && !pickerTop && layout === "forest" && <ForestSidebar />}
-      {!settingsTop && !playerActive && !liveHidesRail && !pickerTop && layout === "stremio" && <StremioRail />}
-      {!settingsTop && !playerActive && !pickerTop && layout === "topdock" && <TopDock />}
-      {!settingsTop && !playerActive && !pickerTop && layout === "cinematic" && <CinematicOverlay />}
-      {!settingsTop && !playerActive && !pickerTop && layout === "royal" && <RoyalTopbar />}
-      {!settingsTop && !playerActive && !pickerTop && layout === "rail" && <SideRail />}
-      {!playerActive && !pickerTop && layout === "minui" && <MinUIDock />}
-      {!playerActive && !pickerTop && layout === "topdock" && <FloatingBack offsetTop={92} />}
-      {!playerActive && !pickerTop && layout === "cinematic" && <FloatingBack offsetTop={92} />}
-      {!playerActive && !pickerTop && layout === "royal" && <FloatingBack offsetTop={92} />}
-      {!playerActive && !pickerTop && layout === "rail" && <FloatingBack offsetLeft={settings.sidebarCollapsed ? 88 : 220} offsetTop={28} />}
-      {!playerActive && !pickerTop && layout === "custom" && <FloatingBack offsetLeft={20} offsetTop={20} />}
       {/* The content half of the app is one region, so leaving it for the
           sidebar and coming back lands where you were, and so focus always has
           somewhere to return to when a view unmounts under it. */}
@@ -811,13 +851,6 @@ function Shell() {
           <FocusLayer top={settingsTop} className={layer(settingsTop)} preferredChildFocusKey={SETTINGS_NAV}>
             <Suspense fallback={null}>
               <Settings active={settingsTop} />
-            </Suspense>
-          </FocusLayer>
-        )}
-        {animeAlive && (
-          <FocusLayer top={animeTop} className={layer(animeTop)} preferredChildFocusKey="row:anime:topPicks">
-            <Suspense fallback={null}>
-              <AnimeView active={animeTop} />
             </Suspense>
           </FocusLayer>
         )}
@@ -982,13 +1015,6 @@ function Shell() {
             </Suspense>
           </FocusLayer>
         )}
-        {animeAwardAlive && animeAwardSource && (
-          <FocusLayer top={animeAwardTop} className={layer(animeAwardTop)}>
-            <Suspense fallback={null}>
-              <AnimeAwardView key={`anime-award-${animeAwardSource}`} sourceId={animeAwardSource} />
-            </Suspense>
-          </FocusLayer>
-        )}
         {pickerAlive && picker && (
           <FocusLayer top={pickerTop} className={layer(pickerTop)} preferredChildFocusKey={focusKeys.pickerPrimary}>
             <Suspense fallback={null}>
@@ -1008,13 +1034,7 @@ function Shell() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 z-30 h-24 bg-gradient-to-b from-canvas/85 via-canvas/40 to-transparent"
         />
-        {!immersive && (themeHasTopbar || (settingsTop && layout !== "minui" && layout !== "custom")) && <Topbar />}
-        {!immersive && layout === "rail" && !settingsTop && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-canvas/90 via-canvas/40 to-transparent"
-          />
-        )}
+        {!immersive && (themeHasTopbar || (settingsTop && layout !== "custom")) && <Topbar />}
       </FocusSection>
       {player && (
         <Suspense fallback={null}>

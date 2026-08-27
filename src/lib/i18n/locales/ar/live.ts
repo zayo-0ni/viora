@@ -46,8 +46,8 @@ const live: Record<string, string> = {
     "التسجيل · {pct}% · {remaining} · انقر للإدارة",
   "Saved as .ts (works in mpv, VLC, ffmpeg)":
     "محفوظ بصيغة .ts (يعمل في mpv وVLC وffmpeg)",
-  "mpv is required for recording. Install mpv and restart Harbor.":
-    "محرك mpv مطلوب للتسجيل. ثبّت mpv وأعد تشغيل Harbor.",
+  "mpv is required for recording. Install mpv and restart Viora.":
+    "محرك mpv مطلوب للتسجيل. ثبّت mpv وأعد تشغيل Viora.",
 
   // New Additions:
   "Loading more channels ({n1} of {n2})": "جاري تحميل المزيد من القنوات ({n1} من {n2})",
@@ -92,7 +92,7 @@ const live: Record<string, string> = {
   "Playlist contained no channels": "لا تحتوي قائمة التشغيل على قنوات",
   "The URL is valid but the playlist is empty. The provider may be in maintenance, or the URL is misconfigured.": "الرابط صالح ولكن قائمة التشغيل فارغة. قد يكون المزود في وضع الصيانة، أو تم إعداد الرابط بشكل خاطئ.",
   "Playlist is too large": "قائمة التشغيل كبيرة جداً",
-  "Harbor caps playlists at 80 MB to stay responsive. Most providers offer a filtered URL with fewer channels.": "يحدد Harbor سعة قوائم التشغيل بـ 80 ميجابايت للحفاظ على سرعة الاستجابة. يقدم معظم المزودين رابطاً مُصفى بعدد أقل من القنوات.",
+  "Viora caps playlists at 80 MB to stay responsive. Most providers offer a filtered URL with fewer channels.": "يحدد Viora سعة قوائم التشغيل بـ 80 ميجابايت للحفاظ على سرعة الاستجابة. يقدم معظم المزودين رابطاً مُصفى بعدد أقل من القنوات.",
   "Could not load this playlist": "تعذر تحميل قائمة التشغيل هذه",
 
   "No channels match": "لا توجد قنوات مطابقة",

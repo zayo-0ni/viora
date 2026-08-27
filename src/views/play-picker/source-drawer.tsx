@@ -96,7 +96,15 @@ export function SourceDrawer({
         </div>
       )}
       {open && (
-        <ul className="overflow-hidden rounded-2xl border border-edge-soft/60 bg-canvas/80">
+        // No clipping here, or it eats the focus ring.
+        //
+        // This carried `overflow-hidden` so the rows' hover tint would not poke
+        // past the rounded border. But the ring a focused row wears is an
+        // outline plus a halo reaching six pixels outside it, and the clip cut
+        // it down to a stub along one edge — which is the missing frame the
+        // owner drew a box around. The rows round themselves instead, which
+        // keeps the corners without clipping anything.
+        <ul className="rounded-2xl border border-edge-soft/60 bg-canvas/80">
           {shown.slice(0, 80).map((s, i) => (
             <SourceRow
               key={`${s.addonId}-${s.infoHash ?? s.url ?? i}`}
@@ -178,7 +186,7 @@ function SourceRow({
       <FocusButton
         onClick={onPlay}
         disabled={resolving}
-        className="group flex w-full items-start gap-4 px-5 py-4 text-start transition-colors hover:bg-ink/5 disabled:cursor-wait disabled:opacity-60"
+        className="group flex w-full items-start gap-4 rounded-2xl px-5 py-4 text-start transition-colors hover:bg-ink/5 disabled:cursor-wait disabled:opacity-60"
       >
         <div className="flex shrink-0 items-center gap-1.5 pt-0.5">
           {tierChipBadges(stream).map((k) => (

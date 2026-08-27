@@ -16,7 +16,7 @@ export function CastingOverlay({
 }) {
   const label = connecting ? "Connecting to" : playing ? "Casting to" : "Paused on";
   return (
-    <div className="pointer-events-none absolute inset-0 z-10 flex animate-[harbor-cast-in_240ms_ease-out] items-center justify-center bg-canvas">
+    <div className="pointer-events-none absolute inset-0 z-10 flex animate-[viora-cast-in_240ms_ease-out] items-center justify-center bg-canvas">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-canvas via-canvas to-canvas/95" />
       {poster && (
         <div
@@ -33,7 +33,7 @@ export function CastingOverlay({
         <div className="relative flex h-32 w-32 items-center justify-center">
           <span
             className="absolute inset-0 rounded-[28px] bg-accent/20 blur-2xl"
-            style={{ animation: "harbor-cast-pulse 2.6s ease-in-out infinite" }}
+            style={{ animation: "viora-cast-pulse 2.6s ease-in-out infinite" }}
           />
           <span className="relative flex h-32 w-32 items-center justify-center rounded-[28px] border border-edge bg-elevated/85 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
             <CastIcon device={device} size={64} />
@@ -41,9 +41,9 @@ export function CastingOverlay({
           {connecting && (
             <span className="absolute -bottom-5 left-1/2 -translate-x-1/2">
               <span className="flex gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "harbor-cast-dot 1.2s ease-in-out 0s infinite" }} />
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "harbor-cast-dot 1.2s ease-in-out 0.18s infinite" }} />
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "harbor-cast-dot 1.2s ease-in-out 0.36s infinite" }} />
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "viora-cast-dot 1.2s ease-in-out 0s infinite" }} />
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "viora-cast-dot 1.2s ease-in-out 0.18s infinite" }} />
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" style={{ animation: "viora-cast-dot 1.2s ease-in-out 0.36s infinite" }} />
               </span>
             </span>
           )}
@@ -63,15 +63,15 @@ export function CastingOverlay({
         </div>
       </div>
       <style>{`
-        @keyframes harbor-cast-pulse {
+        @keyframes viora-cast-pulse {
           0%, 100% { opacity: 0.55; transform: scale(1); }
           50% { opacity: 0.9; transform: scale(1.08); }
         }
-        @keyframes harbor-cast-dot {
+        @keyframes viora-cast-dot {
           0%, 80%, 100% { opacity: 0.25; transform: scale(0.85); }
           40% { opacity: 1; transform: scale(1); }
         }
-        @keyframes harbor-cast-in {
+        @keyframes viora-cast-in {
           from { opacity: 0; transform: scale(0.985); }
           to { opacity: 1; transform: scale(1); }
         }

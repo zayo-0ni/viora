@@ -1,13 +1,10 @@
 import { FocusButton } from "@/lib/tv-focus";
-import { isWindowsDesktop } from "@/lib/platform";
 import { can } from "@/lib/capabilities";
 import { useSettings } from "@/lib/settings";
 import { useT } from "@/lib/i18n";
 import { ToggleRow } from "../shared";
 import { BandwidthInput } from "./bandwidth-section";
 import { DesktopOnlyBlock } from "./internals";
-import { HdrModePicker } from "./hdr-mode";
-import { DisplayPanelSelector } from "./display-panel-selector";
 
 type Choice = {
   id: "auto" | "mpv" | "exo";
@@ -110,7 +107,7 @@ export function PlayerEnginePanel() {
     {
       id: "mpv",
       label: "mpv",
-      sub: t("Bundled with Harbor. Plays anything you throw at it."),
+      sub: t("Bundled with Viora. Plays anything you throw at it."),
     },
   ];
 
@@ -123,24 +120,17 @@ export function PlayerEnginePanel() {
       <DesktopOnlyBlock>
         <div className="flex flex-col gap-2">
           <ToggleRow
-            label={t("Embed mpv inside Harbor window")}
-            sub={t("Renders mpv inline so playback lives in Harbor itself. Disable to open it in a separate window instead.")}
+            label={t("Embed mpv inside Viora window")}
+            sub={t("Renders mpv inline so playback lives in Viora itself. Disable to open it in a separate window instead.")}
             value={settings.playerMpvEmbed}
             onChange={(v) => update({ playerMpvEmbed: v })}
           />
-          {isWindowsDesktop() ? (
-            <HdrModePicker />
-          ) : (
-            <>
-              <ToggleRow
-                label={t("HDR-to-SDR tonemapping")}
-                sub={t("Maps HDR sources to SDR using bt.2446a. Recommended on SDR displays.")}
-                value={settings.playerHdrToSdr}
-                onChange={(v) => update({ playerHdrToSdr: v })}
-              />
-              <DisplayPanelSelector />
-            </>
-          )}
+          <ToggleRow
+            label={t("HDR-to-SDR tonemapping")}
+            sub={t("Maps HDR sources to SDR using bt.2446a. Recommended on SDR displays.")}
+            value={settings.playerHdrToSdr}
+            onChange={(v) => update({ playerHdrToSdr: v })}
+          />
         </div>
       </DesktopOnlyBlock>
 

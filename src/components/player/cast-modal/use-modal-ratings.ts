@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useSettings } from "@/lib/settings";
 import { omdbScores, type OmdbScores } from "@/lib/providers/omdb";
 import { useMdblistScores } from "@/lib/providers/mdblist";
-import { harborImdbTitle } from "@/lib/providers/harbor-imdb";
+import { harborImdbTitle } from "@/lib/providers/viora-imdb";
 
 export function useModalRatings(imdbId: string | null, mediaType: "movie" | "show") {
   const { settings } = useSettings();
   const [scores, setScores] = useState<OmdbScores | null>(null);
-  const [harborImdb, setHarborImdb] = useState<string | null>(null);
+  const [harborImdb, setVioraImdb] = useState<string | null>(null);
   const mdblist = useMdblistScores(settings.mdblistKey, imdbId, mediaType);
 
   useEffect(() => {
@@ -29,14 +29,14 @@ export function useModalRatings(imdbId: string | null, mediaType: "movie" | "sho
 
   useEffect(() => {
     if (!imdbId?.startsWith("tt")) {
-      setHarborImdb(null);
+      setVioraImdb(null);
       return;
     }
     let cancelled = false;
-    setHarborImdb(null);
+    setVioraImdb(null);
     harborImdbTitle(imdbId)
       .then((r) => {
-        if (!cancelled && r != null) setHarborImdb(r.toFixed(1));
+        if (!cancelled && r != null) setVioraImdb(r.toFixed(1));
       })
       .catch(() => {});
     return () => {

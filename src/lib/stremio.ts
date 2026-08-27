@@ -1,6 +1,5 @@
 import { safeFetch as fetch } from "@/lib/safe-fetch";
 import { readResumeEntry } from "@/lib/resume";
-import { isDetectedAnime } from "./anime-detect";
 
 const API = "https://api.strem.io/api";
 
@@ -35,21 +34,17 @@ export type LibraryItem = {
   _ctime: string;
   _mtime: string;
   external?: "simkl";
-  isAnime?: boolean;
   upNext?: boolean;
   local?: boolean;
   manualWatched?: boolean;
 };
 
 export function libraryMetaType(t: string): import("@/lib/cinemeta").MetaType {
-  return t === "series" || t === "channel" || t === "tv" || t === "anime" || t === "other"
+  return t === "series" || t === "channel" || t === "tv" || t === "other"
     ? t
     : "movie";
 }
 
-export function isAnimeCwItem(i: LibraryItem): boolean {
-  return i._id.startsWith("kitsu:") || i._id.startsWith("mal:") || i.isAnime === true || isDetectedAnime(i._id);
-}
 
 export function episodeFromVideoId(
   videoId: string | undefined | null,

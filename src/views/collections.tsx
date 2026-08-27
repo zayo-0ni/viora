@@ -3,7 +3,7 @@ import { ArrowLeft, Search, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BackToTop } from "@/components/back-to-top";
 import { CollectionCard } from "@/components/collection-card";
-import { HarborLoader } from "@/components/harbor-loader";
+import { VioraLoader } from "@/components/viora-loader";
 import { COLLECTION_CATEGORIES, COLLECTIONS_CATALOG } from "@/lib/collections-catalog";
 import { layoutHasGlobalBack } from "@/lib/theme";
 import { tmdbSearchCollections, type CollectionHit } from "@/lib/providers/tmdb";
@@ -258,7 +258,7 @@ export function CollectionsView() {
               {!catFeed.done && <div ref={catFeed.sentinelRef} className="h-2" />}
               {catFeed.loading && (
                 <div className="flex justify-center py-6">
-                  <HarborLoader size="sm" />
+                  <VioraLoader size="sm" />
                 </div>
               )}
               {catFeed.done && (
@@ -297,7 +297,7 @@ export function CollectionsView() {
               {!done && <div ref={sentinelRef} className="h-2" />}
               {loading && (
                 <div className="flex justify-center py-6">
-                  <HarborLoader size="sm" />
+                  <VioraLoader size="sm" />
                 </div>
               )}
               {done && hits.length > 0 && (

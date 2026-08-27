@@ -1,5 +1,4 @@
-import { FocusButton } from "@/lib/tv-focus";
-import { Search } from "lucide-react";
+import { focusKeys, setFocusSafely } from "@/lib/tv-focus";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePlaylistMutations } from "./live/hooks/use-playlist-mutations";
 import { useLiveActions } from "./live/hooks/use-live-actions";
@@ -22,10 +21,10 @@ import { useChannelPipeline } from "./live/hooks/use-channel-pipeline";
 import { useEpg, useNowTick } from "./live/hooks/use-epg";
 import { useXtreamEpgFallback } from "./live/hooks/use-xtream-epg-fallback";
 import { useIptvPlaylist } from "./live/hooks/use-iptv-playlist";
-import { ViewModeToggle, type ViewMode } from "./live/view-mode-toggle";
+
+type ViewMode = "home" | "grid" | "guide";
 
 const ACTIVE_KEY = "harbor.iptv.active";
-const MODE_KEY = "harbor.iptv.viewMode";
 const EMPTY_CHANNELS: IptvChannel[] = [];
 
 function readActiveId(): string | null {
@@ -40,23 +39,6 @@ function writeActiveId(id: string | null) {
   try {
     if (id) localStorage.setItem(ACTIVE_KEY, id);
     else localStorage.removeItem(ACTIVE_KEY);
-  } catch {}
-}
-
-function readMode(): ViewMode {
-  try {
-    const v = localStorage.getItem(MODE_KEY);
-    if (v === "grid") return "grid";
-    if (v === "guide") return "guide";
-    return "home";
-  } catch {
-    return "home";
-  }
-}
-
-function writeMode(m: ViewMode) {
-  try {
-    localStorage.setItem(MODE_KEY, m);
   } catch {}
 }
 
@@ -113,11 +95,7 @@ export function LiveView({ active }: { active: boolean }) {
     () => (favoritesCountRef.current > 0 ? FAVORITES_GROUP_KEY : null),
   );
   const [query, setQuery] = useState("");
-  const [mode, setModeState] = useState<ViewMode>(() => readMode());
-  const setMode = useCallback((m: ViewMode) => {
-    setModeState(m);
-    writeMode(m);
-  }, []);
+  const [mode, setMode] = useState<ViewMode>("home");
   const goLiveHome = useCallback(() => {
     setMode("home");
     setQuery("");
@@ -126,6 +104,30 @@ export function LiveView({ active }: { active: boolean }) {
   useEffect(() => {
     if (!active) return;
     const onLocalBack = (e: Event) => {
+      const here = document.activeElement as HTMLElement | null;
+      /*
+        Back walks out the way the viewer walked in.
+
+        Standing among the channels, Back means "leave these channels" — and the
+        thing they were left for is the category they belong to, not whichever
+        row the column happens to start on. Standing on the column itself, there
+        is nothing further inside the screen to leave, so the press means the
+        app's own menu.
+      */
+      if (here?.closest("[data-live-card]")) {
+        const current = document.querySelector<HTMLElement>('[role="option"][aria-selected="true"]');
+        if (current) {
+          e.preventDefault();
+          current.focus();
+          current.scrollIntoView({ block: "nearest" });
+          return;
+        }
+      }
+      if (here?.closest('[role="option"]')) {
+        e.preventDefault();
+        setFocusSafely(focusKeys.sidebar);
+        return;
+      }
       if (sources.length === 0) {
         e.preventDefault();
         setView("home");
@@ -258,7 +260,7 @@ export function LiveView({ active }: { active: boolean }) {
       <div className="flex min-w-0 flex-1 flex-col">
         {!immersive && (
         <header
-          className="relative z-[40] flex shrink-0 flex-wrap items-center gap-2.5 border-b border-edge-soft/40 bg-surface px-6 py-2.5"
+          className="relative z-[40] flex shrink-0 flex-wrap items-center gap-2.5 px-6 py-2.5"
         >
           <SourcePicker
             sources={managedSources}
@@ -281,31 +283,7 @@ export function LiveView({ active }: { active: boolean }) {
             fetchedAt={playlist?.fetchedAt ?? null}
             channelCount={playlist?.channels.length ?? null}
             loading={state.kind === "loading"}
-          />
-          {(
-            <div className="flex h-11 flex-1 min-w-[220px] items-center gap-2.5 rounded-xl border border-edge-soft/55 bg-elevated px-3.5">
-              <Search size={15} strokeWidth={2} className="text-ink-subtle" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  if (e.target.value && mode === "home") setMode("grid");
-                }}
-                placeholder={t("Search {n} channels", { n: playlist?.channels.length ?? 0 })}
-                className="flex-1 bg-transparent text-[14px] text-ink placeholder:text-ink-subtle focus:outline-none"
-              />
-              {query && (
-                <FocusButton
-                  onClick={() => setQuery("")}
-                  className="text-[12.5px] font-medium text-ink-subtle transition-colors hover:text-ink"
-                >
-                  {t("Clear")}
-                </FocusButton>
-              )}
-            </div>
-          )}
-          <ViewModeToggle mode={mode} onChange={setMode} />
+/>
         </header>
         )}
         {epgError && !epg && (
@@ -322,6 +300,9 @@ export function LiveView({ active }: { active: boolean }) {
                 if (activeId) clearPlaylistCache(activeId);
                 refresh();
               }}
+              // The way out of a URL that does not work, offered on the screen
+              // that says so rather than behind a hover the remote cannot make.
+              onRemove={activeId ? () => removePlaylist(activeId) : undefined}
             />
           ) : state.kind === "loading" ? (
             mode === "guide" ? <GuideSkeleton /> : <GridSkeleton />

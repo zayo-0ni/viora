@@ -68,7 +68,7 @@ export function ProfileChipCompact({
         <span className="hidden max-w-[8rem] truncate sm:inline">{name}</span>
       </FocusButton>
       {open && (
-        <div className="harbor-profile-dropdown absolute end-0 top-[calc(100%+8px)] z-40 w-60 overflow-hidden rounded-2xl border border-white/15 bg-canvas/95 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+        <div className="viora-profile-dropdown absolute end-0 top-[calc(100%+8px)] z-40 w-60 overflow-hidden rounded-2xl border border-white/15 bg-canvas/95 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
           <div className="border-b border-white/10 px-4 py-3">
             <div className="text-[13.5px] font-semibold text-ink">{name}</div>
             {user?.email && (

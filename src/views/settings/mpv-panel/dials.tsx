@@ -172,7 +172,7 @@ export function ColorHdrSection() {
   return (
     <Section
       title={t("Color & HDR")}
-      subtitle={t("How Harbor squeezes HDR movies onto a normal screen. Auto is right for almost everyone; the curves below just change the look (punchy vs soft). Only matters on HDR sources.")}
+      subtitle={t("How Viora squeezes HDR movies onto a normal screen. Auto is right for almost everyone; the curves below just change the look (punchy vs soft). Only matters on HDR sources.")}
     >
       <div className="flex flex-col gap-1.5">
         <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-ink-subtle">

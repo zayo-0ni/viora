@@ -61,10 +61,8 @@ export type MpvRect = {
 };
 
 export type MpvOptions = {
-  anime4k: boolean;
   hdrToSdr: boolean;
   embed?: boolean;
-  anime4kShaders?: string[];
   d3d11Flip?: boolean;
   macEdr?: boolean;
   extraOptions?: string;
@@ -301,7 +299,7 @@ export function createMpvBridge(mpvOptions?: MpvOptions): PlayerBridge {
         unlistenLog = await listen<string>("mpv://log", () => {});
       }
       try {
-        const opts = mpvOptions ?? { anime4k: false, hdrToSdr: true };
+        const opts = mpvOptions ?? { hdrToSdr: true };
         if (mpvStarted) {
           try {
             suppressEndFileUntil = Date.now() + 1500;
@@ -343,10 +341,8 @@ export function createMpvBridge(mpvOptions?: MpvOptions): PlayerBridge {
             url: src.url,
             startAtSec: src.startAtSec ?? null,
             subtitles: (src.subtitles ?? []).map((s) => ({ url: s.url, lang: s.lang ?? null })),
-            anime4k: opts.anime4k,
             hdrToSdr: opts.hdrToSdr,
             embed: opts.embed === true,
-            anime4kShaders: opts.anime4kShaders ?? [],
             d3d11Flip: opts.d3d11Flip === true,
             macEdr: opts.macEdr === true,
             isLive: src.isLive === true,
@@ -489,10 +485,6 @@ export function createMpvBridge(mpvOptions?: MpvOptions): PlayerBridge {
     },
     setVideoEq(name, value) {
       invoke("mpv_set_property", { name, value }).catch(() => {});
-    },
-    setAnime4kShaders(shaders) {
-      const sep = typeof navigator !== "undefined" && navigator.userAgent.toLowerCase().includes("windows") ? ";" : ":";
-      invoke("mpv_set_property", { name: "glsl-shaders", value: shaders.filter(Boolean).join(sep) }).catch(() => {});
     },
     async addSubtitle(url, lang, title, select): Promise<boolean> {
       let mpvUrl = url;

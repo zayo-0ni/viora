@@ -15,6 +15,7 @@ import androidx.media3.common.Tracks
 import androidx.media3.common.VideoSize
 import androidx.media3.common.text.CueGroup
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import org.json.JSONArray
@@ -50,6 +51,37 @@ class VioraPlayer(
 ) {
   private val main = Handler(Looper.getMainLooper())
 
+  /**
+   * Runs a verb on the player's thread without letting it take the app down.
+   *
+   * Every method below arrives from JavaScript on a binder thread and hands its
+   * work to the main looper, because ExoPlayer may only be touched from the
+   * thread that built it. That hop is also where an exception becomes fatal:
+   * nothing above a posted Runnable catches anything, so a single bad track
+   * index or a call against a player that has just been torn down does not fail
+   * the verb — it ends the process, and the viewer sees the app disappear.
+   *
+   * Caught here, the same fault becomes an error the page can read and act on:
+   * the engine reports failure, and the fallback to mpv already wired into
+   * use-player-bridge.ts takes over.
+   */
+  private fun post(body: () -> Unit) {
+    main.post {
+      try {
+        body()
+      } catch (t: Throwable) {
+        lastError = "bridge: ${t.javaClass.simpleName}: ${t.message ?: ""}"
+        lastErrorKind = "unknown"
+        try {
+          refresh()
+        } catch (ignored: Throwable) {
+          // The snapshot could not even be rebuilt; there is nothing further to
+          // report, and throwing from a catch would defeat the whole point.
+        }
+      }
+    }
+  }
+
   private var player: ExoPlayer? = null
 
   private var lastError: String? = null
@@ -82,7 +114,15 @@ class VioraPlayer(
 
   private val tick = object : Runnable {
     override fun run() {
-      refresh()
+      // Five times a second for the whole length of a film, reading tracks and
+      // timings off a player that may be mid-teardown. Unguarded, one bad read
+      // anywhere in that loop ends the process — and it would do it in the
+      // middle of playback, which is exactly when it is least explicable.
+      try {
+        refresh()
+      } catch (t: Throwable) {
+        lastError = "state: ${t.javaClass.simpleName}: ${t.message ?: ""}"
+      }
       if (ticking) main.postDelayed(this, 200)
     }
   }
@@ -92,7 +132,24 @@ class VioraPlayer(
   private fun ensurePlayer(): ExoPlayer {
     player?.let { return it }
     stage.ensure()
-    val built = ExoPlayer.Builder(activity)
+    // Decoder fallback is the difference between a television and an emulator.
+    //
+    // An emulator has no hardware decoder to fail, so playback there proves
+    // nothing about a real set. On a television MediaCodec hands back the
+    // vendor's own decoder, and when that one refuses a stream — an unusual
+    // HEVC profile, a resolution above what it admits to, a second instance
+    // while another app still holds the first — ExoPlayer's default is to stop
+    // at the first refusal and call the playback failed. Some vendor decoders
+    // do not even refuse cleanly; they fault, and the process goes with them.
+    //
+    // With fallback enabled the renderer moves down the codec list instead:
+    // hardware first, then whatever else claims the format, ending at the
+    // software decoder that is always present. Slower on a heavy file, and the
+    // only reason it is not the default is that Google would rather report the
+    // failure than hide a performance cliff. Here the file plays.
+    val renderers = DefaultRenderersFactory(activity)
+      .setEnableDecoderFallback(true)
+    val built = ExoPlayer.Builder(activity, renderers)
       .setMediaSourceFactory(DefaultMediaSourceFactory(httpFactory))
       .build()
     built.setVideoSurfaceView(stage.surface)
@@ -153,11 +210,11 @@ class VioraPlayer(
 
   /** Called when the activity stops, so audio does not follow the viewer out. */
   fun onActivityStopped() {
-    main.post { player?.pause() }
+    post { player?.pause() }
   }
 
   fun destroy() {
-    main.post { teardown() }
+    post { teardown() }
   }
 
   private fun teardown() {
@@ -309,7 +366,7 @@ class VioraPlayer(
         headers[k] = h.optString(k)
       }
     }
-    main.post {
+    post {
       lastError = null
       lastErrorKind = null
       cueLog.clear()
@@ -335,12 +392,12 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun play() {
-    main.post { player?.play() }
+    post { player?.play() }
   }
 
   @JavascriptInterface
   fun pause() {
-    main.post {
+    post {
       player?.pause()
       refresh()
     }
@@ -348,7 +405,7 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun seek(sec: Double) {
-    main.post {
+    post {
       player?.seekTo((sec * 1000).toLong().coerceAtLeast(0L))
       refresh()
     }
@@ -356,7 +413,7 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun setVolume(v: Double) {
-    main.post {
+    post {
       player?.volume = v.coerceIn(0.0, 1.0).toFloat()
       refresh()
     }
@@ -364,7 +421,7 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun setMuted(m: Boolean) {
-    main.post {
+    post {
       player?.volume = if (m) 0f else 1f
       refresh()
     }
@@ -372,7 +429,7 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun setRate(r: Double) {
-    main.post {
+    post {
       player?.setPlaybackSpeed(r.coerceIn(0.25, 4.0).toFloat())
       refresh()
     }
@@ -380,7 +437,7 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun setAudioTrack(id: String) {
-    main.post {
+    post {
       applyTrack(id)
       refresh()
     }
@@ -389,7 +446,7 @@ class VioraPlayer(
   /** The empty string means off; a binder call cannot carry null. */
   @JavascriptInterface
   fun setSubtitleTrack(id: String) {
-    main.post {
+    post {
       val exo = player ?: return@post
       cueLog.clear()
       if (id.isEmpty()) {
@@ -418,13 +475,13 @@ class VioraPlayer(
   @JavascriptInterface
   fun setSubDelay(sec: Double) {
     subDelaySec = sec
-    main.post { refresh() }
+    post { refresh() }
   }
 
   /** `mode` is fit, fill or stretch; `aspect` is -1 unless the page forces one. */
   @JavascriptInterface
   fun setGeometry(mode: String, aspect: Double, zoom: Double) {
-    main.post { stage.setGeometry(mode, aspect, zoom) }
+    post { stage.setGeometry(mode, aspect, zoom) }
   }
 
   /** ExoPlayer has no way to shift the audio clock against the video. */
@@ -439,6 +496,6 @@ class VioraPlayer(
 
   @JavascriptInterface
   fun release() {
-    main.post { teardown() }
+    post { teardown() }
   }
 }

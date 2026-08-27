@@ -1,4 +1,4 @@
-const SALT = "harbor-profile-v1";
+const SALT = "viora-profile-v1";
 
 export async function hashProfilePassword(password: string): Promise<string> {
   const data = new TextEncoder().encode(`${SALT}|${password}`);

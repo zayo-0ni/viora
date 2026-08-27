@@ -1,9 +1,9 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { showHarborError } from "./error-view";
+import { showVioraError } from "./error-view";
 
 type State = { crashed: boolean };
 
-export class HarborErrorBoundary extends Component<{ children: ReactNode }, State> {
+export class VioraErrorBoundary extends Component<{ children: ReactNode }, State> {
   state: State = { crashed: false };
 
   static getDerivedStateFromError(): State {
@@ -11,7 +11,7 @@ export class HarborErrorBoundary extends Component<{ children: ReactNode }, Stat
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    showHarborError({
+    showVioraError({
       fatal: true,
       code: error.name || "Crash",
       title: "Crash",

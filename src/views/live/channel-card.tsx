@@ -64,6 +64,7 @@ export function ChannelCard({
         contentVisibility: "auto",
         containIntrinsicSize: posterUrl ? "200px 240px" : "200px 170px",
       }}
+      data-live-card
       className={`group relative flex w-full flex-col items-stretch overflow-hidden rounded-2xl border bg-elevated transition-colors duration-150 ${
         active
           ? "border-ink/45 bg-raised"
@@ -74,7 +75,18 @@ export function ChannelCard({
         type="button"
         onClick={() => onPlay(channel)}
         aria-label={t("Play {name}", { name: displayName })}
+        /* The ring is drawn inside the card, because the card clips.
+
+           This button fills a wrapper that carries `overflow-hidden` for the
+           rounded corners, and an outline is painted outside the element's box —
+           so the frame was drawn and then thrown away by the clip, and a
+           focused channel looked exactly like an unfocused one. Pulling the
+           outline inwards by its own width puts it back where it can be seen,
+           against the card's edge rather than around it. */
         className="flex w-full flex-col items-stretch text-start"
+        // The scrolling column reveals a control once it is fully outside,
+        // which leaves the last row of a grid sitting half over the edge.
+        onFocus={(e) => e.currentTarget.scrollIntoView({ block: "nearest" })}
       >
         <div
           className={`relative flex items-center justify-center p-3 ${

@@ -4,7 +4,7 @@ import { StreamSwitcher } from "@/components/player/stream-switcher";
 import { AdReportButton } from "@/components/player/ad-report-button";
 import { P2pStatusChip } from "@/components/player/p2p-status-chip";
 import type { VolumeHudPosition, VolumeIndicatorState } from "@/components/player/volume-indicator";
-import type { ParentalCategory } from "@/lib/providers/harbor-imdb";
+import type { ParentalCategory } from "@/lib/providers/viora-imdb";
 import type { PlayerEngine, PlayerBridge, PlayerSnapshot } from "@/lib/player/bridge";
 import type { PlayerSrc, PlayEpisode } from "@/lib/view";
 import { CastLayer } from "./cast-layer";
@@ -17,8 +17,6 @@ import { ShellLayer } from "./shell-layer";
 import { StageOverlays } from "./stage-overlays";
 import { ToolsLayer } from "./tools-layer";
 import { TextSyncOverlay } from "./text-sync-overlay";
-import { Toaster } from "@/views/addons/toaster";
-import type { ToastInfo } from "@/views/addons/addons-types";
 import type { usePlayerCast } from "./hooks/use-player-cast";
 import type { useTextSync } from "./hooks/use-text-sync";
 
@@ -104,9 +102,6 @@ export type PlayerOverlayLayersProps = {
   rememberSubChoice: Shell["rememberSubChoice"];
   cropMode: Shell["cropMode"];
   onCropMode: Shell["onCropMode"];
-  anime4kMode: Shell["anime4kMode"];
-  onAnime4kMode: Shell["onAnime4kMode"];
-  anime4kAvailable: Shell["anime4kAvailable"];
   togglePipMode: () => void;
   setDrawMode: (fn: (d: boolean) => boolean) => void;
   wakeChrome: () => void;
@@ -119,8 +114,6 @@ export type PlayerOverlayLayersProps = {
   tmdbKey: string | null;
   download: Shell["download"];
   liveOverlay: Live["liveOverlay"];
-  setDvrOpen: (fn: (v: boolean) => boolean) => void;
-  openDvr: (() => void) | undefined;
   sleep: Shell["sleep"];
   adjacentPrev: PlayEpisode | null;
   adjacentNext: PlayEpisode | null;
@@ -153,9 +146,7 @@ export type PlayerOverlayLayersProps = {
   switcherOpen: boolean;
   foreignNotice: Room["foreignNotice"];
   onDismissForeign: () => void;
-  mpvEmbedWindowsActive: boolean;
   setStreamCheckOpen: (v: boolean) => void;
-  dvrOpen: boolean;
   setSwitcherOpen: (fn: (v: boolean) => boolean) => void;
   onSwitchStream: Switcher["onPick"];
   debridSlugs: string[];
@@ -173,7 +164,6 @@ export type PlayerOverlayLayersProps = {
   onEnterSync?: () => void;
   syncMode: ReturnType<typeof useTextSync>["syncMode"];
   syncApi: ReturnType<typeof useTextSync>;
-  syncToast: ToastInfo | null;
   onSyncPlayPause: () => void;
 };
 
@@ -301,9 +291,6 @@ export function PlayerOverlayLayers(p: PlayerOverlayLayersProps) {
           onEnterSync={p.onEnterSync}
           cropMode={p.cropMode}
           onCropMode={p.onCropMode}
-          anime4kMode={p.anime4kMode}
-          onAnime4kMode={p.onAnime4kMode}
-          anime4kAvailable={p.anime4kAvailable}
           onPiP={() => p.togglePipMode()}
           onFullscreen={p.toggleFullscreen}
           openCastMenu={p.cast.openCastMenu}
@@ -340,7 +327,6 @@ export function PlayerOverlayLayers(p: PlayerOverlayLayersProps) {
           season={p.src.episode?.season ?? null}
           episode={p.src.episode?.episode ?? null}
           download={p.download}
-          onOpenDvr={p.openDvr}
           sleep={p.sleep}
           onVolumeFeedback={p.onVolumeFeedback}
         />
@@ -354,7 +340,6 @@ export function PlayerOverlayLayers(p: PlayerOverlayLayersProps) {
         />
       )}
 
-      <Toaster toast={p.syncToast} />
 
       <RoomLayer
         inRoom={p.inRoom}
@@ -397,13 +382,7 @@ export function PlayerOverlayLayers(p: PlayerOverlayLayersProps) {
         visible={p.isP2pEngine && p.showChrome && !p.pipMode && !p.drawMode}
       />
 
-      <LiveLayer
-        liveOverlay={p.liveOverlay}
-        dvrOpen={p.dvrOpen}
-        onCloseDvr={() => p.setDvrOpen(() => false)}
-        srcUrl={p.src.url}
-        channelName={p.src.meta.name ?? p.src.title}
-      />
+      <LiveLayer liveOverlay={p.liveOverlay} />
       <StreamSwitcher
         open={p.switcherOpen}
         onClose={() => p.setSwitcherOpen(() => false)}

@@ -1,5 +1,5 @@
 import { FocusButton } from "@/lib/tv-focus";
-import harborStyleImg from "@/assets/onboarding/harborstyle.png";
+import harborStyleImg from "@/assets/onboarding/viorastyle.png";
 import traditionalStyleImg from "@/assets/onboarding/traditional.png";
 import { useT } from "@/lib/i18n";
 import { useSettings } from "@/lib/settings";
@@ -16,14 +16,14 @@ export function LayoutStep() {
   }> = [
     {
       id: "harbor",
-      label: t("Harbor curated"),
+      label: t("Viora curated"),
       sub: t("Hero, Top 10, Trending, In Theaters, per-service rails. Your addons append underneath."),
       img: harborStyleImg,
     },
     {
       id: "classic",
       label: t("Classic Stremio"),
-      sub: t("Continue Watching, then your addon catalogs in install order. No hero, no Harbor rails."),
+      sub: t("Continue Watching, then your addon catalogs in install order. No hero, no Viora rails."),
       img: traditionalStyleImg,
     },
   ];

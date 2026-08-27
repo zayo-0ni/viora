@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { fetch as tauriFetchImpl } from "@tauri-apps/plugin-http";
 import { TrackerBlockedError, isBlockedUrl, noteBlocked } from "./privacy/blocklist";
 import { handleLocalAddonRequest, isLocalAddonUrl } from "@/lib/addons/local";
+import { isCacheable, isFresh, readCached, writeCached } from "./net-cache";
 
 const isTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 
@@ -64,19 +65,19 @@ function rewriteForWeb(url: string, init?: RequestInit): { url: string; init?: R
   const auth = out.get("authorization");
   if (auth) {
     out.delete("authorization");
-    out.set("x-harbor-auth", auth);
+    out.set("x-viora-auth", auth);
   }
   return { url: proxied, init: { ...init, headers: out } };
 }
 
-type HarborFetchResponse = {
+type VioraFetchResponse = {
   status: number;
   ok: boolean;
   body: string;
   contentType: string | null;
 };
 
-async function tauriHarborFetch(input: string, init?: RequestInit): Promise<Response> {
+async function tauriVioraFetch(input: string, init?: RequestInit): Promise<Response> {
   const headers: Record<string, string> = {};
   if (init?.headers) {
     const h = new Headers(init.headers as HeadersInit);
@@ -92,7 +93,7 @@ async function tauriHarborFetch(input: string, init?: RequestInit): Promise<Resp
         : init?.body
           ? JSON.stringify(init.body)
           : undefined;
-  const resp = await invoke<HarborFetchResponse>("harbor_fetch", {
+  const resp = await invoke<VioraFetchResponse>("harbor_fetch", {
     args: {
       url: input,
       method: init?.method ?? "GET",
@@ -170,7 +171,69 @@ export const safeFetch: typeof fetch = (input, init) => {
       );
     }
   }
-  return safeFetchInner(input, init);
+  return safeFetchCached(input, init);
+};
+
+/**
+ * Answers the app already has, before the network is troubled at all.
+ *
+ * A catalogue that was fetched a couple of hours ago is served from disk and no
+ * request is made — which is the point, and the difference from an ordinary
+ * cache that revalidates. Opening the app twice in an evening should not cost
+ * twice the data or twice the wait. Once a stored answer is older than a few
+ * hours it is ignored and the network answers as usual, so the viewer is never
+ * more than that behind.
+ *
+ * Only catalogue and metadata addresses take part; anything carrying a token or
+ * a viewer's own list goes straight through.
+ */
+const safeFetchCached: typeof fetch = async (input, init) => {
+  const target = typeof input === "string" ? input : input instanceof URL ? input.href : null;
+  const method = (init?.method ?? "GET").toUpperCase();
+  if (!target || method !== "GET" || !isCacheable(target)) return safeFetchInner(input, init);
+
+  try {
+    const entry = await readCached(target);
+    if (entry) {
+      // Anything stored is served, however old. Nothing is ever thrown away for
+      // age — the whole library measured 4.8 MB against a 10 GB allowance — so
+      // the app opens on what it already knows, every time, without waiting.
+      //
+      // If that copy is a few hours old the network is asked as well, quietly,
+      // and what comes back replaces it. New titles appear, ones that have gone
+      // stop being asked for, and the viewer waited for none of it.
+      if (!isFresh(entry)) {
+        safeFetchInner(input, init)
+          .then((r) => {
+            if (!r.ok) return;
+            return r
+              .clone()
+              .text()
+              .then((body) =>
+                writeCached(target, body, r.headers.get("content-type") ?? "application/json"),
+              );
+          })
+          .catch(() => {});
+      }
+      return new Response(entry.body, {
+        status: 200,
+        headers: { "content-type": entry.contentType || "application/json" },
+      });
+    }
+  } catch {
+    // Nothing stored, or the store would not open. Ask the network.
+  }
+
+  const res = await safeFetchInner(input, init);
+  if (res.ok) {
+    // Read from a copy: the caller still gets an untouched, unread body.
+    res
+      .clone()
+      .text()
+      .then((body) => writeCached(target, body, res.headers.get("content-type") ?? "application/json"))
+      .catch(() => {});
+  }
+  return res;
 };
 
 const safeFetchInner: typeof fetch = (input, init) => {
@@ -202,16 +265,16 @@ const safeFetchInner: typeof fetch = (input, init) => {
               // Blocked or unreachable from the page: this host needs the native
               // client, and now we know for the rest of the session.
               rememberTransport(target, "native");
-              return tauriHarborFetch(input, init).catch(
+              return tauriVioraFetch(input, init).catch(
                 () => tauriFetchImpl(input as string, init as RequestInit) as Promise<Response>,
               );
             });
         }
-        return tauriHarborFetch(input, init).catch(
+        return tauriVioraFetch(input, init).catch(
           () => tauriFetchImpl(input as string, init as RequestInit) as Promise<Response>,
         );
       }
-      return tauriHarborFetch(input, init);
+      return tauriVioraFetch(input, init);
     }
     return tauriFetchImpl(input as unknown as string, init as RequestInit) as Promise<Response>;
   }

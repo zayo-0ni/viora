@@ -340,7 +340,11 @@ export async function tmdbDetails(key: string, meta: Meta): Promise<TmdbDetail |
     tagline,
     overview,
     poster: finalPosterPath ? `${IMG}/w342${finalPosterPath}` : undefined,
-    backdrop: raw.backdrop_path ? `${IMG}/original${raw.backdrop_path}` : undefined,
+    // w1280, not original. Measured on the television: four backdrops still
+    // asking for the full 3840px held 27 megapixels between them — a hundred
+    // megabytes of decoded pixels for four images, behind a scrim, on a panel
+    // that is 1920 wide and shows them at 644 CSS pixels.
+    backdrop: raw.backdrop_path ? `${IMG}/w1280${raw.backdrop_path}` : undefined,
     logo,
     year: (raw.release_date ?? raw.first_air_date)?.slice(0, 4),
     rating: raw.vote_average > 0 ? Number(raw.vote_average).toFixed(1) : undefined,

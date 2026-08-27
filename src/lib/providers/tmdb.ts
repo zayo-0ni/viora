@@ -44,10 +44,6 @@ export {
   tmdbTrailer,
 } from "./tmdb/tmdb-trailers";
 
-export {
-  tmdbAnimeMatch,
-  tmdbAnimeLogo,
-} from "./tmdb/tmdb-anime";
 
 export {
   tmdbCriticData,

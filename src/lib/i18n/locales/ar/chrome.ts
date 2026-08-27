@@ -43,7 +43,7 @@ const chrome: Record<string, string> = {
   "chrome.parentalOn": "الرقابة الأبوية مفعّلة",
   "chrome.lockedRequiresPin": "{label} (مقفل، يتطلب رمز PIN)",
   "chrome.lockedShort": "{label} · مقفل",
-  "chrome.harborHome": "صفحة Harbor الرئيسية",
+  "chrome.harborHome": "صفحة Viora الرئيسية",
   "chrome.sectionLibrary": "المكتبة",
 
   "profile.whoWatching": "من يشاهد",
@@ -56,7 +56,7 @@ const chrome: Record<string, string> = {
   "profile.signedIn": "تم تسجيل الدخول إلى Stremio",
   "profile.fallback": "ملف شخصي",
 
-  "welcome.title": "مرحبًا بك في Harbor",
+  "welcome.title": "مرحبًا بك في Viora",
   "welcome.subtitle": "الواجهة الآن باللغة العربية. يمكنك التبديل في أي وقت من الإعدادات.",
   "welcome.dismiss": "ابدأ الآن",
 

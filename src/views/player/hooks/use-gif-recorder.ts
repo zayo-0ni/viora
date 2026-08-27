@@ -55,7 +55,7 @@ export function useGifRecorder(params: { src: PlayerSrc }): {
       setToast({
         id: Date.now(),
         kind: "ok",
-        text: `GIF saved to ${dir ? "Pictures/Harbor" : "downloads"}`,
+        text: `GIF saved to ${dir ? "Pictures/Viora" : "downloads"}`,
         path: result.path,
       });
     } catch (e) {

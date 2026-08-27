@@ -1,7 +1,7 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { ChevronRight, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { HarborLoader } from "@/components/harbor-loader";
+import { VioraLoader } from "@/components/viora-loader";
 import type { Meta } from "@/lib/cinemeta";
 import { useDebridClients } from "@/lib/debrid/registry";
 import type { PanelCorner } from "@/lib/player-chrome";
@@ -160,7 +160,7 @@ export function EpisodePanel({
     >
       {resolvingFor && (
         <div className="pointer-events-auto absolute inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-black/82 backdrop-blur-md animate-in fade-in duration-150">
-          <HarborLoader size="md" caption={t("Connecting")} />
+          <VioraLoader size="md" caption={t("Connecting")} />
           <p className="text-[13px] text-white/75">
             {t("Loading {label}", {
               label: `S${resolvingFor.imdbSeason ?? resolvingFor.season} · E${String(resolvingFor.imdbEpisode ?? resolvingFor.episode).padStart(2, "0")}${
@@ -237,7 +237,7 @@ export function EpisodePanel({
             <div ref={listRef} className="flex-1 overflow-y-auto px-4 pb-8 pt-2">
               {loading && episodes.length === 0 && (
                 <div className="flex items-center justify-center py-16">
-                  <HarborLoader size="sm" />
+                  <VioraLoader size="sm" />
                 </div>
               )}
               {!loading && episodes.length === 0 && (

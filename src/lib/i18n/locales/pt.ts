@@ -44,7 +44,7 @@ const pt: Record<string, string> = {
   "chrome.parentalOn": "Controle parental ativado",
   "chrome.lockedRequiresPin": "{label} (bloqueado, requer PIN)",
   "chrome.lockedShort": "{label} · bloqueado",
-  "chrome.harborHome": "Início do Harbor",
+  "chrome.harborHome": "Início do Viora",
   "chrome.sectionLibrary": "Biblioteca",
 
   "profile.whoWatching": "Quem está assistindo?",
@@ -57,7 +57,7 @@ const pt: Record<string, string> = {
   "profile.signedIn": "Conectado ao Stremio",
   "profile.fallback": "Perfil",
 
-  "welcome.title": "Bem-vindo ao Harbor",
+  "welcome.title": "Bem-vindo ao Viora",
   "welcome.subtitle": "A interface agora está em árabe. Você pode mudar de volta a qualquer momento nas Configurações.",
   "welcome.dismiss": "Começar",
 
@@ -167,7 +167,7 @@ const pt: Record<string, string> = {
   "Focus GIF URL": "URL do GIF de Destaque",
   "Addon not installed": "Extensão não instalada",
   "This section depends on the addon": "Esta seção depende da extensão",
-  "You must install this addon in your Stremio account first so Harbor can fetch its works.": "Você deve instalar esta extensão na sua conta do Stremio primeiro para que o Harbor possa buscar seus conteúdos.",
+  "You must install this addon in your Stremio account first so Viora can fetch its works.": "Você deve instalar esta extensão na sua conta do Stremio primeiro para que o Viora possa buscar seus conteúdos.",
   "Missing TMDB Key": "Chave do TMDB Ausente",
   "This section relies on TMDB discovery features.": "Esta seção depende dos recursos de descoberta do TMDB.",
   "Please add your TMDB API key in the Library & Metadata settings to view this folder.": "Por favor, adicione sua chave de API do TMDB nas configurações de Biblioteca e Metadados para visualizar esta pasta.",

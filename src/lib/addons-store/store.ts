@@ -28,7 +28,7 @@ export type ResolvedAddon = {
   curated?: CuratedEntry;
   manifest: Addon["manifest"] | null;
   transportUrl: string;
-  source: "curated" | "community" | "stremio-user" | "harbor-local";
+  source: "curated" | "community" | "stremio-user" | "viora-local";
   installed: boolean;
 };
 
@@ -84,7 +84,7 @@ export function useAddonsCatalog(adultsAllowed: boolean): {
           curated: existing?.curated,
           manifest: a.manifest,
           transportUrl: a.transportUrl,
-          source: existing ? existing.source : "harbor-local",
+          source: existing ? existing.source : "viora-local",
           installed: true,
         });
       }

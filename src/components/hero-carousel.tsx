@@ -187,6 +187,21 @@ export function HeroCarousel({
     // Nothing inside a slide registers, so neither wrapper was buying anything to
     // begin with: the hero is one stop, as declared above.
     <div
+      // Says that a press back through the slides belongs to the hero.
+      //
+      // `onArrowPress` above already decides this correctly — it consumes the
+      // press while there is an earlier slide and lets it through from the
+      // first — but that runs inside the focus engine, and the handler that
+      // opens the navigation rail listens in the capture phase, before anything
+      // else sees the key. So it took every press and the hero could never be
+      // flipped backwards: reach the last slide, press back, and the rail
+      // opened instead. Saying so in the markup is what lets that handler stand
+      // aside without having to know what a carousel is.
+      //
+      // Only while there is somewhere to go back to. On the first slide the
+      // attribute is absent and the press falls through to the rail, which is
+      // exactly the behaviour the cards have.
+      data-hero-can-step-back={active > 0 ? "" : undefined}
       className={full ? "relative" : "flex flex-col gap-5"}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

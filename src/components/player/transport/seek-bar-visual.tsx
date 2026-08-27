@@ -88,7 +88,7 @@ export function SeekBarVisual({
         className="absolute overflow-hidden rounded-full transition-[height] duration-150"
         style={fillStyle}
       >
-        {style === "pinstripe" && <div className="harbor-barberpole absolute inset-0" />}
+        {style === "pinstripe" && <div className="viora-barberpole absolute inset-0" />}
         {glassOverlay && <div className="absolute inset-0" style={glassOverlay} />}
       </div>
       {(segments ?? []).map((s, i) => (

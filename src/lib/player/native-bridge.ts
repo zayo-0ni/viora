@@ -528,9 +528,6 @@ export function createNativeBridge(config: NativeEngineConfig): PlayerBridge {
       pushGeometry();
     },
     setVideoEq() {},
-    setAnime4kShaders(shaders) {
-      native()?.setShaders?.(shaders.join(":"));
-    },
     async addSubtitle(url, lang, title, select): Promise<boolean> {
       const id = `${EXTERNAL_PREFIX}${externals.length}-${Date.now()}`;
       const track: ExternalTrack = { id, url, lang, title, cues: null, loading: false };

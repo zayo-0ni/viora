@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Popcorn } from "lucide-react";
 import { AddonsIcon } from "@/components/icons/addons-icon";
-import { AnimeIcon } from "@/components/icons/anime-icon";
 import { CalendarIcon } from "@/components/icons/calendar-icon";
 import { DiscoverIcon } from "@/components/icons/discover-icon";
 import { HomeIcon } from "@/components/icons/home-icon";
@@ -21,7 +20,6 @@ export type NavItemId =
   | "movies"
   | "shows"
   | "kids"
-  | "anime"
   | "live"
   | "vod"
   | "calendar"
@@ -35,7 +33,7 @@ export type NavItem = {
   label: string;
   render: (active: boolean) => ReactNode;
   view: View;
-  hideKey?: "anime" | "liveTv" | "sports";
+  hideKey?: "liveTv" | "sports";
   parentalKey?: LockableTab;
   pinGated?: boolean;
 };
@@ -52,7 +50,6 @@ export const NAV_ITEMS: NavItem[] = [
   { id: "movies", label: "nav.movies", render: (active) => <MoviesIcon active={active} />, view: "movies", parentalKey: "movies" },
   { id: "shows", label: "nav.shows", render: (active) => <TvIcon active={active} />, view: "shows", parentalKey: "shows" },
   { id: "kids", label: "nav.kids", render: (active) => <Popcorn size={26} strokeWidth={2.2} className={active ? "" : "opacity-70"} />, view: "kids" },
-  { id: "anime", label: "nav.anime", render: (active) => <AnimeIcon active={active} />, view: "anime", hideKey: "anime", parentalKey: "anime" },
   { id: "live", label: "nav.live", render: (active) => <LiveTvIcon active={active} />, view: "live", hideKey: "liveTv", parentalKey: "liveTv" },
   { id: "vod", label: "nav.playlists", render: (active) => <PlaylistVodIcon active={active} />, view: "vod" },
   { id: "calendar", label: "nav.calendar", render: (active) => <CalendarIcon active={active} />, view: "calendar", parentalKey: "calendar" },
@@ -125,4 +122,9 @@ export function renameNavItem(cfg: NavCustomization, id: string, label: string):
 
 export function resetNavCustomization(): NavCustomization {
   return { order: [], hidden: [], renamed: {} };
+}
+
+/** A stable name per destination, so a rail can prefer the active one. */
+export function navFocusKey(view: View): string {
+  return `SIDEBAR_NAV_${String(view).toUpperCase()}`;
 }

@@ -1,7 +1,6 @@
 import { createExoBridge } from "@/lib/player/exo";
 import { createMpvAndroidBridge, isMpvAndroidAvailable } from "@/lib/player/mpv-android";
 import type { PlayerEngine, PlayerBridge } from "@/lib/player/bridge";
-import { isLinuxDesktop, isMacDesktop } from "@/lib/platform";
 
 export const SYNC_DRIFT_TOLERANCE_S = 0.6;
 export const SYNC_SUPPRESS_MS = 1400;
@@ -26,30 +25,16 @@ export function round2(v: number): number {
   return Math.round(v * 100) / 100;
 }
 
-export function embedFlags(
-  engine: PlayerEngine,
-  mpvEmbed: boolean,
-  videoWidth: number,
-  videoHeight: number,
-): { mpvEmbedWindowsActive: boolean; stageBg: string } {
-  const embedOn = engine === "mpv" && mpvEmbed;
-  const mpvEmbedWindowsActive =
-    embedOn &&
-    typeof navigator !== "undefined" &&
-    navigator.userAgent.toLowerCase().includes("windows");
-  const hasFrame = videoWidth > 0 && videoHeight > 0;
-  const macShowing = embedOn && isMacDesktop() && hasFrame;
-  const linuxShowing = embedOn && isLinuxDesktop() && hasFrame;
+export function embedFlags(engine: PlayerEngine): { stageBg: string } {
   // Both Android engines draw on a surface *behind* the page. A black stage
   // would be a black screen with working controls on top of it, so the stage
   // keeps no background of its own and the picture comes through from
-  // underneath. Desktop mpv is a different arrangement entirely, handled above.
+  // underneath.
+  //
+  // The desktop mpv embed had three more arrangements here — a Windows child
+  // window, and the mac and Linux frames — which went with the desktop build.
   const nativeSurface = engine === "exo" || (engine === "mpv" && isMpvAndroidAvailable());
-  return {
-    mpvEmbedWindowsActive,
-    stageBg:
-      mpvEmbedWindowsActive || macShowing || linuxShowing || nativeSurface ? "" : "bg-black",
-  };
+  return { stageBg: nativeSurface ? "" : "bg-black" };
 }
 
 export function formatNames(names: string[]): string {

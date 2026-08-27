@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { narrowMediaType, isAddonNativeMeta, type Meta } from "@/lib/cinemeta";
-import { animeKitsuMeta } from "@/lib/providers/anime-kitsu-addon";
-import { kitsuToImdb } from "@/lib/providers/anime-mapping";
 import { tmdbImdbId } from "@/lib/providers/tmdb";
 import { cinemetaImdbFallback } from "./picker-utils";
 
@@ -19,27 +17,6 @@ export function useImdbId(meta: Meta, tmdbKey: string | undefined): ResolvedImdb
     if (meta.id.startsWith("tt")) {
       set({ id: meta.id, verified: true });
       return;
-    }
-    if (meta.id.startsWith("kitsu:") || meta.id.startsWith("mal:")) {
-      (async () => {
-        const addonRes = await animeKitsuMeta(meta.id).catch(() => null);
-        if (addonRes?.imdb_id) {
-          set({ id: addonRes.imdb_id, verified: true });
-          return;
-        }
-        if (meta.id.startsWith("kitsu:")) {
-          const n = parseInt(meta.id.slice("kitsu:".length), 10);
-          if (Number.isFinite(n)) {
-            const fromXml = await kitsuToImdb(n).catch(() => null);
-            set(fromXml ? { id: fromXml, verified: true } : UNRESOLVED);
-            return;
-          }
-        }
-        set(UNRESOLVED);
-      })();
-      return () => {
-        cancelled = true;
-      };
     }
     if (isAddonNativeMeta(meta)) {
       set(UNRESOLVED);

@@ -175,7 +175,7 @@ function CommunityCard({ theme, onOpen }: { theme: StoreTheme; onOpen: () => voi
             {state === "loading" ? (
               <Loader2 size={14} className="animate-spin" />
             ) : state === "done" ? (
-              <Check key="done" size={14} className="harbor-pop" />
+              <Check key="done" size={14} className="viora-pop" />
             ) : state === "error" ? (
               <AlertCircle size={14} />
             ) : (

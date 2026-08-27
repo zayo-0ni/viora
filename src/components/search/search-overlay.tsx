@@ -10,22 +10,16 @@ import { useT } from "@/lib/i18n";
 import { useSearch } from "@/lib/search-context";
 import { useView } from "@/lib/view";
 import { MOVIE_GENRES, TV_GENRES } from "@/lib/feed/tags";
-import { AnimeRow } from "./anime-row";
 import { EmptyState } from "./empty-state";
 import { GuideModal } from "./guide-modal";
 import { LiveTvRow } from "./live-tv-row";
-import { TopMatch } from "./top-match";
 import { PeopleRow } from "./people-row";
 import { MetaList } from "./meta-list";
 import { AddonHits } from "./addon-hits";
 import { AddonResults } from "./addon-results";
 import { MagnetCard } from "./magnet-card";
 import { UrlCard } from "./url-card";
-import { AiSearchSection } from "./ai-search-section";
-import { AiModeButton } from "./ai-mode-button";
 import { WebSearchButton } from "./web-search-button";
-import { AiExampleHint, SEARCH_EXAMPLES } from "@/components/ai-example-hint";
-import { useSettings } from "@/lib/settings";
 import { isMagnetInput, isDirectVideoUrl } from "@/lib/torrent/magnet";
 
 export function SearchOverlay() {
@@ -34,10 +28,6 @@ export function SearchOverlay() {
   const { openFilter, openMeta } = useView();
   const t = useT();
   const [guideOpen, setGuideOpen] = useState(false);
-  const [aiActive, setAiActive] = useState(false);
-  const [aiMode, setAiMode] = useState(false);
-  const [aiRunSignal, setAiRunSignal] = useState(0);
-  const { settings, update } = useSettings();
 
   useEffect(() => {
     if (!open) return;
@@ -87,7 +77,6 @@ export function SearchOverlay() {
       results.movies.length ||
       results.series.length ||
       results.liveTv.length ||
-      results.anime.length ||
       results.addons.length ||
       results.addonGroups.length)
   );
@@ -100,7 +89,6 @@ export function SearchOverlay() {
     results.movies.length === 0 &&
     results.series.length === 0 &&
     results.liveTv.length === 0 &&
-    results.anime.length === 0 &&
     results.addons.length === 0 &&
     results.addonGroups.length === 0
   );
@@ -111,7 +99,7 @@ export function SearchOverlay() {
         aria-label={t("Close search")}
         onClick={close}
         data-tauri-drag-region
-        className="harbor-search-backdrop absolute inset-0 cursor-default"
+        className="viora-search-backdrop absolute inset-0 cursor-default"
       />
 
       {isDpadPrimary() ? (
@@ -134,12 +122,6 @@ export function SearchOverlay() {
         */
         <FocusModal onClose={close} className="relative flex h-full w-full gap-8 px-10 py-8">
           <div className="flex w-[300px] shrink-0 flex-col gap-4">
-            <FocusButton
-              onClick={close}
-              className="flex h-11 shrink-0 items-center justify-center rounded-lg border border-edge-soft/60 text-[13.5px] font-medium text-ink-muted transition-colors hover:bg-elevated hover:text-ink"
-            >
-              {t("Back to Browse")}
-            </FocusButton>
             <TvKeyboard
               focusKey="SEARCH_KEYBOARD"
               primary
@@ -161,17 +143,15 @@ export function SearchOverlay() {
               // row is clipped by this column while still inside the window.
               <FocusSection
                 scrolls
-                className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="min-h-0 flex-1 overflow-y-auto scroll-pt-3 scroll-pb-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
               >
                 <div className="flex flex-col gap-8">
-                  {results.topMatch && <TopMatch match={results.topMatch} onClose={close} />}
                   <LiveTvRow items={results.liveTv} onClose={close} />
                   <PeopleRow people={results.people} onClose={close} />
                   <ResultGrid
                     results={results}
                     query={trimmed}
                     onClose={close}
-                    excludeId={results.topMatch?.meta.id}
                   />
                   <AddonResults groups={results.addonGroups} onClose={close} />
                 </div>
@@ -189,13 +169,11 @@ export function SearchOverlay() {
         className="relative mx-auto flex h-full w-full max-w-[1080px] flex-col px-6 py-6 sm:px-10 sm:py-10"
       >
         <div
-          className={`modal-panel relative flex shrink-0 items-center gap-3 rounded-2xl border bg-elevated/70 px-5 shadow-[0_24px_80px_-30px_rgba(0,0,0,0.7)] transition-colors ${
-            aiMode ? "border-accent/55" : "border-edge-soft/80"
-          }`}
+          className="modal-panel relative flex shrink-0 items-center gap-3 rounded-2xl border border-edge-soft/80 bg-elevated/70 px-5 shadow-[0_24px_80px_-30px_rgba(0,0,0,0.7)] transition-colors"
         >
           <Search
             size={22}
-            className={`shrink-0 transition-colors ${aiMode ? "text-accent" : "text-ink-muted"}`}
+            className="shrink-0 text-ink-muted transition-colors"
             strokeWidth={1.9}
           />
           <div className="relative flex-1">
@@ -205,57 +183,24 @@ export function SearchOverlay() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && e.shiftKey) {
-                  if (!query.trim()) return;
-                  e.preventDefault();
-                  if (!aiMode) setAiMode(true);
-                  setAiRunSignal((n) => n + 1);
-                  return;
-                }
                 if (e.key !== "Enter") return;
-                if (aiMode) {
-                  if (query.trim()) {
-                    e.preventDefault();
-                    setAiRunSignal((n) => n + 1);
-                  }
-                  return;
-                }
-                if (results?.topMatch) {
+                const first = results?.movies[0] ?? results?.series[0] ?? null;
+                if (first) {
                   e.preventDefault();
                   recordRecent(query);
-                  const meta = results.topMatch.meta;
                   setOpen(false);
-                  openMeta(meta);
+                  openMeta(first);
                 }
               }}
-              placeholder={aiMode ? "" : t("Search movies, shows, people, genres, years...")}
+              placeholder={t("Search movies, shows, people, genres, years...")}
               className="h-16 w-full bg-transparent text-[20px] text-ink placeholder:text-ink-subtle focus:outline-none sm:text-[22px]"
               spellCheck={false}
               autoComplete="off"
             />
-            {aiMode && (
-              <AiExampleHint
-                hidden={query.trim().length > 0}
-                examples={SEARCH_EXAMPLES}
-                prefix=""
-                sizeClass="text-[20px] sm:text-[22px]"
-              />
-            )}
           </div>
           {status === "loading" && <Loader2 size={18} className="shrink-0 animate-spin text-ink-subtle" />}
           <Hint />
           <WebSearchButton />
-          {(settings.aiSearchKey.trim() || settings.aiGroqKey.trim()) && (
-            <AiModeButton
-              active={aiMode}
-              currentModel={settings.aiSearchModel}
-              onToggle={() => setAiMode((v) => !v)}
-              onSelectModel={(id) => {
-                update({ aiSearchModel: id });
-                setAiMode(true);
-              }}
-            />
-          )}
           {query && (
             <FocusButton
               type="button"
@@ -305,13 +250,8 @@ export function SearchOverlay() {
             </FocusButton>
           )}
 
-          {trimmed && !directInput && (
-            <AiSearchSection query={trimmed} onClose={close} onActive={setAiActive} runSignal={aiRunSignal} />
-          )}
-
-          {trimmed && !directInput && hasResults && !aiActive && results && (
+          {trimmed && !directInput && hasResults && results && (
             <div className="flex flex-col gap-8 pb-12">
-              {results.topMatch && <TopMatch match={results.topMatch} onClose={close} />}
               <LiveTvRow items={results.liveTv} onClose={close} />
               <AddonHits hits={results.addons} onClose={close} />
               <PeopleRow people={results.people} onClose={close} />
@@ -319,12 +259,11 @@ export function SearchOverlay() {
                 <MetaList title={t("Movies")} items={results.movies} onClose={close} />
                 <MetaList title={t("Series")} items={results.series} onClose={close} />
               </div>
-              <AnimeRow items={results.anime} onClose={close} />
               <AddonResults groups={results.addonGroups} onClose={close} />
             </div>
           )}
 
-          {noResults && !directInput && !aiActive && (
+          {noResults && !directInput && (
             <div className="flex flex-col items-center gap-3 pt-16 text-center">
               <span className="text-[17px] font-semibold text-ink">{t("No matches for \"{query}\"", { query: trimmed })}</span>
               <span className="max-w-[44ch] text-[14px] text-ink-muted">

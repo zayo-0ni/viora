@@ -137,7 +137,7 @@ export function ManualAddonCard({
   configureUrl: string;
 }) {
   const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const localId = `harbor-manual-${slug}`;
+  const localId = `viora-manual-${slug}`;
   const [installedId, setInstalledId] = useState<string | null>(() => {
     const fromAlias = transportUrlFor(localId) ? localId : null;
     return fromAlias;

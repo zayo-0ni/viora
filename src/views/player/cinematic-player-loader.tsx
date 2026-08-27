@@ -1,6 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { useEffect, useRef, useState } from "react";
-import { HarborLoader } from "@/components/harbor-loader";
+import { VioraLoader } from "@/components/viora-loader";
 import type { PlayerSnapshot } from "@/lib/player/bridge";
 import { getPlaybackPosition, usePlaybackFlag } from "@/lib/player/playback-clock";
 import { isLocalUrl } from "@/lib/player/local-url";
@@ -162,7 +162,7 @@ export function CinematicPlayerLoader({
             </p>
           </div>
         ) : (
-          <HarborLoader size="md" caption={isLocal ? t("Loading") : t("Connecting")} />
+          <VioraLoader size="md" caption={isLocal ? t("Loading") : t("Connecting")} />
         )}
         {!kid && showEngineActivity && (
           <p className="text-[12.5px] font-medium tracking-wide text-white/50 tabular-nums">

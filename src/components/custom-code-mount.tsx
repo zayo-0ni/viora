@@ -4,9 +4,9 @@ import { getThemeById } from "@/lib/theme";
 import { useView } from "@/lib/view";
 import type { CustomTheme } from "@/lib/custom-themes";
 
-const STYLE_ID = "harbor-custom-css";
-const THEME_STYLE_ID = "harbor-theme-css";
-const OVERLAY_ID = "harbor-custom-overlay";
+const STYLE_ID = "viora-custom-css";
+const THEME_STYLE_ID = "viora-theme-css";
+const OVERLAY_ID = "viora-custom-overlay";
 
 function runThemeCleanup(key: "__harborCustomCleanup" | "__harborThemeCleanup") {
   const w = window as unknown as Record<string, unknown>;
@@ -68,7 +68,7 @@ export function CustomCodeMount() {
     try {
       new Function(code)();
     } catch (err) {
-      console.warn("[harbor-custom-js] error:", err);
+      console.warn("[viora-custom-js] error:", err);
     }
     return () => runThemeCleanup("__harborCustomCleanup");
   }, [settings.customJs]);
@@ -80,7 +80,7 @@ export function CustomCodeMount() {
     try {
       new Function(code)();
     } catch (err) {
-      console.warn("[harbor-theme-js] error:", err);
+      console.warn("[viora-theme-js] error:", err);
     }
     return () => runThemeCleanup("__harborThemeCleanup");
   }, [themeExt?.js]);

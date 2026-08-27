@@ -1,7 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { useEffect, useRef, useState } from "react";
 import {
-  ArrowLeft,
   ArrowRight,
   CalendarRange,
   Clock,
@@ -11,6 +10,7 @@ import {
   ShieldCheck,
   Tv,
 } from "lucide-react";
+import { TvFieldInput } from "@/components/tv-field-input";
 import { useT } from "@/lib/i18n";
 import {
   EMPTY_FORM,
@@ -204,17 +204,13 @@ function Form({
   return (
     <div className="relative flex min-h-full flex-col px-12 py-20">
       <div className="mx-auto flex w-full max-w-[640px] flex-1 flex-col justify-center gap-8">
-        <FocusButton
-          onClick={onBack}
-          className="group inline-flex h-11 items-center gap-2 self-start rounded-full border border-edge-soft bg-elevated/60 ps-3.5 pe-5 text-[14px] font-semibold text-ink-muted transition-all duration-150 ease-out hover:border-edge hover:bg-elevated hover:text-ink active:scale-[0.97]"
-        >
-          <ArrowLeft
-            size={16}
-            strokeWidth={2.4}
-            className="dir-icon transition-transform group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0.5"
-          />
-          {t("Back")}
-        </FocusButton>
+        {/* A Back button used to sit here, and it was the third way out of one
+            screen: Cancel at the foot of the form calls this same handler, and
+            the remote's own Back key calls it too. Being first in the document
+            it was also the first thing the highlight met on arriving — so the
+            screen opened by offering to leave itself, before the provider
+            choices and before a single field. Cancel keeps the job, beside Save
+            where a form's two answers belong. */}
         <header className="flex flex-col gap-3">
           <h2
             className="font-display text-[38px] font-medium leading-[1.05] tracking-tight text-ink"
@@ -269,12 +265,12 @@ function Form({
 
         <div className="flex flex-col gap-5 border-t border-edge-soft/40 pt-7">
           <Field label={t("Display name")} hint={t("Optional")}>
-            <input
-              type="text"
+            <TvFieldInput
+              label={t("Display name")}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={setName}
               placeholder={t(defaultName(kind))}
-              onKeyDown={(e) => e.key === "Enter" && submit()}
+              onSubmit={submit}
               className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 text-[14.5px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
             />
           </Field>
@@ -282,25 +278,22 @@ function Form({
           {kind === "m3u" && (
             <>
               <Field label={t("Playlist URL")}>
-                <input
-                  ref={firstFieldRef}
-                  type="url"
+                <TvFieldInput
+                  label={t("Playlist URL")}
                   value={url}
-                  onChange={(e) => setUrl(e.target.value)}
+                  onChange={setUrl}
                   placeholder="https://example.com/get.php?username=…&password=…&type=m3u_plus"
-                  spellCheck={false}
-                  onKeyDown={(e) => e.key === "Enter" && submit()}
+                  onSubmit={submit}
                   className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
                 />
               </Field>
               <Field label={t("EPG URL")} hint={t("Optional")}>
-                <input
-                  type="url"
+                <TvFieldInput
+                  label={t("EPG URL")}
                   value={epgUrl}
-                  onChange={(e) => setEpgUrl(e.target.value)}
+                  onChange={setEpgUrl}
                   placeholder="https://example.com/xmltv.php?username=…&password=…"
-                  spellCheck={false}
-                  onKeyDown={(e) => e.key === "Enter" && submit()}
+                  onSubmit={submit}
                   className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
                 />
               </Field>
@@ -310,39 +303,34 @@ function Form({
           {kind === "xtream" && (
             <>
               <Field label={t("Server URL")}>
-                <input
-                  ref={firstFieldRef}
-                  type="url"
+                <TvFieldInput
+                  label={t("Server URL")}
                   value={server}
-                  onChange={(e) => setServer(e.target.value)}
+                  onChange={setServer}
                   placeholder="https://example-iptv.com:8080"
-                  spellCheck={false}
-                  onKeyDown={(e) => e.key === "Enter" && submit()}
+                  onSubmit={submit}
                   className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
                 />
               </Field>
               <div className="grid grid-cols-2 gap-4">
                 <Field label={t("Username")}>
-                  <input
-                    type="text"
+                  <TvFieldInput
+                    label={t("Username")}
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={setUsername}
                     placeholder="user12345"
-                    autoComplete="off"
-                    spellCheck={false}
-                    onKeyDown={(e) => e.key === "Enter" && submit()}
+                    onSubmit={submit}
                     className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
                   />
                 </Field>
                 <Field label={t("Password")}>
-                  <input
-                    type="password"
+                  <TvFieldInput
+                    label={t("Password")}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={setPassword}
                     placeholder="••••••••"
-                    autoComplete="new-password"
-                    spellCheck={false}
-                    onKeyDown={(e) => e.key === "Enter" && submit()}
+                    onSubmit={submit}
+                    password
                     className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
                   />
                 </Field>
@@ -352,14 +340,12 @@ function Form({
 
           {kind === "epg" && (
             <Field label={t("EPG / XMLTV URL")}>
-              <input
-                ref={firstFieldRef}
-                type="url"
+              <TvFieldInput
+                label={t("EPG URL")}
                 value={epgUrl}
-                onChange={(e) => setEpgUrl(e.target.value)}
+                onChange={setEpgUrl}
                 placeholder="https://example.com/epg.xml"
-                spellCheck={false}
-                onKeyDown={(e) => e.key === "Enter" && submit()}
+                onSubmit={submit}
                 className="h-12 w-full rounded-xl border border-edge-soft/70 bg-canvas/70 px-4 font-mono text-[13px] text-ink placeholder:text-ink-subtle/70 transition-colors focus:border-edge focus:outline-none"
               />
             </Field>

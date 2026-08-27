@@ -51,7 +51,11 @@ async function run(key: string, id: number): Promise<TmdbCollection | null> {
     name: raw.name ?? "",
     overview: raw.overview ?? "",
     poster: raw.poster_path ? `${IMG}/w342${raw.poster_path}` : undefined,
-    backdrop: raw.backdrop_path ? `${IMG}/original${raw.backdrop_path}` : undefined,
+    // `original` is whatever the uploader gave TMDB — measured at 3840x2160 for
+    // a card drawn 641x359, thirty-six times the pixels and 33 MB of decoded
+    // memory each. The line above this one already asks for w780 for the same
+    // kind of artwork.
+    backdrop: raw.backdrop_path ? `${IMG}/w780${raw.backdrop_path}` : undefined,
     parts,
     genreCounts,
   };

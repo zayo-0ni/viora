@@ -3,7 +3,6 @@ import { isDpadPrimary } from "@/lib/platform";
 import {
   Camera,
   ChevronLeft,
-  Cpu,
   Crop,
   Info,
   Maximize,
@@ -27,18 +26,14 @@ import { SubtitleMenu } from "../subtitle-menu";
 import { AudioMenu } from "../audio-menu";
 import { DownloadButton } from "./download-button";
 import { Tooltip } from "./tooltip";
-import { DvrButton } from "./dvr-button";
 import { SpeedMenu } from "./speed-menu";
-import { Anime4kMenu } from "./anime4k-menu";
 import { HdrToggleStremioBtn } from "./hdr-toggle-btn";
-import type { Anime4kChoice } from "@/views/player/hooks/use-anime4k";
 import { DrawToggle } from "./draw-toggle";
 import { CastButton } from "./cast-button";
 import { TimeStart } from "./time-display";
 import { StremioBtn } from "./stremio-btn";
 import { StremioVolume } from "./stremio-volume";
 import { renderCustomIconControlStremio } from "./custom-icon-renderer";
-import { WindowControlButtons } from "./window-control-buttons";
 import { IdentifySongButton } from "@/components/identify-song-button";
 
 function qualityInfoOn(): boolean {
@@ -97,10 +92,6 @@ export type StremioRenderCtx = {
   setAspectMenuOpen: (v: boolean) => void;
   cropMode?: string;
   onCropMode?: (id: string) => void;
-  setAnime4kMenuOpen: (v: boolean) => void;
-  anime4kMode?: string;
-  onAnime4kMode?: (id: string) => void;
-  anime4kAvailable?: boolean;
   onPlayPause: () => void;
   onMute: () => void;
   onVolume: (v: number) => void;
@@ -126,7 +117,6 @@ export type StremioRenderCtx = {
   onDownloadCancel?: () => void;
   onDownloadReveal?: () => void;
   onDownloadReset?: () => void;
-  onOpenDvr?: () => void;
 };
 
 function getStremioState(id: PlayerControlId, ctx: StremioRenderCtx): string | undefined {
@@ -139,8 +129,6 @@ function getStremioState(id: PlayerControlId, ctx: StremioRenderCtx): string | u
       return ctx.fullscreen ? "fullscreen" : "windowed";
     case "draw-toggle":
       return ctx.drawMode ? "active" : "inactive";
-    case "dvr":
-      return ctx.isLiveChannel ? "recording" : "idle";
     case "cast":
       return ctx.capabilities.chromecast ? "connected" : "idle";
     case "pip":
@@ -304,9 +292,6 @@ export function RenderedStremioControl({
           </StremioBtn>
         </Tooltip>
       );
-    case "dvr":
-      if (!ctx.isLiveChannel || !ctx.onOpenDvr) return null;
-      return <DvrButton channelName={ctx.meta?.name ?? tr("Live")} onClick={ctx.onOpenDvr} />;
     case "download":
       if (ctx.isLiveChannel) return null;
       if (!ctx.download || !ctx.onDownloadStart || !ctx.onDownloadCancel || !ctx.onDownloadReveal || !ctx.onDownloadReset) return null;
@@ -346,15 +331,6 @@ export function RenderedStremioControl({
         </Tooltip>
       );
     }
-    case "anime4k-menu":
-      if (!ctx.onAnime4kMode || !ctx.anime4kAvailable) return null;
-      return (
-        <Anime4kMenu
-          mode={(ctx.anime4kMode as Anime4kChoice) ?? "auto"}
-          onMode={ctx.onAnime4kMode}
-          onOpenChange={ctx.setAnime4kMenuOpen}
-        />
-      );
     case "hdr-toggle":
       // Tone mapping is an mpv render option; the native engine has nothing
       // here to toggle.
@@ -383,19 +359,36 @@ export function RenderedStremioControl({
         />
       );
     case "engine-switch": {
-      // Only when there is genuinely another engine to move to. The label names
-      // the destination, because that is what the viewer is pressing it for.
+      // One button per engine, the running one green — the same arrangement as
+      // the other transport. A single swap button never said which engine was
+      // playing, because its icon was the same either way.
       if (!ctx.alternateEngine) return null;
-      const engineLabel = ctx.alternateEngine === "mpv" ? "mpv" : tr("the native player");
+      const engines: Array<{ id: "mpv" | "exo"; short: string; name: string }> = [
+        { id: "mpv", short: "MPV", name: "mpv" },
+        { id: "exo", short: "TV", name: tr("the native player") },
+      ];
       return (
-        <Tooltip label={tr("Switch to {engine}", { engine: engineLabel })} side="top">
-          <StremioBtn
-            onClick={ctx.onSwitchEngine}
-            ariaLabel={tr("Switch to {engine}", { engine: engineLabel })}
-          >
-            <Cpu size={26} strokeWidth={2} />
-          </StremioBtn>
-        </Tooltip>
+        <>
+          {engines.map((e) => {
+            const running = ctx.engine === e.id;
+            const label = running
+              ? tr("Playing on {engine}", { engine: e.name })
+              : tr("Switch to {engine}", { engine: e.name });
+            return (
+              <Tooltip key={e.id} label={label} side="top">
+                <StremioBtn onClick={running ? undefined : ctx.onSwitchEngine} ariaLabel={label}>
+                  <span
+                    className={`text-[13px] font-bold uppercase tracking-[0.06em] ${
+                      running ? "text-emerald-400" : ""
+                    }`}
+                  >
+                    {e.short}
+                  </span>
+                </StremioBtn>
+              </Tooltip>
+            );
+          })}
+        </>
       );
     }
     case "audio-menu":
@@ -452,8 +445,8 @@ export function RenderedStremioControl({
         </Tooltip>
       );
     case "window-controls":
-      if (isDpadPrimary()) return null;
-      return <WindowControlButtons t={tr} />;
+      // See control-renderer.tsx: no window to control on a television.
+      return null;
     default:
       return null;
   }

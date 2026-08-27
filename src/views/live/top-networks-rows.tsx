@@ -1,6 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Tv } from "lucide-react";
+import { Tv } from "lucide-react";
 import { useT } from "@/lib/i18n";
 import type { IptvChannel } from "@/lib/iptv/types";
 import {
@@ -53,8 +53,6 @@ function Row({
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [cellWidth, setCellWidth] = useState<number | null>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
   const rafRef = useRef<number | null>(null);
   const drag = useRef({
     active: false,
@@ -75,8 +73,6 @@ function Row({
     if (available <= 0) return;
     const fits = Math.max(1, Math.floor((available + GAP) / (MIN_CARD_WIDTH + GAP)));
     setCellWidth((available - (fits - 1) * GAP) / fits);
-    setCanPrev(track.scrollLeft > 1);
-    setCanNext(track.scrollWidth - (track.scrollLeft + track.clientWidth) > 1);
   }, []);
 
   useLayoutEffect(() => {
@@ -244,26 +240,6 @@ function Row({
               />
             ))}
         </div>
-        {/* Chevrons appear on hover and are skipped by the remote, which pages
-            the row by moving between the channels. */}
-        {canPrev && (
-          <button
-            aria-label={t("Scroll left")}
-            onClick={() => scrollPage(-1)}
-            className="absolute start-0 top-1/2 z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-edge-soft/55 bg-canvas/90 text-ink opacity-0 backdrop-blur transition-opacity duration-150 hover:bg-canvas group-hover/row:opacity-100 focus-visible:opacity-100 rtl:translate-x-1/2"
-          >
-            <ChevronLeft size={18} strokeWidth={2.2} className="dir-icon" />
-          </button>
-        )}
-        {canNext && (
-          <button
-            aria-label={t("Scroll right")}
-            onClick={() => scrollPage(1)}
-            className="absolute end-0 top-1/2 z-10 flex h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-edge-soft/55 bg-canvas/90 text-ink opacity-0 backdrop-blur transition-opacity duration-150 hover:bg-canvas group-hover/row:opacity-100 focus-visible:opacity-100 rtl:-translate-x-1/2"
-          >
-            <ChevronRight size={18} strokeWidth={2.2} className="dir-icon" />
-          </button>
-        )}
       </div>
     </section>
   );

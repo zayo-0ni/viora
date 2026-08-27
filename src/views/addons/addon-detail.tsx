@@ -168,7 +168,7 @@ export function AddonDetail({
               size={22}
               strokeWidth={2.4}
               fill="currentColor"
-              className="text-accent harbor-rating-star"
+              className="text-accent viora-rating-star"
             />
             <span className="text-[32px] font-semibold tabular-nums leading-none text-ink">
               {community.stars.toLocaleString()}
@@ -249,7 +249,7 @@ export function AddonDetail({
                   onClick={openRate}
                   className="flex h-11 items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-5 text-[13.5px] font-semibold text-accent transition-colors hover:border-accent hover:bg-accent-soft/80"
                 >
-                  <Star size={14} strokeWidth={2.4} fill="currentColor" className="harbor-rating-star" />
+                  <Star size={14} strokeWidth={2.4} fill="currentColor" className="viora-rating-star" />
                   {t("Rate")}
                 </FocusButton>
                 <FocusButton
@@ -365,7 +365,7 @@ export function AddonDetail({
           </div>
           <div className="mt-10 flex flex-col items-center gap-2 border-t border-edge-soft pt-6 text-center">
             <p className="text-[12px] text-ink-subtle">
-              {t("Stremio addon, packaged into Harbor's catalog.")}
+              {t("Stremio addon, packaged into Viora's catalog.")}
             </p>
             <p className="text-[11.5px] leading-relaxed text-ink-subtle">
               {t("Version and capabilities come straight from the addon's manifest. Ratings and categories come from the")}{" "}

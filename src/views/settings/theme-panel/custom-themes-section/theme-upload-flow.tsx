@@ -121,7 +121,7 @@ export function ThemeUploadFlow({ onClose }: { onClose: () => void }) {
           <div className="mx-auto flex h-full max-w-[1100px] flex-col gap-6 px-10 py-8">
             <StepRail step={step} />
             <div className="grid min-h-0 flex-1 gap-10 lg:grid-cols-[1fr_300px]">
-              <div key={step} className="harbor-step min-h-0 overflow-y-auto pe-1 [scrollbar-width:thin]">
+              <div key={step} className="viora-step min-h-0 overflow-y-auto pe-1 [scrollbar-width:thin]">
                 {step === 0 && <ThemeStep themes={myThemes} selected={theme} onSelect={setTheme} />}
                 {step === 1 && <CoverCropper onChange={setCoverBlob} />}
                 {step === 2 && <ShotsStep shots={shots} onAdd={addShots} onRemove={removeShot} />}
@@ -308,7 +308,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 function SuccessView({ share, copied, onCopy, onDone }: { share: string; copied: boolean; onCopy: () => void; onDone: () => void }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 px-10 text-center">
-      <span className="harbor-step flex h-16 w-16 items-center justify-center rounded-full bg-accent/15 text-accent">
+      <span className="viora-step flex h-16 w-16 items-center justify-center rounded-full bg-accent/15 text-accent">
         <Check size={32} strokeWidth={2.5} />
       </span>
       <div className="flex flex-col gap-1.5">

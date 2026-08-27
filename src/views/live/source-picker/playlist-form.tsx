@@ -1,6 +1,7 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { CalendarRange, Globe2, Tv } from "lucide-react";
 import { useState } from "react";
+import { TvFieldInput } from "@/components/tv-field-input";
 import { useT } from "@/lib/i18n";
 
 export type PlaylistKind = "m3u" | "xtream" | "epg";
@@ -113,11 +114,10 @@ export function PlaylistForm({
       </Field>
 
       <Field label={t("Name")}>
-        <input
-          autoFocus
-          type="text"
+        <TvFieldInput
+          label={t("Name")}
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={setName}
           placeholder={t("My provider")}
           className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 text-[13px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
         />
@@ -126,22 +126,20 @@ export function PlaylistForm({
       {kind === "m3u" && (
         <>
           <Field label={t("Playlist URL")}>
-            <input
-              type="url"
+            <TvFieldInput
+              label={t("Playlist URL")}
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={setUrl}
               placeholder="https://...get.php?username=...&password=..."
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
           <Field label={t("EPG URL (optional)")}>
-            <input
-              type="url"
+            <TvFieldInput
+              label={t("EPG URL")}
               value={epgUrl}
-              onChange={(e) => setEpgUrl(e.target.value)}
+              onChange={setEpgUrl}
               placeholder="https://...xmltv.php?username=...&password=..."
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
@@ -151,44 +149,39 @@ export function PlaylistForm({
       {kind === "xtream" && (
         <>
           <Field label={t("Server URL")}>
-            <input
-              type="url"
+            <TvFieldInput
+              label={t("Server URL")}
               value={xtream.server}
-              onChange={(e) => setXtream((x) => ({ ...x, server: e.target.value }))}
+              onChange={(v) => setXtream((x) => ({ ...x, server: v }))}
               placeholder="https://example-iptv.com:8080"
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
           <Field label={t("Username")}>
-            <input
-              type="text"
+            <TvFieldInput
+              label={t("Username")}
               value={xtream.username}
-              onChange={(e) => setXtream((x) => ({ ...x, username: e.target.value }))}
+              onChange={(v) => setXtream((x) => ({ ...x, username: v }))}
               placeholder="user12345"
-              autoComplete="off"
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
           <Field label={t("Password")}>
-            <input
-              type="password"
+            <TvFieldInput
+              label={t("Password")}
               value={xtream.password}
-              onChange={(e) => setXtream((x) => ({ ...x, password: e.target.value }))}
+              onChange={(v) => setXtream((x) => ({ ...x, password: v }))}
               placeholder="••••••••"
-              autoComplete="new-password"
-              spellCheck={false}
+              password
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
           <Field label={t("EPG URL (optional)")}>
-            <input
-              type="url"
+            <TvFieldInput
+              label={t("EPG URL")}
               value={epgUrl}
-              onChange={(e) => setEpgUrl(e.target.value)}
+              onChange={setEpgUrl}
               placeholder="https://...xmltv.php?username=...&password=..."
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>
@@ -198,12 +191,11 @@ export function PlaylistForm({
       {kind === "epg" && (
         <>
           <Field label={t("EPG / XMLTV URL")}>
-            <input
-              type="url"
+            <TvFieldInput
+              label={t("EPG URL")}
               value={epgUrl}
-              onChange={(e) => setEpgUrl(e.target.value)}
+              onChange={setEpgUrl}
               placeholder="https://example.com/epg.xml"
-              spellCheck={false}
               className="h-10 rounded-lg border border-edge-soft/70 bg-canvas px-3 font-mono text-[11.5px] text-ink placeholder:text-ink-subtle focus:border-edge focus:outline-none"
             />
           </Field>

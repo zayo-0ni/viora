@@ -1,6 +1,5 @@
 import { safeFetch } from "@/lib/safe-fetch";
 import { FEATURES, backendUrl } from "@/lib/brand";
-import { kitsuToTvdb } from "./anime-mapping";
 
 // TVDB requires a paid API key that has to stay server-side.
 const PROXY = FEATURES.tvdbProxy ? backendUrl("/api/tvdb/images") : null;
@@ -12,12 +11,11 @@ export async function fetchTvdbProxyImages(opts: {
   kitsuId?: number | null;
   type?: string;
 }): Promise<TvdbImageMap> {
-  // Same trap as harbor-imdb: without this the null base becomes a relative URL
+  // Same trap as viora-imdb: without this the null base becomes a relative URL
   // the app's own server answers, and the call costs a round trip to learn
   // nothing.
   if (!PROXY) return {};
-  let series: number | null = null;
-  if (opts.kitsuId != null) series = await kitsuToTvdb(opts.kitsuId).catch(() => null);
+  const series: number | null = null;
   const q = new URLSearchParams();
   if (series) q.set("series", String(series));
   else if (opts.imdb && opts.imdb.startsWith("tt")) q.set("imdb", opts.imdb);

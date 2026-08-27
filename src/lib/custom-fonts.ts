@@ -33,7 +33,7 @@ export function useCustomFonts() {
     try {
       const dataUrl = await readDataUrl(file);
       const id = randomUuid().slice(0, 8);
-      await new FontFace(`harbor-font-${id}`, `url(${dataUrl})`, { display: "swap" }).load();
+      await new FontFace(`viora-font-${id}`, `url(${dataUrl})`, { display: "swap" }).load();
       update({ customFonts: [...fonts, { id, name: prettyName(file.name), dataUrl, format }] });
       return id;
     } catch {

@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
 import { useTmdbImdbId } from "@/lib/providers/tmdb";
-import { harborImdbTitle } from "@/lib/providers/harbor-imdb";
+import { harborImdbTitle } from "@/lib/providers/viora-imdb";
 
 export type LiveImdb = { value: string | undefined; isImdb: boolean };
 
 export function useLiveImdbRating(meta: Meta): LiveImdb {
   const resolved = useTmdbImdbId(meta.id);
   const tt = meta.id.startsWith("tt") ? meta.id : resolved;
-  const [harbor, setHarbor] = useState<string | undefined>(undefined);
+  const [harbor, setViora] = useState<string | undefined>(undefined);
   useEffect(() => {
-    setHarbor(undefined);
+    setViora(undefined);
     if (!tt || !tt.startsWith("tt")) return;
     let cancelled = false;
     harborImdbTitle(tt)
       .then((r) => {
-        if (!cancelled && r != null) setHarbor(r.toFixed(1));
+        if (!cancelled && r != null) setViora(r.toFixed(1));
       })
       .catch(() => {});
     return () => {

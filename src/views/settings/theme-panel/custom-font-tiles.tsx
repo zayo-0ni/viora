@@ -41,7 +41,7 @@ export function CustomFontTiles({
     <>
       {fonts.map((f) => {
         const active = f.id === activeId;
-        const family = `"harbor-font-${f.id}", sans-serif`;
+        const family = `"viora-font-${f.id}", sans-serif`;
         return (
           <div
             key={f.id}

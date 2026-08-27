@@ -66,8 +66,11 @@ export function PrimaryCard({
   const isLandscape = Boolean(landscapeImage);
 
   return (
-    <section className="relative overflow-hidden rounded-[24px] border border-edge-soft/70 bg-canvas/85 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ink/12 to-transparent" />
+    // Same reason as the source list: `overflow-hidden` here cut the ring off
+    // Play, which sits close to the card's edge. The hairline below is the only
+    // thing that needed the clip, and it clips itself.
+    <section className="relative rounded-[24px] border border-edge-soft/70 bg-canvas/85 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px overflow-hidden rounded-t-[24px] bg-gradient-to-r from-transparent via-ink/12 to-transparent" />
 
       <div className={`grid gap-7 p-7 ${isLandscape ? "grid-cols-[320px_1fr] items-center" : "grid-cols-[224px_1fr]"}`}>
         <div

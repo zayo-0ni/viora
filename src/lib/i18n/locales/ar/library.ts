@@ -25,8 +25,8 @@ const library: Record<string, string> = {
   "Press play on something. It'll show up here once you start watching.":
     "اضغط تشغيل على شيء ما. سيظهر هنا بمجرد أن تبدأ المشاهدة.",
   "Your watchlist is empty": "قائمة مشاهدتك فارغة",
-  "Right-click any title in Harbor or hit \"Add to Watchlist\" on its detail page to save it here.":
-    "انقر بزرّ الفأرة الأيمن على أي عنوان في Harbor أو اضغط \"إضافة إلى قائمة المشاهدة\" في صفحة تفاصيله لحفظه هنا.",
+  "Right-click any title in Viora or hit \"Add to Watchlist\" on its detail page to save it here.":
+    "انقر بزرّ الفأرة الأيمن على أي عنوان في Viora أو اضغط \"إضافة إلى قائمة المشاهدة\" في صفحة تفاصيله لحفظه هنا.",
   "Loading favorites…": "جارٍ تحميل المفضّلة…",
   "Loading favorites from other providers…": "جارٍ تحميل المفضّلة من مزوّدين آخرين…",
 

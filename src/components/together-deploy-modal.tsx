@@ -143,7 +143,7 @@ export function TogetherDeployModal({ onClose, inline = false }: { onClose: () =
                 {t("Fill the top of the form to look exactly like this:")}
                 <img
                   src={cfTokenTutorial}
-                  alt={t("Cloudflare token form filled with name 'Harbor Relay' and one permission row set to Account / Workers Scripts / Edit")}
+                  alt={t("Cloudflare token form filled with name 'Viora Relay' and one permission row set to Account / Workers Scripts / Edit")}
                   className="mt-2 w-full rounded-lg border border-edge"
                 />
                 <span className="mt-2 block text-[12px] text-ink-subtle">
@@ -290,7 +290,7 @@ export function TogetherDeployModal({ onClose, inline = false }: { onClose: () =
               </FocusButton>
             </div>
             <p className="text-[12px] text-ink-subtle">
-              {t("Send this to anyone you want to watch with. They paste it in their Settings → Harbor Relay. After that, share a 6-character room code from the people icon up top.")}
+              {t("Send this to anyone you want to watch with. They paste it in their Settings → Viora Relay. After that, share a 6-character room code from the people icon up top.")}
             </p>
             <FocusButton
               onClick={onClose}

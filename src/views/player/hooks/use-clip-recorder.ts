@@ -54,7 +54,7 @@ export function useClipRecorder(params: { src: PlayerSrc }): {
         setToast({
           id: Date.now(),
           kind: "ok",
-          text: `Clip saved to ${dir ? "Pictures/Harbor" : "downloads"}`,
+          text: `Clip saved to ${dir ? "Pictures/Viora" : "downloads"}`,
           path: result.path,
         });
       } catch (e) {

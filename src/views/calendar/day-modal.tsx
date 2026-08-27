@@ -83,10 +83,9 @@ function DayModalRow({
     item.poster ?? undefined,
     item.type === "tv" ? "series" : "movie",
   );
-  const tag = item.isAnime ? t("Anime") : item.type === "movie" ? t("Movie") : t("TV");
-  const tagClass = item.isAnime
-    ? "bg-rose-400/20 text-rose-200"
-    : item.type === "movie"
+  const tag = item.type === "movie" ? t("Movie") : t("TV");
+  const tagClass =
+    item.type === "movie"
       ? "bg-amber-400/20 text-amber-200"
       : "bg-blue-400/20 text-blue-200";
   return (

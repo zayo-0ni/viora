@@ -13,7 +13,7 @@ import type { Draft } from "./theme-studio/studio-types";
 import type { CodeLang } from "@/components/code-editor";
 import { saveCustomTheme, type CustomTheme } from "@/lib/custom-themes";
 import { downloadText } from "@/lib/download-text";
-import { serializeHarborStyle } from "@/lib/harborstyle";
+import { serializeVioraStyle } from "@/lib/viorastyle";
 import {
   applyTheme,
   customColorsToTokens,
@@ -100,9 +100,9 @@ function emptyDraft(seed?: ThemePreset): Draft {
   };
 }
 
-const STUDIO_STYLE_ID = "harbor-studio-preview-css";
-const STUDIO_HTML_ID = "harbor-studio-preview-html";
-const STUDIO_AUTHORITY_ID = "harbor-studio-authority-css";
+const STUDIO_STYLE_ID = "viora-studio-preview-css";
+const STUDIO_HTML_ID = "viora-studio-preview-html";
+const STUDIO_AUTHORITY_ID = "viora-studio-authority-css";
 
 export function ThemeStudio({ seed, onClose }: { seed?: ThemePreset; onClose: () => void }) {
   const { settings, update } = useSettings();
@@ -229,7 +229,7 @@ export function ThemeStudio({ seed, onClose }: { seed?: ThemePreset; onClose: ()
     try {
       new Function(code)();
     } catch (err) {
-      console.warn("[harbor-studio-js] error:", err);
+      console.warn("[viora-studio-js] error:", err);
     }
   };
 
@@ -311,9 +311,9 @@ export function ThemeStudio({ seed, onClose }: { seed?: ThemePreset; onClose: ()
 
   const onExport = async () => {
     if (!canSave) return;
-    const text = serializeHarborStyle(buildTheme());
+    const text = serializeVioraStyle(buildTheme());
     const slug = trimmedName.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "theme";
-    await downloadText(`${slug}.harborstyle`, text, ["harborstyle"]);
+    await downloadText(`${slug}.viorastyle`, text, ["viorastyle"]);
   };
 
   return createPortal(

@@ -15,7 +15,7 @@ import { useSettings } from "@/lib/settings";
 import type { ThemeLayout } from "@/lib/theme";
 import { NavRow } from "./nav-editor/nav-row";
 
-const ICON_ONLY: ReadonlySet<ThemeLayout> = new Set(["minui"]);
+const ICON_ONLY: ReadonlySet<ThemeLayout> = new Set();
 
 export function NavEditor({ layout }: { layout: ThemeLayout }) {
   const { settings, update } = useSettings();

@@ -77,7 +77,7 @@ function FrameToast({ toast }: { toast: FrameGrabToast }) {
   return (
     <div
       key={toast.id}
-      className="pointer-events-none absolute left-1/2 top-24 z-40 -translate-x-1/2 animate-[harbor-fade-in_200ms_ease-out]"
+      className="pointer-events-none absolute left-1/2 top-24 z-40 -translate-x-1/2 animate-[viora-fade-in_200ms_ease-out]"
     >
       <div
         className={`pointer-events-auto flex items-center gap-2.5 rounded-full border py-2 ps-4 pe-2 text-[12.5px] font-medium backdrop-blur-md ${

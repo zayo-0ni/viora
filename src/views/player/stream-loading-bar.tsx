@@ -16,7 +16,7 @@ export function StreamLoadingBar({ ready, done }: { ready: number; done: boolean
         />
       ) : (
         <div
-          className="harbor-barberpole h-full rounded-full bg-white"
+          className="viora-barberpole h-full rounded-full bg-white"
           style={{ width: `${pct}%`, transition: `width ${done ? 350 : 1900}ms linear` }}
         />
       )}

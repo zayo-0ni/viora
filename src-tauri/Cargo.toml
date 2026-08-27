@@ -1,6 +1,6 @@
 [package]
 name = "viora"
-version = "1.0.0"
+version = "1.0.4"
 description = "A Stremio client built for adventure"
 edition = "2021"
 
@@ -12,7 +12,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 # ---------------------------------------------------------------------------
-# Shared across every target: desktop, Android and iOS.
+# Shared across every target.
 # ---------------------------------------------------------------------------
 [dependencies]
 tauri = { version = "2", features = ["protocol-asset"] }
@@ -48,11 +48,12 @@ url = "2"
 realfft = "3"
 
 # ---------------------------------------------------------------------------
-# Mobile. libmpv, the tray, the updater, single-instance, Discord IPC, the
+# Android. libmpv, the tray, the updater, single-instance, Discord IPC, the
 # Windows and macOS window bindings and gtk were the other half of this file;
 # they went with the desktop target.
 # ---------------------------------------------------------------------------
-[target.'cfg(any(target_os = "android", target_os = "ios"))'.dependencies]
+[target.'cfg(target_os = "android")'.dependencies]
+# OpenSSL does not cross-compile cleanly to the NDK toolchain; rustls does.
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 
 [profile.dev]
@@ -68,6 +69,3 @@ lto = true
 codegen-units = 1
 opt-level = "s"
 
-[target.'cfg(target_os = "android")'.dependencies]
-jni = "0.21"
-ndk-context = "0.1"

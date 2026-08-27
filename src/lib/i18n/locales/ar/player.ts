@@ -377,7 +377,7 @@ const player: Record<string, string> = {
   "default": "افتراضي",
   "loading more…": "جارٍ تحميل المزيد…",
   "min": "دقيقة",
-  "mpv is required for recording. Install mpv and restart Harbor.": "محرك mpv مطلوب للتسجيل. ثبّت mpv وأعد تشغيل Harbor.",
+  "mpv is required for recording. Install mpv and restart Viora.": "محرك mpv مطلوب للتسجيل. ثبّت mpv وأعد تشغيل Viora.",
   "to close": "للإغلاق",
   "unsaved changes": "تغييرات غير محفوظة",
   "{count} dl": "{count} تنزيل",

@@ -27,7 +27,7 @@ export const NAV_CATALOG: ChromeNavId[] = [
 
 export const DEFAULT_CHROME: ChromeConfig = {
   position: "sidebar",
-  brand: "Harbor",
+  brand: "Viora",
   items: ["home", "movies", "shows", "library", "live", "settings"],
 };
 
@@ -54,7 +54,7 @@ function buttons(config: ChromeConfig): string {
       const iconVal = config.icons?.[id];
       const iconMarkup = iconVal ? resolveIconMarkup(iconVal) : undefined;
       const inner = iconMarkup ? `${iconMarkup}<span>${esc(label)}</span>` : esc(label);
-      return `    <button data-harbor-nav="${id}" onclick="window.harbor.navigate('${id}')">${inner}</button>`;
+      return `    <button data-viora-nav="${id}" onclick="window.harbor.navigate('${id}')">${inner}</button>`;
     })
     .join("\n");
 }

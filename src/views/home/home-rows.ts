@@ -1,12 +1,5 @@
 import { createAddonCatalogFetcher, normalizeName, type AddonRow } from "@/lib/addons";
 import { topMovies, topSeries, type Meta } from "@/lib/cinemeta";
-import {
-  jikanNewReleases,
-  jikanTopAiring,
-  jikanTopPopular,
-  jikanUpcoming,
-  stripFranchiseSuffix,
-} from "@/lib/providers/jikan";
 import { tmdbMovieRow, tmdbSeriesRow, tmdbTrending } from "@/lib/providers/tmdb";
 import { type Settings } from "@/lib/settings";
 import type { HomeRow, RowSpec } from "./home-types";
@@ -125,87 +118,6 @@ export async function buildCinemetaRows() {
   return { rows, hero };
 }
 
-export async function buildAnimeHomeRows(): Promise<HomeRow[]> {
-  const cleanMetas = (list: Meta[]): Meta[] =>
-    list.map((m) => {
-      const cleaned = stripFranchiseSuffix(m.name);
-      return cleaned === m.name ? m : { ...m, name: cleaned };
-    });
-  const fetchMany = async (
-    fn: (page: number) => Promise<Meta[]>,
-    pages: number,
-  ): Promise<Meta[]> => {
-    const results = await Promise.all(
-      Array.from({ length: pages }, (_, i) => fn(i + 1).catch(() => [] as Meta[])),
-    );
-    const seen = new Set<string>();
-    const out: Meta[] = [];
-    for (const list of results) {
-      for (const m of list) {
-        if (seen.has(m.id)) continue;
-        seen.add(m.id);
-        out.push(m);
-      }
-    }
-    return out;
-  };
-  try {
-    const [airing, newest, popular, upcoming] = await Promise.all([
-      fetchMany(jikanTopAiring, 3),
-      fetchMany(jikanNewReleases, 3),
-      fetchMany(jikanTopPopular, 3),
-      fetchMany(jikanUpcoming, 3),
-    ]);
-    const out: HomeRow[] = [];
-    if (airing.length >= 6) {
-      out.push({
-        key: "anime-airing",
-        type: "series",
-        name: "Trending Anime",
-        metas: cleanMetas(airing).slice(0, 60),
-        page: 3,
-        hasMore: false,
-        noDedup: true,
-      });
-    }
-    if (newest.length >= 6) {
-      out.push({
-        key: "anime-new",
-        type: "series",
-        name: "New Anime Releases",
-        metas: cleanMetas(newest).slice(0, 60),
-        page: 3,
-        hasMore: false,
-        noDedup: true,
-      });
-    }
-    if (popular.length >= 6) {
-      out.push({
-        key: "anime-popular",
-        type: "series",
-        name: "Popular Anime",
-        metas: cleanMetas(popular).slice(0, 60),
-        page: 3,
-        hasMore: false,
-        noDedup: true,
-      });
-    }
-    if (upcoming.length >= 6) {
-      out.push({
-        key: "anime-upcoming",
-        type: "series",
-        name: "Upcoming Anime",
-        metas: cleanMetas(upcoming).slice(0, 60),
-        page: 3,
-        hasMore: false,
-        noDedup: true,
-      });
-    }
-    return out;
-  } catch {
-    return [];
-  }
-}
 
 const STREAMING_SERVICE_PATTERNS = [
   /\bnetflix\b/,

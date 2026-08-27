@@ -5,6 +5,7 @@ import { useSettings } from "@/lib/settings";
 import { can } from "@/lib/capabilities";
 import { listMpvAudioDevices, type MpvAudioDevice } from "@/lib/player/mpv";
 import { PlayModePanel, PlayerEnginePanel } from "./player-panel";
+import { SvpSection } from "./player-panel/svp-section";
 import { Section, Segmented, ToggleRow, useSettingsActiveContext } from "./shared";
 import { CROP_PRESETS } from "@/views/player/hooks/use-video-fill";
 import { useT } from "@/lib/i18n";
@@ -32,6 +33,32 @@ export function QualityPanel() {
       >
         <PlayerEnginePanel />
       </Section>
+
+      {/* Frame interpolation.
+          These two lived in an "Anime tweaks" section, alongside Anime4K,
+          because judder is most obvious on animation — drawn on twos and
+          threes, a pan steps rather than glides. But neither of them knows
+          anything about anime: they interpolate whatever is playing. The
+          anime section is gone; the interpolation is not, so it moved to the
+          player, next to the engine that performs it. */}
+      <Section
+        title={t("Smooth motion")}
+        subtitle={t("Fills in frames between the real ones so panning glides instead of stepping. Most visible on animation and on anything shot at a low frame rate.")}
+      >
+        <ToggleRow
+          label={t("Motion smoothing")}
+          sub={t("Viora's built-in frame interpolation. Needs a display refresh rate above the video's frame rate, and can stutter on weak GPUs. Lighter than SVP.")}
+          value={settings.playerMotionInterp}
+          onChange={(v) => update({ playerMotionInterp: v })}
+          lockReason={
+            settings.playerSvp && !!settings.svpVpyPath
+              ? t("SVP is already handling frame interpolation. Turn off SVP below to use this instead. Running both delays the audio.")
+              : undefined
+          }
+        />
+      </Section>
+
+      <SvpSection />
 
       <Section
         title={t("Stream quality in player")}
@@ -97,11 +124,11 @@ export function QualityPanel() {
 
       <Section
         title={t("Skip intros & credits")}
-        subtitle={t("Harbor finds intro and credits timing from AniSkip, TheIntroDB, and the file's own chapters, then shows a Skip button at the right moment.")}
+        subtitle={t("Viora finds intro and credits timing from AniSkip, TheIntroDB, and the file's own chapters, then shows a Skip button at the right moment.")}
       >
         <ToggleRow
           label={t("Show the Skip button")}
-          sub={t("Show a Skip Intro / Skip Credits button when Harbor detects one. Turn this off to never show it. You can also tap the X on the button to dismiss a wrong one for the rest of the episode.")}
+          sub={t("Show a Skip Intro / Skip Credits button when Viora detects one. Turn this off to never show it. You can also tap the X on the button to dismiss a wrong one for the rest of the episode.")}
           value={settings.showSkipButton}
           onChange={(v) => update({ showSkipButton: v })}
         />

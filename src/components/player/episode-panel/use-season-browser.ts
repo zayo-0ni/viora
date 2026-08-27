@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
-import { fetchSeasonEpisodes, fetchSeasonList, isAnimeId } from "@/lib/series-episodes";
+import { fetchSeasonEpisodes, fetchSeasonList } from "@/lib/series-episodes";
 import { useSettings } from "@/lib/settings";
 import type { PlayEpisode } from "@/lib/view";
 
@@ -26,7 +26,7 @@ export function useSeasonBrowser(
   }, [open, meta.id, current?.imdbSeason, current?.season]);
 
   useEffect(() => {
-    if (!open || (meta.type !== "series" && !isAnimeId(meta.id))) return;
+    if (!open || meta.type !== "series") return;
     let cancelled = false;
     fetchSeasonList(meta, { tmdbKey: settings.tmdbKey })
       .then((s) => {
@@ -41,7 +41,7 @@ export function useSeasonBrowser(
   }, [open, meta.id, meta.type, settings.tmdbKey]);
 
   useEffect(() => {
-    if (!open || (meta.type !== "series" && !isAnimeId(meta.id))) {
+    if (!open || meta.type !== "series") {
       setEpisodes([]);
       return;
     }

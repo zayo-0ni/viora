@@ -55,7 +55,16 @@ export function TitlePlate({ title, logo, loading }: { title: string; logo?: str
 
   const hasLogo = layers.length > 0;
 
-  if (loading && !hasLogo) return <div className="min-h-[120px]" />;
+  // The name is known the moment the page opens — it came with the card the
+  // viewer pressed — so there is no reason to hold an empty box while the rest
+  // of the details are fetched. Measured on the television, some of those
+  // requests take close to three seconds, and for all of it the artwork was up
+  // and the space where the title belongs was blank.
+  //
+  // Only a page that genuinely has no name yet waits. Everything else prints
+  // the name immediately, and the crossfade below already handles the moment
+  // the logo arrives and takes its place.
+  if (loading && !hasLogo && !title) return <div className="min-h-[120px]" />;
 
   return (
     <div className="relative flex min-h-[120px] flex-col justify-end">

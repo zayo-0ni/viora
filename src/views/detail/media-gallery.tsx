@@ -3,11 +3,10 @@ import { isDpadPrimary } from "@/lib/platform";
 import { useCallback, useMemo, useState } from "react";
 import { Check } from "lucide-react";
 import { createPortal } from "react-dom";
-import { saveImageToDisk, saveTrailerToDisk } from "@/lib/download/save-binary";
+import { saveImageToDisk } from "@/lib/download/save-binary";
 import { t } from "@/lib/i18n";
 import type { TmdbDetail } from "@/lib/providers/tmdb";
 import { useSettings } from "@/lib/settings";
-import { resolveTrailerQuality } from "@/lib/trailer";
 import { TrailerOverlay } from "./trailer-overlay";
 import { MediaLightbox } from "./media-lightbox";
 import { MediaRail } from "./media-gallery/media-rail";
@@ -17,7 +16,7 @@ type Tab = "videos" | "backdrops" | "posters" | "logos";
 
 const BACKDROP_DIM = 0.5;
 
-export function MediaGallery({ detail, title, logo }: { detail: TmdbDetail; title: string; logo?: string }) {
+export function MediaGallery({ detail, title }: { detail: TmdbDetail; title: string }) {
   const { settings, update } = useSettings();
   const videos = useMemo(() => collectVideos(detail), [detail]);
   const backdrops = detail.gallery.backdrops;
@@ -57,15 +56,6 @@ export function MediaGallery({ detail, title, logo }: { detail: TmdbDetail; titl
     [slug, flash],
   );
 
-  const downloadVideo = useCallback(
-    (v: GalleryVideo) => {
-      flash(t("Downloading..."));
-      saveTrailerToDisk(v.ytId, resolveTrailerQuality(settings.trailerQuality), `${slug}-${baseName(v.name)}`)
-        .then((r) => flash(r.saved ? t("Saved to disk") : t("Download failed")))
-        .catch(() => flash(t("Download failed")));
-    },
-    [slug, settings.trailerQuality, flash],
-  );
 
   const setBackdrop = useCallback(
     (url: string) => {
@@ -122,7 +112,7 @@ export function MediaGallery({ detail, title, logo }: { detail: TmdbDetail; titl
       {current === "videos" && (
         <MediaRail>
           {videos.map((v) => (
-            <VideoTile key={v.ytId} v={v} onPlay={() => setTrailer(v.ytId)} onDownload={() => downloadVideo(v)} />
+            <VideoTile key={v.ytId} v={v} onPlay={() => setTrailer(v.ytId)} />
           ))}
         </MediaRail>
       )}
@@ -167,7 +157,7 @@ export function MediaGallery({ detail, title, logo }: { detail: TmdbDetail; titl
         </MediaRail>
       )}
 
-      {trailer && <TrailerOverlay id={trailer} title={title} logo={logo} onClose={() => setTrailer(null)} />}
+      {trailer && <TrailerOverlay id={trailer} title={title} onClose={() => setTrailer(null)} />}
       {lightbox &&
         createPortal(
           <MediaLightbox

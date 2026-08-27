@@ -38,12 +38,12 @@ function buildActionableCastError(
     return {
       title: "Enable Roku Network Access",
       message:
-        "Your Roku is set to block control requests from apps on your network, so Harbor can't reach it. This is a one-time setting on the Roku.",
+        "Your Roku is set to block control requests from apps on your network, so Viora can't reach it. This is a one-time setting on the Roku.",
       steps: [
         "On your Roku remote, press Home.",
         "Open Settings, then System, then Advanced system settings.",
         'Select "Control by mobile apps" and set Network access to "Default".',
-        "Come back to Harbor and try casting again.",
+        "Come back to Viora and try casting again.",
       ],
       deviceName,
     };
@@ -52,7 +52,7 @@ function buildActionableCastError(
     return {
       title: "Couldn't reach this Roku",
       message:
-        "Harbor found something at this address that looked like a Roku, but it didn't respond like one. The device may be offline or another product picked up the same broadcast.",
+        "Viora found something at this address that looked like a Roku, but it didn't respond like one. The device may be offline or another product picked up the same broadcast.",
       steps: [
         "Make sure the Roku is powered on and on the same Wi-Fi as your computer.",
         "Close the cast menu and reopen it to rescan the network.",
@@ -70,7 +70,7 @@ function buildActionableCastError(
         "On your Roku, open Streaming Channels from the home screen.",
         'Search for "Media Assistant" (channel ID 782875, free).',
         "Install it.",
-        "Come back to Harbor and try casting again.",
+        "Come back to Viora and try casting again.",
       ],
       deviceName,
     };
@@ -85,10 +85,10 @@ function buildActionableCastError(
     return {
       title: "Install ffmpeg",
       message:
-        "Harbor uses ffmpeg to convert streams into formats TVs can play. It's a one-time install and Harbor will pick it up automatically.",
+        "Viora uses ffmpeg to convert streams into formats TVs can play. It's a one-time install and Viora will pick it up automatically.",
       steps: [
         `Open a terminal and run: ${installCmd}`,
-        "Restart Harbor after the install completes.",
+        "Restart Viora after the install completes.",
         "Open the cast menu and try this device again.",
       ],
       deviceName,

@@ -28,7 +28,7 @@ export function AwardHero({ type, tint, films }: { type: AwardType; tint: string
   return (
     <header
       data-tauri-drag-region
-      className="harbor-bleed-stremio relative flex h-[52vh] min-h-[460px] items-end overflow-hidden border-b border-edge-soft pb-14 pt-32"
+      className="viora-bleed-stremio relative flex h-[52vh] min-h-[460px] items-end overflow-hidden border-b border-edge-soft pb-14 pt-32"
       style={{ backgroundImage: baseGradient }}
     >
       {tiles.length > 0 && (

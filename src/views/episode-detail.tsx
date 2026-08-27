@@ -11,7 +11,7 @@ import { useScrollMemory, useView, type PlayEpisode } from "@/lib/view";
 import { useT } from "@/lib/i18n";
 import { openUrl } from "@/lib/window";
 import { useOmdbScores, omdbScores as fetchOmdbScores } from "@/lib/providers/omdb";
-import { harborImdbEpisodes } from "@/lib/providers/harbor-imdb";
+import { harborImdbEpisodes } from "@/lib/providers/viora-imdb";
 import { useTmdbImdbId } from "@/lib/providers/tmdb";
 import { HeroRatings } from "@/views/detail/hero-ratings";
 import { CastCard } from "@/views/detail/cast-card";
@@ -52,15 +52,15 @@ export function EpisodeDetailView({
   const omdbScores = useOmdbScores(imdbId ?? undefined);
   const episodeImdbId = episodeData?.imdbId ?? undefined;
   const episodeOmdbScores = useOmdbScores(episodeImdbId);
-  const [harborEpisodeRating, setHarborEpisodeRating] = useState<string | undefined>();
+  const [harborEpisodeRating, setVioraEpisodeRating] = useState<string | undefined>();
   useEffect(() => {
-    setHarborEpisodeRating(undefined);
+    setVioraEpisodeRating(undefined);
     if (!imdbId || !imdbId.startsWith("tt")) return;
     let cancelled = false;
     void harborImdbEpisodes(imdbId).then((map) => {
       if (cancelled) return;
       const r = map.get(`${season}:${episode}`);
-      if (r != null) setHarborEpisodeRating(r.toFixed(1));
+      if (r != null) setVioraEpisodeRating(r.toFixed(1));
     }).catch(() => {});
     return () => {
       cancelled = true;
@@ -119,13 +119,15 @@ export function EpisodeDetailView({
     return () => { cancelled = true; };
   }, [episodeKey, initialSeriesMeta, tmdbKey]);
 
-  const getImageUrl = (path: string | null | undefined, size = "original"): string | undefined => {
+  const getImageUrl = (path: string | null | undefined, size = "w1280"): string | undefined => {
     if (!path) return undefined;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
     return `https://image.tmdb.org/t/p/${size}${path}`;
   };
 
-  const background = getImageUrl(episodeData?.stillPath, "original") ?? seriesMeta?.background ?? undefined;
+  // A still behind the page, on a 1920 wide panel. The full size asset is
+  // decoded whole before any of it is drawn.
+  const background = getImageUrl(episodeData?.stillPath, "w1280") ?? seriesMeta?.background ?? undefined;
 
   // Episode rating: hosted IMDb → OMDB (via episode IMDb ID) → TMDB vote_average → none
   const episodeRating = harborEpisodeRating ??
@@ -219,7 +221,7 @@ export function EpisodeDetailView({
       <section className="relative">
         <div
           data-tauri-drag-region
-          className="harbor-bleed-stremio relative h-[78vh] min-h-[640px] overflow-hidden"
+          className="viora-bleed-stremio relative h-[78vh] min-h-[640px] overflow-hidden"
         >
           {background && (
             <img
@@ -259,7 +261,6 @@ export function EpisodeDetailView({
                 )}
                 <HeroRatings
                   rating={episodeRating ?? seriesRating}
-                  isAnime={false}
                   scores={episodeOmdbScores ?? omdbScores}
                   mdblist={null}
                   imdbId={episodeImdbId ?? imdbId}

@@ -1,5 +1,4 @@
 import { meta as fetchMeta, narrowMediaType } from "@/lib/cinemeta";
-import { animeKitsuMeta } from "@/lib/providers/anime-kitsu-addon";
 import { tmdbLiteMeta } from "@/lib/providers/tmdb/tmdb-lite";
 import { libraryPut, type LibraryItem } from "@/lib/stremio";
 
@@ -19,10 +18,6 @@ async function canonicalFor(
   try {
     if (id.startsWith("tt")) {
       const m = await fetchMeta(narrowMediaType(item.type), id);
-      return m?.name ? { name: m.name, poster: m.poster ?? null } : null;
-    }
-    if (/^(kitsu|mal|anilist|anidb):/.test(id)) {
-      const m = await animeKitsuMeta(id);
       return m?.name ? { name: m.name, poster: m.poster ?? null } : null;
     }
     if (id.startsWith("tmdb:")) {

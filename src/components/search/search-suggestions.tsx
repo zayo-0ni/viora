@@ -66,12 +66,24 @@ export function SearchSuggestions({
     <FocusSection
       focusKey={focusKey}
       rememberChild={false}
-      className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      /* Room for the ring inside the scroller.
+         The rows sat flush against the edges of an `overflow-y-auto` column, so
+         the focus outline on the first and last of them was cut off by the
+         clip — the highlight appeared as three sides of a rectangle. The
+         padding is the width of the ring, and the scroll margin keeps the row
+         from being scrolled to an edge that would clip it again. */
+      className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 pt-2 pb-8 scroll-py-8 [scrollbar-width:none] [&>*]:scroll-my-4 [&::-webkit-scrollbar]:hidden"
       aria-label={query ? t("Suggestions") : t("Recent searches")}
     >
       {items.map((item) => (
         <FocusButton
           key={item}
+          /* The row brings itself inside before it is ringed.
+             The last suggestion settled 20px below the bottom of its own column,
+             so its frame was cut in half. Padding could not reach it: the
+             column was sitting at 130 of a possible 182 and was simply never
+             asked to scroll. */
+          onFocus={(e) => e.currentTarget.scrollIntoView({ block: "nearest" })}
           onClick={() => onPick(item)}
           className="flex items-center gap-2.5 rounded-md px-2 py-2 text-start text-[14px] text-ink-muted transition-colors hover:bg-elevated hover:text-ink"
         >

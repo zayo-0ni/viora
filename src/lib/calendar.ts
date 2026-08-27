@@ -4,7 +4,6 @@ import { tmdbImdbId } from "./providers/tmdb";
 
 const TMDB = "https://api.themoviedb.org/3";
 const IMG = "https://image.tmdb.org/t/p";
-const ANIMATION_GENRE = 16;
 
 export type CalendarItem = {
   id: string;
@@ -14,12 +13,11 @@ export type CalendarItem = {
   poster: string | null;
   background: string | null;
   releaseDate: string;
-  isAnime: boolean;
   overview: string;
   voteAverage: number;
 };
 
-export type CalendarFilter = "all" | "movie" | "tv" | "anime";
+export type CalendarFilter = "all" | "movie" | "tv";
 
 const POSTER = (path: string | null | undefined) => (path ? `${IMG}/w342${path}` : null);
 const BACKDROP = (path: string | null | undefined) => (path ? `${IMG}/w780${path}` : null);
@@ -52,12 +50,6 @@ type DiscoverTvRow = {
   original_language?: string;
 };
 
-function isAnimeRow(row: { genre_ids?: number[]; original_language?: string; origin_country?: string[] }): boolean {
-  const animation = (row.genre_ids ?? []).includes(ANIMATION_GENRE);
-  const japanese =
-    row.original_language === "ja" || (row.origin_country ?? []).includes("JP");
-  return animation && japanese;
-}
 
 async function fetchDiscoverMovies(
   apiKey: string,
@@ -156,7 +148,6 @@ export async function fetchCalendarRange(
       poster: POSTER(m.poster_path),
       background: BACKDROP(m.backdrop_path),
       releaseDate: (m.release_date ?? "").slice(0, 10),
-      isAnime: isAnimeRow(m),
       overview: m.overview ?? "",
       voteAverage: m.vote_average ?? 0,
     }));
@@ -170,7 +161,6 @@ export async function fetchCalendarRange(
       poster: POSTER(s.poster_path),
       background: BACKDROP(s.backdrop_path),
       releaseDate: (s.first_air_date ?? "").slice(0, 10),
-      isAnime: isAnimeRow(s),
       overview: s.overview ?? "",
       voteAverage: s.vote_average ?? 0,
     }));
@@ -188,9 +178,8 @@ export async function fetchCalendarRange(
 
 export function applyCalendarFilter(items: CalendarItem[], filter: CalendarFilter): CalendarItem[] {
   if (filter === "all") return items;
-  if (filter === "anime") return items.filter((i) => i.isAnime);
-  if (filter === "movie") return items.filter((i) => i.type === "movie" && !i.isAnime);
-  return items.filter((i) => i.type === "tv" && !i.isAnime);
+  if (filter === "movie") return items.filter((i) => i.type === "movie");
+  return items.filter((i) => i.type === "tv");
 }
 
 export function groupByDate(items: CalendarItem[]): Map<string, CalendarItem[]> {
@@ -277,7 +266,6 @@ export async function fetchPersonUpcoming(
       poster: POSTER(m.poster_path),
       background: BACKDROP(m.backdrop_path),
       releaseDate: (m.release_date ?? "").slice(0, 10),
-      isAnime: isAnimeRow(m),
       overview: m.overview ?? "",
       voteAverage: m.vote_average ?? 0,
     });
@@ -295,7 +283,6 @@ export async function fetchPersonUpcoming(
       poster: POSTER(s.poster_path),
       background: BACKDROP(s.backdrop_path),
       releaseDate: (s.first_air_date ?? "").slice(0, 10),
-      isAnime: isAnimeRow(s),
       overview: s.overview ?? "",
       voteAverage: s.vote_average ?? 0,
     });
@@ -352,7 +339,6 @@ async function discoverFiltered(opts: {
           poster: POSTER(m.poster_path),
           background: BACKDROP(m.backdrop_path),
           releaseDate: (m.release_date ?? "").slice(0, 10),
-          isAnime: isAnimeRow(m),
           overview: m.overview ?? "",
           voteAverage: m.vote_average ?? 0,
         };
@@ -366,7 +352,6 @@ async function discoverFiltered(opts: {
         poster: POSTER(s.poster_path),
         background: BACKDROP(s.backdrop_path),
         releaseDate: (s.first_air_date ?? "").slice(0, 10),
-        isAnime: isAnimeRow(s),
         overview: s.overview ?? "",
         voteAverage: s.vote_average ?? 0,
       };
@@ -381,7 +366,7 @@ export type CustomCalendarFilters = {
   genres: Array<{ id: number; name: string; mediaType: "movie" | "tv" }>;
   watchProviders: Array<{ id: number; name: string }>;
   originCountries: string[];
-  mediaTypes: { movie: boolean; tv: boolean; anime: boolean };
+  mediaTypes: { movie: boolean; tv: boolean };
 };
 
 export async function fetchCustomCalendar(opts: {
@@ -399,12 +384,11 @@ export async function fetchCustomCalendar(opts: {
 
   const wantMovie = filters.mediaTypes.movie;
   const wantTv = filters.mediaTypes.tv;
-  const wantAnime = filters.mediaTypes.anime;
 
   const tasks: Promise<CalendarItem[]>[] = [
     ...filters.trackedPeople.map((p) => fetchPersonUpcoming(apiKey, p, start, end)),
   ];
-  if (wantMovie || wantAnime) {
+  if (wantMovie) {
     tasks.push(
       discoverFiltered({
         apiKey,
@@ -418,7 +402,7 @@ export async function fetchCustomCalendar(opts: {
       }),
     );
   }
-  if (wantTv || wantAnime) {
+  if (wantTv) {
     tasks.push(
       discoverFiltered({
         apiKey,
@@ -436,7 +420,6 @@ export async function fetchCustomCalendar(opts: {
   const all = [...extra, ...batches.flat()];
 
   const filterMatches = (i: CalendarItem): boolean => {
-    if (i.isAnime) return wantAnime;
     if (i.type === "movie") return wantMovie;
     if (i.type === "tv") return wantTv;
     return false;
@@ -499,13 +482,13 @@ export async function fireWebhook(
           },
           {
             name: "Type",
-            value: i.isAnime ? "Anime" : i.type === "movie" ? "Movie" : "TV",
+            value: i.type === "movie" ? "Movie" : "TV",
             inline: true,
           },
         ],
       }));
       const body: Record<string, unknown> = {
-        username: "Harbor",
+        username: "Viora",
         content: payload.text,
       };
       if (embeds.length > 0) body.embeds = embeds;
@@ -519,7 +502,7 @@ export async function fireWebhook(
     if (kind === "telegram") {
       const lines = [payload.text, ""];
       for (const i of payload.items.slice(0, 8)) {
-        const tag = i.isAnime ? "🍙" : i.type === "movie" ? "🎬" : "📺";
+        const tag = i.type === "movie" ? "🎬" : "📺";
         lines.push(`${tag} *${i.name}* · ${i.releaseDate}`);
       }
       const text = lines.join("\n");

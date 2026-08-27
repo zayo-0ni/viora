@@ -75,7 +75,11 @@ export function PeopleRow({ people, onClose }: { people: SearchPerson[]; onClose
               <div className="relative h-[110px] w-[110px] overflow-hidden rounded-full ring-1 ring-edge-soft transition-all duration-200 group-hover:ring-2 group-hover:ring-ink/40 group-active:scale-[0.97]">
                 {p.profile ? (
                   <img
-                    src={`https://image.tmdb.org/t/p/h632${p.profile}`}
+                    // `h632` is a 421x632 portrait, and this draws it inside a
+                    // 110px circle — ten times the pixels for a face the size of
+                    // a thumbnail. `w185` is the next size TMDB offers and still
+                    // covers the circle at this panel's device ratio.
+                    src={`https://image.tmdb.org/t/p/w185${p.profile}`}
                     alt={p.name}
                     loading="lazy"
                     decoding="async"

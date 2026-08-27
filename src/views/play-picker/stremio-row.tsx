@@ -1,7 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { ArrowDownToLine, Play } from "lucide-react";
 import { AddonLogo } from "@/components/addon-logo";
-import { CopyLinkButton, resolveStreamLink } from "@/components/player/copy-link-button";
 import { FormatBadge, streamBadges } from "@/components/format-badge";
 import { HostMatchChip } from "@/components/host-match-chip";
 import { useSettings } from "@/lib/settings";
@@ -30,10 +29,20 @@ export function StremioRow({
   const rawDescription = stream.title?.trim() || stream.description?.trim() || "";
   const description = full ? rawDescription : condenseDescription(rawDescription);
   const badges = settings.showQualityBadge ? streamBadges(stream) : [];
-  const link = resolveStreamLink(stream);
   return (
-    <div
-      className={`flex items-stretch gap-5 rounded-2xl bg-elevated/40 p-5 ring-1 transition-colors ${
+    // The row is the target, so the frame goes round all of it.
+    //
+    // It was a plain div holding two focusable buttons — a 36px copy button and
+    // then the play circle at the far edge — so the highlight only ever sat on
+    // a small control in the corner and the card itself never showed a frame.
+    // The owner drew a box round a whole row to say where it belongs.
+    //
+    // One stop now, and pressing it plays. The copy button goes with it: on a
+    // remote it was a stop on the way to play and nothing else.
+    <FocusButton
+      onClick={onPlay}
+      aria-label={download ? `Download ${headline}` : `Play ${headline}`}
+      className={`flex w-full items-stretch gap-5 rounded-2xl bg-elevated/40 p-5 text-start ring-1 transition-colors ${
         failed ? "ring-danger/40 bg-danger/5" : "ring-edge-soft/50"
       }`}
     >
@@ -67,21 +76,21 @@ export function StremioRow({
           <p className="text-[13px] font-medium text-danger">Unavailable, try another.</p>
         )}
       </div>
-      <div className="flex shrink-0 items-center gap-2 self-center">
-        {link && <CopyLinkButton url={link} size={16} className="h-9 w-9" />}
-        <FocusButton
-          onClick={onPlay}
-          aria-label={download ? "Download" : "Play"}
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-canvas transition-transform active:scale-95 hover:opacity-90"
+      <div className="flex shrink-0 items-center self-center">
+        {/* A mark now, not a control — the card around it is what gets pressed,
+            so this only says which way the row acts. */}
+        <span
+          aria-hidden
+          className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-canvas"
         >
           {download ? (
             <ArrowDownToLine size={25} strokeWidth={2.4} />
           ) : (
             <Play size={26} fill="currentColor" className="ml-0.5" />
           )}
-        </FocusButton>
+        </span>
       </div>
-    </div>
+    </FocusButton>
   );
 }
 

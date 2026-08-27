@@ -44,7 +44,7 @@ export function CollectionView({ collectionId }: { collectionId: number }) {
       {data?.backdrop && (
         <div
           aria-hidden
-          className="harbor-bleed-stremio pointer-events-none absolute inset-x-0 top-0 -z-10 h-[680px]"
+          className="viora-bleed-stremio pointer-events-none absolute inset-x-0 top-0 -z-10 h-[680px]"
           style={{
             backgroundImage: `url(${data.backdrop})`,
             backgroundSize: "cover",
@@ -56,7 +56,7 @@ export function CollectionView({ collectionId }: { collectionId: number }) {
       )}
       <div className="relative">
         {data?.backdrop && (
-          <div className="harbor-bleed-stremio pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden">
+          <div className="viora-bleed-stremio pointer-events-none absolute inset-x-0 top-0 h-[560px] overflow-hidden">
             <img src={data.backdrop} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/70 to-canvas/10" />
             <div className="absolute inset-0 bg-gradient-to-r from-canvas/90 via-canvas/25 to-transparent" />

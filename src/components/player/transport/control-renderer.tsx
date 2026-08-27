@@ -1,7 +1,7 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { isDpadPrimary } from "@/lib/platform";
 import { t as translate } from "@/lib/i18n";
-import { Camera, ChevronLeft, Crop, Cpu, Info, Maximize, Minimize, Pause, PauseCircle, PictureInPicture2, Play, PlayCircle, Replace, Tv } from "lucide-react";
+import { Camera, ChevronLeft, Crop, Info, Maximize, Minimize, Pause, PauseCircle, PictureInPicture2, Play, PlayCircle, Replace, Tv } from "lucide-react";
 import type { ReactNode } from "react";
 import type { PlayerEngine, PlayerCapabilities, PlayerSnapshot } from "@/lib/player/bridge";
 import type { Meta } from "@/lib/cinemeta";
@@ -22,8 +22,6 @@ function getControlState(id: PlayerControlId, ctx: ControlContext): string | und
       return ctx.fullscreen ? "fullscreen" : "windowed";
     case "draw-toggle":
       return ctx.drawMode ? "active" : "inactive";
-    case "dvr":
-      return ctx.isLiveChannel ? "recording" : "idle";
     case "cast":
       return ctx.capabilities.chromecast ? "connected" : "idle";
     case "pip":
@@ -38,18 +36,14 @@ import { AudioMenu } from "../audio-menu";
 import { DownloadButton } from "./download-button";
 import { Tooltip } from "./tooltip";
 import { BigButton } from "./big-button";
-import { DvrButton } from "./dvr-button";
 import { VolumeControl } from "./volume-control";
 import { SpeedMenu } from "./speed-menu";
-import { Anime4kMenu } from "./anime4k-menu";
 import { HdrToggleBigBtn } from "./hdr-toggle-btn";
-import type { Anime4kChoice } from "@/views/player/hooks/use-anime4k";
 import { DrawToggle } from "./draw-toggle";
 import { CastButton } from "./cast-button";
 import { SeekStepBtn } from "./seek-step-btn";
 import { EpisodeNavBtn } from "./episode-nav-btn";
 import { TimeStart, TimeEnd } from "./time-display";
-import { WindowControlButtons } from "./window-control-buttons";
 import { IdentifySongButton } from "@/components/identify-song-button";
 
 export type ControlContext = {
@@ -124,17 +118,12 @@ export type ControlContext = {
   onDownloadCancel?: () => void;
   onDownloadReveal?: () => void;
   onDownloadReset?: () => void;
-  onOpenDvr?: () => void;
   setAudioMenuOpen: (v: boolean) => void;
   setSubtitleMenuOpen: (v: boolean) => void;
   setSpeedMenuOpen: (v: boolean) => void;
   setAspectMenuOpen: (v: boolean) => void;
   cropMode?: string;
   onCropMode?: (id: string) => void;
-  setAnime4kMenuOpen: (v: boolean) => void;
-  anime4kMode?: string;
-  onAnime4kMode?: (id: string) => void;
-  anime4kAvailable?: boolean;
 };
 
 export function renderControl(id: PlayerControlId, ctx: ControlContext): ReactNode {
@@ -256,10 +245,6 @@ export function renderControl(id: PlayerControlId, ctx: ControlContext): ReactNo
         />
       );
     }
-    case "dvr": {
-      if (ctx.tight || !ctx.isLiveChannel || !ctx.onOpenDvr) return null;
-      return <DvrButton channelName={ctx.meta?.name ?? t("Live")} onClick={ctx.onOpenDvr} />;
-    }
     case "download": {
       if (ctx.mid || ctx.isLiveChannel) return null;
       if (!ctx.download || !ctx.onDownloadStart || !ctx.onDownloadCancel || !ctx.onDownloadReveal || !ctx.onDownloadReset) {
@@ -357,17 +342,47 @@ export function renderControl(id: PlayerControlId, ctx: ControlContext): ReactNo
       );
     }
     case "engine-switch": {
-      // Only when there is genuinely another engine to move to. The label names
-      // the destination rather than the current engine, because the viewer is
-      // pressing it to get somewhere.
+      // One button per engine, and the running one is green.
+      //
+      // This was a single button that swapped to whichever engine was not
+      // playing. It worked, but it never said which one you were on — the icon
+      // was the same either way — so pressing it was a guess and the only way
+      // to know the answer was to watch what happened. Two buttons state the
+      // choice and mark the answer: the engine playing is lit, the other is a
+      // place to go.
+      //
+      // Both are still shown only when both exist; a device with one engine has
+      // no choice to offer.
       if (ctx.tight || !ctx.alternateEngine) return null;
-      const label = translate("Switch to {engine}", {
-        engine: ctx.alternateEngine === "mpv" ? "mpv" : translate("the native player"),
-      });
+      const engines: Array<{ id: "mpv" | "exo"; name: string }> = [
+        { id: "mpv", name: "mpv" },
+        { id: "exo", name: translate("the native player") },
+      ];
       return (
-        <BigButton onClick={ctx.onSwitchEngine} ariaLabel={label} tooltip={label}>
-          <Cpu size={22} strokeWidth={1.9} />
-        </BigButton>
+        <>
+          {engines.map((e) => {
+            const running = ctx.engine === e.id;
+            const label = running
+              ? translate("Playing on {engine}", { engine: e.name })
+              : translate("Switch to {engine}", { engine: e.name });
+            return (
+              <BigButton
+                key={e.id}
+                onClick={running ? undefined : ctx.onSwitchEngine}
+                ariaLabel={label}
+                tooltip={label}
+              >
+                <span
+                  className={`text-[12px] font-bold uppercase tracking-[0.06em] ${
+                    running ? "text-emerald-400" : ""
+                  }`}
+                >
+                  {e.id === "mpv" ? "MPV" : "TV"}
+                </span>
+              </BigButton>
+            );
+          })}
+        </>
       );
     }
     case "audio-menu": {
@@ -439,16 +454,6 @@ export function renderControl(id: PlayerControlId, ctx: ControlContext): ReactNo
         </BigButton>
       );
     }
-    case "anime4k-menu": {
-      if (ctx.tight || !ctx.onAnime4kMode || !ctx.anime4kAvailable) return null;
-      return (
-        <Anime4kMenu
-          mode={(ctx.anime4kMode as Anime4kChoice) ?? "auto"}
-          onMode={ctx.onAnime4kMode}
-          onOpenChange={ctx.setAnime4kMenuOpen}
-        />
-      );
-    }
     case "hdr-toggle": {
       // Tone mapping is an mpv render option. The native engine hands HDR
       // straight to the panel and has nothing here to toggle.
@@ -511,9 +516,9 @@ export function renderControl(id: PlayerControlId, ctx: ControlContext): ReactNo
       );
     }
     case "window-controls":
-      // A television has one window and it is the screen. These are minimise,
-      // maximise and close for a desktop that no longer exists.
-      if (isDpadPrimary()) return null;
-      return <WindowControlButtons t={t} />;
+      // A television has one window and it is the screen. These were minimise,
+      // maximise and close for a desktop that no longer exists. The case stays
+      // so a saved player layout naming this control still loads.
+      return null;
   }
 }

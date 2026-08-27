@@ -46,8 +46,8 @@ const addons: Record<string, string> = {
   "Re-configure this addon and apply the updated link": "أعد تهيئة هذه الإضافة وطبّق الرابط المحدّث",
 
   "Sign in to sync your addons across devices": "سجّل الدخول لمزامنة إضافاتك عبر الأجهزة",
-  "Anything you install in Harbor pushes back to your Stremio account so it shows up on mobile too. Sign in via the avatar in the bottom-left of the sidebar.":
-    "أي شيء تثبّته في Harbor يُدفع إلى حساب Stremio الخاص بك ليظهر على الجوال أيضًا. سجّل الدخول عبر الصورة الرمزية أسفل الشريط الجانبي.",
+  "Anything you install in Viora pushes back to your Stremio account so it shows up on mobile too. Sign in via the avatar in the bottom-left of the sidebar.":
+    "أي شيء تثبّته في Viora يُدفع إلى حساب Stremio الخاص بك ليظهر على الجوال أيضًا. سجّل الدخول عبر الصورة الرمزية أسفل الشريط الجانبي.",
   Starters: "البدايات",
   "Common picks for a fresh setup.": "اختيارات شائعة لإعداد جديد.",
 
@@ -83,8 +83,8 @@ const addons: Record<string, string> = {
   "Configure on the addon's setup page": "التهيئة في صفحة إعداد الإضافة",
   "Click to open {name}'s setup page. Pick your options, then copy the install link it gives you and paste it below to update the addon.":
     "انقر لفتح صفحة إعداد {name}. اختر خياراتك، ثم انسخ رابط التثبيت الذي تمنحك إياه والصقه أدناه لتحديث الإضافة.",
-  "Click to open {name}'s setup page in Harbor's built-in browser. Pick your options. When you click Install on their page, Harbor catches the link automatically and updates the addon.":
-    "انقر لفتح صفحة إعداد {name} في متصفّح Harbor المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتها، يلتقط Harbor الرابط تلقائيًا ويحدّث الإضافة.",
+  "Click to open {name}'s setup page in Viora's built-in browser. Pick your options. When you click Install on their page, Viora catches the link automatically and updates the addon.":
+    "انقر لفتح صفحة إعداد {name} في متصفّح Viora المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتها، يلتقط Viora الرابط تلقائيًا ويحدّث الإضافة.",
   "Open setup page": "فتح صفحة الإعداد",
   "Heads-up: a few addons (like AIOStatus) don't pre-fill from the URL. If the form loads blank, paste the existing manifest URL into their \"Import from URL\" field to restore your settings.":
     "تنبيه: بعض الإضافات (مثل AIOStatus) لا تُملأ مسبقًا من الرابط. إذا حُمّل النموذج فارغًا، فالصق رابط الـ manifest الحالي في حقل \"الاستيراد من رابط\" لاستعادة إعداداتك.",
@@ -143,7 +143,7 @@ const addons: Record<string, string> = {
     "قد تحمل الروابط مفاتيح debrid أو رموزًا؛ أظهرها عندما تحتاج إلى النسخ",
   "Hidden by default. Manifest paths often carry API keys (debrid tokens, OMDB keys, etc.) you don't want over a shoulder.":
     "مخفي افتراضيًا. غالبًا ما تحمل مسارات الـ manifest مفاتيح API (رموز debrid، مفاتيح OMDB، إلخ) لا تريد أن تُرى من فوق كتفك.",
-  "Stremio addon, packaged into Harbor's catalog.": "إضافة Stremio، مُدمجة في كتالوج Harbor.",
+  "Stremio addon, packaged into Viora's catalog.": "إضافة Stremio، مُدمجة في كتالوج Viora.",
   "Version and capabilities come straight from the addon's manifest. Ratings and categories come from the":
     "يأتي الإصدار والإمكانات مباشرة من manifest الإضافة. وتأتي التقييمات والفئات من",
   "community API. Star, browse, and contribute on their site.":
@@ -163,8 +163,8 @@ const addons: Record<string, string> = {
 
   "You've reached the end · {n} addons": "لقد وصلت إلى النهاية · {n} إضافة",
   "No velocity data yet": "لا توجد بيانات سرعة بعد",
-  "Trending tracks star growth across your Harbor visits. Open the addons page again tomorrow and the top risers will appear here.":
-    "يتتبّع الرائج نمو النجوم عبر زياراتك لـ Harbor. افتح صفحة الإضافات مرة أخرى غدًا وستظهر هنا أكثر الإضافات صعودًا.",
+  "Trending tracks star growth across your Viora visits. Open the addons page again tomorrow and the top risers will appear here.":
+    "يتتبّع الرائج نمو النجوم عبر زياراتك لـ Viora. افتح صفحة الإضافات مرة أخرى غدًا وستظهر هنا أكثر الإضافات صعودًا.",
   New: "جديد",
 
   "Organize addons": "تنظيم الإضافات",
@@ -188,8 +188,8 @@ const addons: Record<string, string> = {
     "يتزامن هذا الترتيب مع كل تطبيق Stremio مسجّل الدخول بهذا الحساب.",
   "No addons are synced to this account yet.": "لا توجد إضافات متزامنة مع هذا الحساب بعد.",
   "On this device only": "على هذا الجهاز فقط",
-  "These live in Harbor on this computer and never touch your account.":
-    "توجد هذه في Harbor على هذا الحاسوب ولا تمسّ حسابك أبدًا.",
+  "These live in Viora on this computer and never touch your account.":
+    "توجد هذه في Viora على هذا الحاسوب ولا تمسّ حسابك أبدًا.",
   "On this device": "على هذا الجهاز",
   "Sign in to Stremio to organize the addons synced to your account.":
     "سجّل الدخول إلى Stremio لتنظيم الإضافات المتزامنة مع حسابك.",
@@ -202,8 +202,8 @@ const addons: Record<string, string> = {
     "لا يتغيّر شيء حتى تضغط حفظ. مغادرة هذه الصفحة تتجاهل التعديلات.",
   "The Backups button at the top keeps your last five orders. One click restores any of them.":
     "يحتفظ زرّ النسخ الاحتياطية في الأعلى بآخر خمسة ترتيبات. نقرة واحدة تستعيد أيًّا منها.",
-  "Harbor double-checks with Stremio after saving, so a half-written order can't slip through.":
-    "يتحقّق Harbor مرتين مع Stremio بعد الحفظ، حتى لا يتسلّل ترتيب مكتوب جزئيًا.",
+  "Viora double-checks with Stremio after saving, so a half-written order can't slip through.":
+    "يتحقّق Viora مرتين مع Stremio بعد الحفظ، حتى لا يتسلّل ترتيب مكتوب جزئيًا.",
 
   "{n} addon": "إضافة واحدة",
   "{n} addons": "{n} إضافة",
@@ -221,12 +221,12 @@ const addons: Record<string, string> = {
     "تغيّرت مجموعة إضافاتك على جهاز آخر. لم يُكتب أي شيء.",
   "Stremio didn't confirm the save. Your collection may be unchanged. Retry will re-check before writing again.":
     "لم يؤكّد Stremio الحفظ. قد تكون مجموعتك دون تغيير. ستُعيد المحاولة التحقّق قبل الكتابة مرة أخرى.",
-  "Saved, but Harbor couldn't confirm the new order. Retry to re-check.":
-    "تم الحفظ، لكن تعذّر على Harbor تأكيد الترتيب الجديد. أعد المحاولة للتحقّق.",
+  "Saved, but Viora couldn't confirm the new order. Retry to re-check.":
+    "تم الحفظ، لكن تعذّر على Viora تأكيد الترتيب الجديد. أعد المحاولة للتحقّق.",
   "Stremio reports a different order than was saved.": "يُبلّغ Stremio عن ترتيب مختلف عمّا حُفظ.",
 
-  "A safety copy of your addon order. One is saved automatically before Harbor writes any change, and you can save one yourself any time. The five most recent are kept.":
-    "نسخة أمان من ترتيب إضافاتك. تُحفظ واحدة تلقائيًا قبل أن يكتب Harbor أي تغيير، ويمكنك حفظ واحدة بنفسك في أي وقت. يُحتفظ بأحدث خمس نسخ.",
+  "A safety copy of your addon order. One is saved automatically before Viora writes any change, and you can save one yourself any time. The five most recent are kept.":
+    "نسخة أمان من ترتيب إضافاتك. تُحفظ واحدة تلقائيًا قبل أن يكتب Viora أي تغيير، ويمكنك حفظ واحدة بنفسك في أي وقت. يُحتفظ بأحدث خمس نسخ.",
   "Back up current order": "نسخ الترتيب الحالي احتياطيًا",
   "No backups yet. Press the button above to save your first one.":
     "لا توجد نسخ احتياطية بعد. اضغط الزرّ أعلاه لحفظ أول نسخة.",
@@ -255,8 +255,8 @@ const addons: Record<string, string> = {
     "التثبيت من رابط: الصق أي manifest أو رابط //:stremio",
   "Click below to open {name}'s setup page. Pick your options, then copy the install link it gives you and paste it below to update the addon.":
     "انقر أدناه لفتح صفحة إعداد {name}. اختر خياراتك، ثم انسخ رابط التثبيت الذي تمنحك إياه والصقه أدناه لتحديث الإضافة.",
-  "Click below to open {name}'s setup page in Harbor's built-in browser. Pick your options. When you click Install on their page, Harbor catches the link automatically and updates the addon.":
-    "انقر أدناه لفتح صفحة إعداد {name} في متصفّح Harbor المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتها، يلتقط Harbor الرابط تلقائيًا ويحدّث الإضافة.",
+  "Click below to open {name}'s setup page in Viora's built-in browser. Pick your options. When you click Install on their page, Viora catches the link automatically and updates the addon.":
+    "انقر أدناه لفتح صفحة إعداد {name} في متصفّح Viora المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتها، يلتقط Viora الرابط تلقائيًا ويحدّث الإضافة.",
 
   "Essential addons": "إضافات أساسية",
   "Start here. The ones almost everyone has.": "ابدأ من هنا. الإضافات التي لدى الجميع تقريبًا.",

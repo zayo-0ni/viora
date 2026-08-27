@@ -1,10 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BackToTop } from "@/components/back-to-top";
 import { CollectionsRow } from "@/components/collections-row";
-import { CriticsPick } from "@/components/critics-pick";
 import { LazyMount } from "@/components/lazy-mount";
-import { DiscoveryQueueCta } from "@/components/discovery-queue-cta";
-import { AwardTiles } from "@/components/award-tiles";
 import { GenreTiles } from "@/components/genre-tiles";
 import { LanguageTiles } from "@/components/language-tiles";
 import { Row, ScrollRootContext } from "@/components/row";
@@ -56,7 +53,11 @@ export function Discover({ active = true }: { active?: boolean }) {
   const t = useT();
   const pageRows = usePageRows("discover");
   const [featured, setFeatured] = useState<Meta[]>([]);
+  // The queue is no longer shown, but it is still gathered: several effects
+  // below prune it alongside the other lists when something is watched or
+  // downvoted, and unpicking that is a bigger change than hiding a block.
   const [queue, setQueue] = useState<FeedItem[]>([]);
+  void queue;
   const [criticsPickList, setCriticsPickList] = useState<Meta[]>([]);
   const [tasteVersion, setTasteVersion] = useState(0);
   const [rails, setRails] = useState<Record<string, Meta[]>>({});
@@ -331,7 +332,6 @@ export function Discover({ active = true }: { active?: boolean }) {
     return out;
   }, [featured, criticsPickList, rails]);
 
-  const hiddenFeatured = pageRows.custom.hidden.includes("section-featured");
   const hiddenCatalog = pageRows.custom.hidden.includes("section-catalog");
   const hiddenSurprise = pageRows.custom.hidden.includes("section-surprise");
 
@@ -365,9 +365,7 @@ export function Discover({ active = true }: { active?: boolean }) {
             </div>
           ) : (
             (!hiddenCatalog || !hiddenSurprise) && (
-              <div
-                className={`flex flex-wrap items-stretch gap-x-6 gap-y-4 ${!hiddenFeatured ? "-mt-8" : ""}`}
-              >
+              <div className="flex flex-wrap items-stretch gap-x-6 gap-y-4 -mt-8">
                 {!hiddenCatalog && <CatalogBrowser />}
                 {!hiddenSurprise && <SurpriseMe pool={surprisePool} />}
               </div>
@@ -452,20 +450,18 @@ export function Discover({ active = true }: { active?: boolean }) {
                     />
                   </LazyMount>
 
+                  {/* Removed at the owner's request: the discovery queue, the
+                      critics' pick and the award tiles. Each was a block of its
+                      own between the rows, and between them they pushed the
+                      catalogues — the reason the screen exists — a long way down
+                      the page. The rows below are what the remote is for. */}
                   {i === 0 && <GenreTiles />}
-                  {i === 1 && queue.length > 0 && <DiscoveryQueueCta items={queue} />}
                   {i === 2 && <LanguageTiles />}
                   {i === 2 && settings.tmdbKey && (
                     <LazyMount minHeight={260}>
                       <CollectionsRow />
                     </LazyMount>
                   )}
-                  {i === 3 && criticsPick && (
-                    <LazyMount minHeight={580}>
-                      <CriticsPick meta={criticsPick} />
-                    </LazyMount>
-                  )}
-                  {i === 4 && <AwardTiles />}
                 </Fragment>
               ))}
         </div>

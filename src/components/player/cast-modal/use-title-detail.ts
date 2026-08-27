@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
-import { animeDetails } from "@/lib/providers/anime-detail";
 import { useSettings } from "@/lib/settings";
 import { tmdbDetails, type TmdbDetail } from "@/lib/providers/tmdb/tmdb-details";
 import { imdbapiDetails } from "@/lib/providers/imdbapi/imdbapi-details";
 
-function isAnimeId(id: string): boolean {
-  return id.startsWith("kitsu:") || id.startsWith("mal:") || id.startsWith("anilist:");
-}
 
 export function useTitleDetail(meta: Meta, tmdbKey: string | null, active: boolean) {
   const { settings } = useSettings();
   const [detail, setDetail] = useState<TmdbDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const anime = isAnimeId(meta.id);
   const usedImdbFallback =
-    !anime && !tmdbKey && settings.imdbApiFallback && meta.id.startsWith("tt");
-  const canFetch = anime || !!tmdbKey || usedImdbFallback;
+    !tmdbKey && settings.imdbApiFallback && meta.id.startsWith("tt");
+  const canFetch = !!tmdbKey || usedImdbFallback;
 
   useEffect(() => {
     if (!active) return;
@@ -27,11 +22,9 @@ export function useTitleDetail(meta: Meta, tmdbKey: string | null, active: boole
     let cancelled = false;
     setLoading(true);
     setDetail(null);
-    const req: Promise<TmdbDetail | null> = anime
-      ? animeDetails(settings, meta).then((r) => r?.detail ?? null)
-      : tmdbKey
-        ? tmdbDetails(tmdbKey, meta)
-        : imdbapiDetails(meta.id);
+    const req: Promise<TmdbDetail | null> = tmdbKey
+      ? tmdbDetails(tmdbKey, meta)
+      : imdbapiDetails(meta.id);
     req
       .then((d) => {
         if (!cancelled) setDetail(d);
@@ -45,7 +38,7 @@ export function useTitleDetail(meta: Meta, tmdbKey: string | null, active: boole
     return () => {
       cancelled = true;
     };
-  }, [active, meta, tmdbKey, anime, settings, canFetch]);
+  }, [active, meta, tmdbKey, settings, canFetch]);
 
   return { detail, loading, canFetch, needsKey: !canFetch };
 }

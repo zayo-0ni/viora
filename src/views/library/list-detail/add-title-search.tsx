@@ -4,20 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
 import { addToList, MAX_ITEMS, type CustomList } from "@/lib/custom-lists";
 import { useT } from "@/lib/i18n";
-import { searchAll, type AnimeHit, type SearchResults } from "@/lib/search";
+import { searchAll, type SearchResults } from "@/lib/search";
 import { useSettings } from "@/lib/settings";
 import { emitListToast } from "@/components/lists/list-toast";
 import { Poster } from "@/components/poster";
 
-function animeToMeta(a: AnimeHit): Meta {
-  return {
-    id: a.kitsuId ? `kitsu:${a.kitsuId}` : `mal:${a.malId}`,
-    type: "series",
-    name: a.name,
-    poster: a.poster ?? undefined,
-    releaseInfo: a.year ?? undefined,
-  };
-}
 
 export function AddTitleSearch({ list }: { list: CustomList }) {
   const t = useT();
@@ -60,7 +51,6 @@ export function AddTitleSearch({ list }: { list: CustomList }) {
   const hits: Meta[] = [
     ...(results?.movies ?? []),
     ...(results?.series ?? []),
-    ...(results?.anime ?? []).map(animeToMeta),
   ].slice(0, 24);
 
   const add = (m: Meta) => {

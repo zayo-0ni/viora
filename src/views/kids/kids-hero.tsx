@@ -21,7 +21,7 @@ export function KidsHero({ featured }: { featured: Meta[] }) {
   }, [featured]);
 
   return (
-    <section className="harbor-bleed-stremio relative h-[72vh] min-h-[620px] overflow-hidden bg-canvas">
+    <section className="viora-bleed-stremio relative h-[72vh] min-h-[620px] overflow-hidden bg-canvas">
       <div
         className="absolute inset-0"
         style={{

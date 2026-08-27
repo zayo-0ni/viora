@@ -148,14 +148,6 @@ export function renderCustomIconControl(
         </BigButton>
       );
     }
-    case "dvr": {
-      if (ctx.tight || !ctx.isLiveChannel || !ctx.onOpenDvr) return null;
-      return (
-        <BigButton onClick={ctx.onOpenDvr} ariaLabel={t("Record")} tooltip={t("DVR record")}>
-          <CustomIcon url={iconUrl} size={22} />
-        </BigButton>
-      );
-    }
     case "download": {
       if (ctx.mid || ctx.isLiveChannel || !ctx.onDownloadStart) return null;
       return (
@@ -253,15 +245,6 @@ export function renderCustomIconControlStremio(
             onClick={ctx.onPickAnother}
             ariaLabel={ctx.isLiveChannel ? t("TV Guide") : t("Switch stream")}
           >
-            <CustomIcon url={iconUrl} size={26} />
-          </StremioBtn>
-        </Tooltip>
-      );
-    case "dvr":
-      if (!ctx.isLiveChannel || !ctx.onOpenDvr) return null;
-      return (
-        <Tooltip label={t("DVR record")}>
-          <StremioBtn onClick={ctx.onOpenDvr} ariaLabel={t("DVR record")}>
             <CustomIcon url={iconUrl} size={26} />
           </StremioBtn>
         </Tooltip>

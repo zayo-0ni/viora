@@ -596,7 +596,7 @@ function ConfirmDeleteFont({
         <p className="text-[15px] font-semibold text-ink">{t("Delete this font?")}</p>
         <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">
           <span className="font-semibold text-ink">{name}</span>{" "}
-          {t("will be removed from Harbor. Anything you've set to use it will fall back to Inter.")}
+          {t("will be removed from Viora. Anything you've set to use it will fall back to Inter.")}
         </p>
         <div className="mt-4 flex justify-end gap-2">
           <FocusButton

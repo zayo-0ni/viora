@@ -15,7 +15,6 @@ export function CollectionsRow() {
       title={t("Collections")}
       min={320}
       shape="landscape"
-      arrowsAlways
       scrollKey="home:collections"
       onViewAll={openCollections}
     >

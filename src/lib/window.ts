@@ -1,79 +1,13 @@
 import { openUrl as tauriOpenUrl } from "@tauri-apps/plugin-opener";
-import { getCurrentWindow, type Window } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/core";
-import { useEffect, useState } from "react";
-import { can } from "@/lib/capabilities";
 
-// Tauri exists on Android too, but its window commands reject there with
-// "Window API not available on mobile". Gating on the capability instead of on
-// `isTauri()` keeps every helper below a no-op rather than an unhandled
-// rejection — TV reuses the desktop chrome, so it reaches this code.
-const win: Window | null = can("customTitlebar") ? getCurrentWindow() : null;
-
-const IS_MAC =
-  typeof navigator !== "undefined" && /Mac|iP(hone|ad|od)/.test(navigator.platform || navigator.userAgent);
+// The window controls that used to live here — minimize, maximize, close, edge
+// resizing and the useMaximized hook — went with the desktop build. Android has
+// exactly one WebView and no window to manage; Tauri's window commands reject
+// there with "Window API not available on mobile".
 
 function isTauri() {
   return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
-}
-
-export const minimize = () => win?.minimize();
-
-export const toggleMaximize = async () => {
-  if (!win) return;
-  if (IS_MAC) {
-    const fs = await win.isFullscreen().catch(() => false);
-    await win.setFullscreen(!fs).catch(() => {});
-    return;
-  }
-  await win.toggleMaximize().catch(() => {});
-};
-
-export const close = () => win?.close();
-
-export type ResizeDir =
-  | "East"
-  | "North"
-  | "NorthEast"
-  | "NorthWest"
-  | "South"
-  | "SouthEast"
-  | "SouthWest"
-  | "West";
-
-export function startResize(direction: ResizeDir) {
-  win?.startResizeDragging(direction).catch(() => {});
-}
-
-export function useMaximized(): boolean {
-  const [maxed, setMaxed] = useState(false);
-  useEffect(() => {
-    if (!win) return;
-    let cancelled = false;
-    let timer: number | null = null;
-    const check = () => {
-      (IS_MAC ? win.isFullscreen() : win.isMaximized())
-        .then((v) => {
-          if (!cancelled) setMaxed(v);
-        })
-        .catch(() => {});
-    };
-    check();
-    const schedule = () => {
-      if (timer != null) return;
-      timer = window.setTimeout(() => {
-        timer = null;
-        check();
-      }, 150);
-    };
-    const unlisten = win.onResized(schedule);
-    return () => {
-      cancelled = true;
-      if (timer != null) window.clearTimeout(timer);
-      unlisten.then((fn) => fn());
-    };
-  }, []);
-  return maxed;
 }
 
 export function openUrl(url: string) {

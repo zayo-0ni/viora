@@ -132,7 +132,7 @@ export function SubtitleSelectStep({
                   )}
                   {!error && total === 0 && (
                     <p className="px-4 py-6 text-[14px] text-ink-muted">
-                      {t("No subtitles found. Start anyway, Harbor keeps looking while you watch.")}
+                      {t("No subtitles found. Start anyway, Viora keeps looking while you watch.")}
                     </p>
                   )}
 
@@ -161,7 +161,7 @@ export function SubtitleSelectStep({
             onClick={() => onStart(src)}
             className="h-12 rounded-full px-6 text-[15px] font-semibold text-ink-muted transition-colors hover:text-ink"
           >
-            {t("Skip, let Harbor choose")}
+            {t("Skip, let Viora choose")}
           </FocusButton>
           <FocusButton
             type="button"

@@ -1,6 +1,6 @@
-import { FocusButton } from "@/lib/tv-focus";
-import { useMemo, useState } from "react";
-import { AlertTriangle, Check, ChevronDown, ChevronUp, Copy, Tv } from "lucide-react";
+import { FocusButton, FocusSection } from "@/lib/tv-focus";
+import { useMemo } from "react";
+import { AlertTriangle, Trash2, Tv } from "lucide-react";
 import type { Meta } from "@/lib/cinemeta";
 import { useT } from "@/lib/i18n";
 import { isHydratableChannel } from "@/lib/iptv/channel-hydration";
@@ -46,7 +46,10 @@ export function ChannelGrid({
   }, [visible, epg, tvgIdCounts, nowMinute]);
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3.5">
+      {/* The channels are one region, so a press inside them resolves among
+          them rather than against the category column beside them or the
+          header above. */}
+      <FocusSection className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-3.5">
         {visible.map((ch) => {
           const { current, next } = nowByChannel.get(ch.id) ?? { current: null, next: null };
           const hydrated = hydrations.get(ch.name) ?? null;
@@ -63,7 +66,7 @@ export function ChannelGrid({
             />
           );
         })}
-      </div>
+      </FocusSection>
       {hasMore ? (
         <div ref={sentinelRef} className="flex h-16 items-center justify-center">
           <div className="flex items-center gap-2 text-[12.5px] text-ink-subtle">
@@ -92,19 +95,18 @@ export function ChannelGrid({
   );
 }
 
-export function ErrorBlock({ message, onRetry }: { message: string; onRetry: () => void }) {
+export function ErrorBlock({
+  message,
+  onRetry,
+  onRemove,
+}: {
+  message: string;
+  onRetry: () => void;
+  /** Take the playlist out, from the screen that says it is broken. */
+  onRemove?: () => void;
+}) {
   const t = useT();
   const classified = useMemo(() => classifyError(message), [message]);
-  const [expanded, setExpanded] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(classified.raw);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1400);
-    } catch {}
-  };
 
   return (
     <div className="mx-auto mt-6 flex max-w-[560px] flex-col gap-5 rounded-2xl border border-danger/30 bg-elevated p-7">
@@ -124,26 +126,18 @@ export function ErrorBlock({ message, onRetry }: { message: string; onRetry: () 
         >
           {t("Try again")}
         </FocusButton>
-        <FocusButton
-          onClick={copy}
-          className="flex h-10 items-center gap-1.5 rounded-xl border border-edge-soft/55 bg-canvas/40 px-3 text-[12.5px] font-medium text-ink-muted transition-colors hover:bg-raised hover:text-ink"
-        >
-          {copied ? <Check size={13} strokeWidth={2.2} /> : <Copy size={13} strokeWidth={1.9} />}
-          {copied ? t("Copied") : t("Copy error")}
-        </FocusButton>
-      </div>
-      <div className="border-t border-edge-soft/50 pt-3">
-        <FocusButton
-          onClick={() => setExpanded((v) => !v)}
-          className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-subtle transition-colors hover:text-ink-muted"
-        >
-          {expanded ? <ChevronUp size={12} strokeWidth={2.2} /> : <ChevronDown size={12} strokeWidth={2.2} />}
-          {t("Technical details")}
-        </FocusButton>
-        {expanded && (
-          <pre className="mt-2.5 max-h-[200px] overflow-auto whitespace-pre-wrap break-words rounded-lg bg-canvas/70 p-3 font-mono text-[10.5px] leading-relaxed text-ink-subtle">
-            {classified.raw}
-          </pre>
+        {/* The useful thing to do about a URL that does not work. This card
+            used to offer the error text and nothing else, so a playlist typed
+            wrong could be read about but not removed: the controls that delete
+            one were drawn at zero opacity behind a mouse hover. */}
+        {onRemove && (
+          <FocusButton
+            onClick={onRemove}
+            className="flex h-10 items-center gap-1.5 rounded-xl border border-danger/40 bg-danger/10 px-3.5 text-[12.5px] font-semibold text-danger transition-colors hover:bg-danger/20"
+          >
+            <Trash2 size={13} strokeWidth={2} />
+            {t("Remove playlist")}
+          </FocusButton>
         )}
       </div>
       <p className="text-[11.5px] leading-relaxed text-ink-subtle">
@@ -272,7 +266,7 @@ function classifyError(raw: string): { title: string; hint: string; raw: string 
   if (lower.includes("too large")) {
     return {
       title: "Playlist is too large",
-      hint: "Harbor caps playlists at 80 MB to stay responsive. Most providers offer a filtered URL with fewer channels.",
+      hint: "Viora caps playlists at 80 MB to stay responsive. Most providers offer a filtered URL with fewer channels.",
       raw,
     };
   }

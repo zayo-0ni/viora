@@ -63,7 +63,7 @@ export function BasicsPanel() {
         <LaunchRow
           icon={<Languages size={19} strokeWidth={2} />}
           title={t("Languages")}
-          sub={t("Pick which audio and subtitle languages Harbor reaches for first.")}
+          sub={t("Pick which audio and subtitle languages Viora reaches for first.")}
           status={langLabel}
           onClick={() => setActive("language")}
         />

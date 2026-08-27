@@ -64,7 +64,7 @@ export function TraktPanel() {
               {t("Connect your Trakt account")}
             </h2>
             <p className="text-[13.5px] leading-relaxed text-ink-muted">
-              {t("Track everything you watch, see your watchlist, and get personalized recommendations on Harbor's home page. Free at trakt.tv.")}
+              {t("Track everything you watch, see your watchlist, and get personalized recommendations on Viora's home page. Free at trakt.tv.")}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -87,7 +87,7 @@ export function TraktPanel() {
       ) : (
         <Section
           title={t("Connected")}
-          subtitle={t("Harbor will scrobble your playback to Trakt and sync your watchlist.")}
+          subtitle={t("Viora will scrobble your playback to Trakt and sync your watchlist.")}
         >
           <div className="flex items-center justify-between gap-4 rounded-xl border border-edge-soft bg-canvas/40 px-4 py-3">
             <div className="flex items-center gap-3">
@@ -126,8 +126,8 @@ export function TraktPanel() {
           </div>
           {traktAvatar && (
             <ToggleRow
-              label={t("Use my Trakt avatar as my Harbor avatar")}
-              sub={t("Wear your Trakt profile picture across Harbor instead of the default.")}
+              label={t("Use my Trakt avatar as my Viora avatar")}
+              sub={t("Wear your Trakt profile picture across Viora instead of the default.")}
               value={settings.useTraktAvatar}
               onChange={toggleTraktAvatar}
               leading={
@@ -183,7 +183,7 @@ export function TraktPanel() {
       {isConnected && (
         <Section
           title={t("Move your watchlist")}
-          subtitle={t("Copy your Harbor watchlist over to Trakt, or pull your Trakt watchlist into Harbor. Safe to run again, Trakt skips anything it already has.")}
+          subtitle={t("Copy your Viora watchlist over to Trakt, or pull your Trakt watchlist into Viora. Safe to run again, Trakt skips anything it already has.")}
         >
           <WatchlistSync />
         </Section>

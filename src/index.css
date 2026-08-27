@@ -68,11 +68,6 @@ body,
   overflow: hidden;
 }
 
-html[data-os="linux"]:not([data-mpv-embed="1"]),
-html[data-os="linux"]:not([data-mpv-embed="1"]) body,
-html[data-os="linux"]:not([data-mpv-embed="1"]) #root {
-  background: var(--color-canvas);
-}
 
 body {
   user-select: none;
@@ -141,19 +136,19 @@ body {
   --color-edge-soft: oklch(0.55 0.05 212 / 0.13);
 }
 
-[data-kids="on"] [data-harbor-sidebar] {
+[data-kids="on"] [data-viora-sidebar] {
   background-color: #e5f5f5;
 }
 
-[data-kids="on"] .harbor-search-pill {
+[data-kids="on"] .viora-search-pill {
   background-color: #d1eaed;
   opacity: 1;
 }
-[data-kids="on"] .harbor-win-control,
-[data-kids="on"] .harbor-together-btn:not(.harbor-wt-tab) {
+[data-kids="on"] .viora-win-control,
+[data-kids="on"] .viora-together-btn:not(.viora-wt-tab) {
   background-color: #d1eaed;
 }
-[data-kids="on"] .harbor-win-close:hover {
+[data-kids="on"] .viora-win-close:hover {
   background-color: #e5484d;
   color: #ffffff;
 }
@@ -174,19 +169,19 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   background-color: #4fb3b9;
 }
 
-[data-kids="on"] .harbor-row-track {
+[data-kids="on"] .viora-row-track {
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
   mask-image: linear-gradient(to right, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
 }
 
-[data-kids="on"] .harbor-mark-sail {
+[data-kids="on"] .viora-mark-sail {
   fill: #6bc5ca;
 }
-[data-kids="on"] .harbor-mark-hull {
+[data-kids="on"] .viora-mark-hull {
   fill: #845151;
 }
 
-[data-kids="on"] .harbor-row-arrow {
+[data-kids="on"] .viora-row-arrow {
   height: 3.25rem;
   width: 3.25rem;
   background-color: #ffffff;
@@ -194,7 +189,7 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   border: 2px solid #d4eff0;
   box-shadow: 0 12px 28px -10px rgba(20, 70, 80, 0.4);
 }
-[data-kids="on"] .harbor-row-arrow svg {
+[data-kids="on"] .viora-row-arrow svg {
   width: 26px;
   height: 26px;
 }
@@ -345,36 +340,36 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   background: var(--color-raised);
 }
 
-@keyframes harbor-fade-in {
+@keyframes viora-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes harbor-step-in {
+@keyframes viora-step-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.harbor-step {
-  animation: harbor-step-in 380ms var(--ease-out) both;
+.viora-step {
+  animation: viora-step-in 380ms var(--ease-out) both;
 }
 
-@keyframes harbor-pop {
+@keyframes viora-pop {
   0% { opacity: 0; transform: scale(0.5); }
   60% { transform: scale(1.18); }
   100% { opacity: 1; transform: scale(1); }
 }
 
-.harbor-pop {
-  animation: harbor-pop 340ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.viora-pop {
+  animation: viora-pop 340ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-@keyframes harbor-modal-in {
+@keyframes viora-modal-in {
   from { opacity: 0; transform: scale(0.96) translateY(6px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-@keyframes harbor-nudge-in {
+@keyframes viora-nudge-in {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -384,13 +379,13 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   100% { transform: translateX(300%); }
 }
 
-@keyframes harbor-barberpole {
+@keyframes viora-barberpole {
   from { background-position: 0 0; }
   to   { background-position: 22.627417px 0; }
 }
 
 
-@keyframes harbor-dots-anim {
+@keyframes viora-dots-anim {
   0%   { content: ""; }
   25%  { content: "."; }
   50%  { content: ".."; }
@@ -408,10 +403,10 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   content: "...";
   display: inline-block;
   font-size: 12px;
-  animation: harbor-dots-anim 1.2s steps(1, end) infinite;
+  animation: viora-dots-anim 1.2s steps(1, end) infinite;
 }
 
-.harbor-barberpole {
+.viora-barberpole {
   background-image: repeating-linear-gradient(
     135deg,
     rgba(0, 0, 0, 0.28) 0 4px,
@@ -419,75 +414,75 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
     rgba(0, 0, 0, 0.14) 8px 12px,
     rgba(0, 0, 0, 0) 12px 16px
   );
-  animation: harbor-barberpole 1.4s linear infinite;
+  animation: viora-barberpole 1.4s linear infinite;
 }
 
 .animate-fade-in {
-  animation: harbor-fade-in 350ms var(--ease-out) both;
+  animation: viora-fade-in 350ms var(--ease-out) both;
 }
 
 .animate-step-in {
-  animation: harbor-step-in 420ms var(--ease-out) both;
+  animation: viora-step-in 420ms var(--ease-out) both;
 }
 
 .animate-modal-in {
-  animation: harbor-modal-in 480ms var(--ease-out) both;
+  animation: viora-modal-in 480ms var(--ease-out) both;
 }
 
 .animate-nudge-in {
-  animation: harbor-nudge-in 380ms var(--ease-out) both;
+  animation: viora-nudge-in 380ms var(--ease-out) both;
 }
 
-@keyframes harbor-welcome-rise {
+@keyframes viora-welcome-rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
 
-@keyframes harbor-welcome-aura {
+@keyframes viora-welcome-aura {
   from { opacity: 0; transform: scale(0.92); }
   to { opacity: 0.5; transform: scale(1); }
 }
 
 .animate-welcome-rise {
-  animation: harbor-welcome-rise 560ms var(--ease-out) both;
+  animation: viora-welcome-rise 560ms var(--ease-out) both;
 }
 
 .animate-welcome-aura {
-  animation: harbor-welcome-aura 700ms var(--ease-out) 120ms both;
+  animation: viora-welcome-aura 700ms var(--ease-out) 120ms both;
 }
 
-@keyframes harbor-home-roof {
+@keyframes viora-home-roof {
   from { stroke-dasharray: 1; stroke-dashoffset: 1; }
   to { stroke-dasharray: 1; stroke-dashoffset: 0; }
 }
 
-@keyframes harbor-home-hearth {
+@keyframes viora-home-hearth {
   0%, 100% { opacity: 0.7; transform: scale(0.9); }
   50% { opacity: 1; transform: scale(1.1); }
 }
 
 .animate-home-roof {
-  animation: harbor-home-roof 620ms var(--ease-out) both;
+  animation: viora-home-roof 620ms var(--ease-out) both;
 }
 
 .animate-home-hearth {
-  animation: harbor-home-hearth 2.6s var(--ease-in-out) both;
+  animation: viora-home-hearth 2.6s var(--ease-in-out) both;
   transform-origin: center;
   transform-box: fill-box;
 }
 
-@keyframes harbor-reel-spin {
+@keyframes viora-reel-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
 .animate-reel-spin {
-  animation: harbor-reel-spin 1.4s var(--ease-out) both;
+  animation: viora-reel-spin 1.4s var(--ease-out) both;
   transform-origin: center;
   transform-box: fill-box;
 }
 
-@keyframes harbor-tv-scan {
+@keyframes viora-tv-scan {
   0% { transform: translateY(-2.5px); opacity: 0; }
   15% { opacity: 0.95; }
   85% { opacity: 0.95; }
@@ -495,39 +490,39 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
 }
 
 .animate-tv-scan {
-  animation: harbor-tv-scan 2.4s var(--ease-in-out) both;
+  animation: viora-tv-scan 2.4s var(--ease-in-out) both;
 }
 
-@keyframes harbor-anger-pop {
+@keyframes viora-anger-pop {
   0%, 100% { opacity: 0.7; transform: scale(0.85) rotate(-6deg); }
   40% { opacity: 1; transform: scale(1.18) rotate(7deg); }
   60% { opacity: 1; transform: scale(1.05) rotate(-4deg); }
 }
 
 .animate-anger-pop {
-  animation: harbor-anger-pop 1.4s var(--ease-in-out) both;
+  animation: viora-anger-pop 1.4s var(--ease-in-out) both;
   transform-origin: center;
   transform-box: fill-box;
 }
 
-@keyframes harbor-bang-pop {
+@keyframes viora-bang-pop {
   0% { opacity: 0; transform: scale(0.4) rotate(-12deg); }
   60% { opacity: 1; transform: scale(1.15) rotate(6deg); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 .animate-bang-pop {
-  animation: harbor-bang-pop 380ms var(--ease-out) both;
+  animation: viora-bang-pop 380ms var(--ease-out) both;
   transform-origin: center;
   transform-box: fill-box;
 }
 
-@keyframes harbor-ball-spin {
+@keyframes viora-ball-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-@keyframes harbor-ball-bounce {
+@keyframes viora-ball-bounce {
   0% { transform: translateY(0) scaleY(1); }
   18% { transform: translateY(-6px) scaleY(1.06); }
   34% { transform: translateY(0) scaleY(0.86); }
@@ -540,30 +535,30 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
 }
 
 .animate-ball-spin {
-  animation: harbor-ball-spin 1.6s var(--ease-out) both;
+  animation: viora-ball-spin 1.6s var(--ease-out) both;
   transform-origin: center;
   transform-box: fill-box;
 }
 
 .animate-ball-bounce {
-  animation: harbor-ball-bounce 880ms var(--ease-out) both;
+  animation: viora-ball-bounce 880ms var(--ease-out) both;
   transform-origin: 12px 21px;
   transform-box: fill-box;
 }
 
-@keyframes harbor-book-wobble-a {
+@keyframes viora-book-wobble-a {
   0%, 100% { transform: rotate(0deg); }
   30% { transform: rotate(-4deg); }
   70% { transform: rotate(3deg); }
 }
 
-@keyframes harbor-book-wobble-b {
+@keyframes viora-book-wobble-b {
   0%, 100% { transform: rotate(0deg); }
   30% { transform: rotate(3deg); }
   70% { transform: rotate(-3deg); }
 }
 
-@keyframes harbor-book-wobble-c {
+@keyframes viora-book-wobble-c {
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(-2deg); }
   65% { transform: rotate(4deg); }
@@ -574,42 +569,42 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
   transform-box: fill-box;
 }
 
-.animate-book-a { animation: harbor-book-wobble-a 1.6s var(--ease-in-out) both; }
-.animate-book-b { animation: harbor-book-wobble-b 1.4s var(--ease-in-out) both; }
-.animate-book-c { animation: harbor-book-wobble-c 1.8s var(--ease-in-out) both; }
+.animate-book-a { animation: viora-book-wobble-a 1.6s var(--ease-in-out) both; }
+.animate-book-b { animation: viora-book-wobble-b 1.4s var(--ease-in-out) both; }
+.animate-book-c { animation: viora-book-wobble-c 1.8s var(--ease-in-out) both; }
 
-@keyframes harbor-block-drop {
+@keyframes viora-block-drop {
   0%, 70%, 100% { transform: translateY(0); opacity: 1; }
   8% { transform: translateY(-7px); opacity: 0; }
   18% { transform: translateY(-3px); opacity: 0.7; }
   30% { transform: translateY(0); opacity: 1; }
 }
 
-.animate-block-1 { animation: harbor-block-drop 1.2s var(--ease-out) both; animation-delay: 0s; }
-.animate-block-2 { animation: harbor-block-drop 1.2s var(--ease-out) both; animation-delay: 0.12s; }
-.animate-block-3 { animation: harbor-block-drop 1.2s var(--ease-out) both; animation-delay: 0.24s; }
-.animate-block-4 { animation: harbor-block-drop 1.2s var(--ease-out) both; animation-delay: 0.36s; }
+.animate-block-1 { animation: viora-block-drop 1.2s var(--ease-out) both; animation-delay: 0s; }
+.animate-block-2 { animation: viora-block-drop 1.2s var(--ease-out) both; animation-delay: 0.12s; }
+.animate-block-3 { animation: viora-block-drop 1.2s var(--ease-out) both; animation-delay: 0.24s; }
+.animate-block-4 { animation: viora-block-drop 1.2s var(--ease-out) both; animation-delay: 0.36s; }
 
-@keyframes harbor-gear-spin {
+@keyframes viora-gear-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
 .animate-gear-spin {
-  animation: harbor-gear-spin 1.6s var(--ease-out) both;
+  animation: viora-gear-spin 1.6s var(--ease-out) both;
 }
 
-.harbor-key {
+.viora-key {
   display: inline-flex;
   transform-origin: 31% 65%;
   transition: transform 420ms var(--ease-out);
 }
 
-.group:hover .harbor-key {
+.group:hover .viora-key {
   transform: rotate(18deg);
 }
 
-@keyframes harbor-clap-snap {
+@keyframes viora-clap-snap {
   0% { transform: rotate(-26deg); }
   55% { transform: rotate(0deg); }
   68% { transform: rotate(3deg); }
@@ -618,12 +613,12 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
 }
 
 .animate-clap-snap {
-  animation: harbor-clap-snap 640ms var(--ease-out) both;
+  animation: viora-clap-snap 640ms var(--ease-out) both;
   transform-origin: 3px 9px;
   transform-box: fill-box;
 }
 
-@keyframes harbor-shimmer {
+@keyframes viora-shimmer {
   0%, 18% { transform: translateX(-220%); opacity: 0; }
   28% { opacity: 1; }
   62% { transform: translateX(320%); opacity: 1; }
@@ -631,19 +626,19 @@ main[data-kids="on"]::-webkit-scrollbar-thumb:hover {
 }
 
 .animate-shimmer {
-  animation: harbor-shimmer 5.4s ease-in-out infinite;
+  animation: viora-shimmer 5.4s ease-in-out infinite;
 }
 
-@keyframes harbor-loader-pulse {
+@keyframes viora-loader-pulse {
   0%, 100% { opacity: 0.42; }
   50% { opacity: 1; }
 }
 
 .animate-loader-pulse {
-  animation: harbor-loader-pulse 2.4s var(--ease-in-out) infinite;
+  animation: viora-loader-pulse 2.4s var(--ease-in-out) infinite;
 }
 
-@keyframes harbor-stroke-fade {
+@keyframes viora-stroke-fade {
   0% { opacity: 1; }
   60% { opacity: 1; }
   100% { opacity: 0; }
@@ -824,28 +819,28 @@ html[data-theme-layout="minui"] {
   --service-logo-filter: brightness(0);
 }
 
-html[data-theme-card="minui"] .harbor-service-tile,
-html[data-theme-layout="minui"] .harbor-service-tile {
+html[data-theme-card="minui"] .viora-service-tile,
+html[data-theme-layout="minui"] .viora-service-tile {
   background-color: transparent !important;
   box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--color-canvas) 18%, transparent);
   transition: box-shadow 180ms ease, background-color 180ms ease;
 }
 
-html[data-theme-card="minui"] .harbor-service-tile:hover,
-html[data-theme-layout="minui"] .harbor-service-tile:hover {
+html[data-theme-card="minui"] .viora-service-tile:hover,
+html[data-theme-layout="minui"] .viora-service-tile:hover {
   background-color: color-mix(in srgb, var(--color-canvas) 4%, transparent) !important;
   box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--color-canvas) 42%, transparent);
 }
 
-html[data-theme-card="minui"] .harbor-service-tile img,
-html[data-theme-layout="minui"] .harbor-service-tile img {
+html[data-theme-card="minui"] .viora-service-tile img,
+html[data-theme-layout="minui"] .viora-service-tile img {
   filter: brightness(0) !important;
   opacity: 0.78;
   transition: opacity 180ms ease;
 }
 
-html[data-theme-card="minui"] .harbor-service-tile:hover img,
-html[data-theme-layout="minui"] .harbor-service-tile:hover img {
+html[data-theme-card="minui"] .viora-service-tile:hover img,
+html[data-theme-layout="minui"] .viora-service-tile:hover img {
   opacity: 1;
 }
 
@@ -904,64 +899,64 @@ html[data-theme-layout="stremio"] main {
   padding-right: 2.75rem !important;
 }
 
-html[data-theme-layout="stremio"] .harbor-bleed-stremio {
+html[data-theme-layout="stremio"] .viora-bleed-stremio {
   margin-left: -2.5rem;
   margin-right: -2.75rem;
 }
 
-.harbor-hero-full {
+.viora-hero-full {
   margin-left: -1.25rem;
   margin-right: -1.25rem;
 }
 @media (min-width: 640px) {
-  .harbor-hero-full {
+  .viora-hero-full {
     margin-left: -2rem;
     margin-right: -2rem;
   }
 }
 @media (min-width: 1024px) {
-  .harbor-hero-full {
+  .viora-hero-full {
     margin-left: -3rem;
     margin-right: -3rem;
   }
 }
-html[data-theme-layout="stremio"] .harbor-hero-full {
+html[data-theme-layout="stremio"] .viora-hero-full {
   margin-left: -2.5rem;
   margin-right: -2.75rem;
 }
 
-.harbor-cinema-badge {
+.viora-cinema-badge {
   color: oklch(0.78 0.13 60);
   border: 1px solid oklch(0.78 0.13 60 / 0.35);
 }
 
-.harbor-together-surface {
+.viora-together-surface {
   background-color: var(--color-canvas);
   background-image: linear-gradient(var(--color-elevated), var(--color-elevated));
 }
 
-html[data-theme-card="crunch"] .harbor-wt-wrap,
-html[data-theme-card="noir"] .harbor-wt-wrap {
+html[data-theme-card="crunch"] .viora-wt-wrap,
+html[data-theme-card="noir"] .viora-wt-wrap {
   transform: translateY(2px);
 }
 
-html[data-theme-card="crunch"] .harbor-wt-tab,
-html[data-theme-card="noir"] .harbor-wt-tab,
-html[data-theme-card="glass"] .harbor-wt-tab {
+html[data-theme-card="crunch"] .viora-wt-tab,
+html[data-theme-card="noir"] .viora-wt-tab,
+html[data-theme-card="glass"] .viora-wt-tab {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
 
-html[data-theme-card="stremio"] .harbor-rating-star {
+html[data-theme-card="stremio"] .viora-rating-star {
   color: #f5a623;
 }
 
-html[data-theme-layout="stremio"] .harbor-cinema-badge {
+html[data-theme-layout="stremio"] .viora-cinema-badge {
   color: color-mix(in srgb, var(--color-ink) 95%, transparent);
   border-color: color-mix(in srgb, var(--color-ink) 28%, transparent);
 }
 
-button.group:not([data-no-card-ring]):hover .harbor-card-ring::after {
+button.group:not([data-no-card-ring]):hover .viora-card-ring::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -974,34 +969,34 @@ html[data-theme-card="stremio"] button.group:not([data-no-card-ring]):hover > .r
   transform: none;
 }
 
-.harbor-custom-hover img {
+.viora-custom-hover img {
   transition: transform 0.3s ease-out, filter 0.3s ease-out;
 }
-.group:hover .harbor-custom-hover img,
-.group:focus-within .harbor-custom-hover img {
+.group:hover .viora-custom-hover img,
+.group:focus-within .viora-custom-hover img {
   transform: scale(var(--ch-scale, 1));
   filter: blur(var(--ch-blur, 0px)) brightness(var(--ch-dim, 1));
 }
-.harbor-custom-hover.ch-glow {
+.viora-custom-hover.ch-glow {
   transition: box-shadow 0.3s ease-out;
 }
-.group:hover .harbor-custom-hover.ch-glow,
-.group:focus-within .harbor-custom-hover.ch-glow {
+.group:hover .viora-custom-hover.ch-glow,
+.group:focus-within .viora-custom-hover.ch-glow {
   box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.6), 0 0 34px -6px rgba(242, 196, 102, 0.55);
 }
-.harbor-custom-hover-preview img {
+.viora-custom-hover-preview img {
   transform: scale(var(--ch-scale, 1));
   filter: blur(var(--ch-blur, 0px)) brightness(var(--ch-dim, 1));
 }
-.harbor-custom-hover-preview.ch-glow {
+.viora-custom-hover-preview.ch-glow {
   box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.6), 0 0 34px -6px rgba(242, 196, 102, 0.55);
 }
 
-html[data-theme-card="stremio"] button.group:not([data-no-card-ring]):hover .harbor-poster {
+html[data-theme-card="stremio"] button.group:not([data-no-card-ring]):hover .viora-poster {
   box-shadow: none !important;
 }
 
-html[data-theme-card="stremio"] button.group:not([data-no-card-ring]):hover .harbor-poster::after {
+html[data-theme-card="stremio"] button.group:not([data-no-card-ring]):hover .viora-poster::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1026,7 +1021,7 @@ html[data-theme-card="stremio"] .modal-panel {
   border-color: color-mix(in srgb, var(--color-ink) 12%, transparent) !important;
 }
 
-html[data-theme-layout="stremio"] [data-harbor-player] {
+html[data-theme-layout="stremio"] [data-viora-player] {
   --color-canvas: var(--color-canvas);
   --color-surface: #181434;
   --color-elevated: #1f1b3f;
@@ -1035,8 +1030,8 @@ html[data-theme-layout="stremio"] [data-harbor-player] {
   --color-edge-soft: rgba(255, 255, 255, 0.08);
 }
 
-html[data-theme-layout="stremio"] .harbor-chat-toast,
-html[data-theme-layout="stremio"] .harbor-together-pill {
+html[data-theme-layout="stremio"] .viora-chat-toast,
+html[data-theme-layout="stremio"] .viora-together-pill {
   background-color: color-mix(in srgb, var(--color-canvas) 85%, transparent) !important;
   background-image: none !important;
   border-color: color-mix(in srgb, var(--color-ink) 12%, transparent) !important;
@@ -1091,13 +1086,13 @@ html[data-theme-button="minui"] .bg-accent {
   color: var(--color-canvas) !important;
 }
 
-html[data-theme-layout="minui"] .harbor-cinema-badge {
+html[data-theme-layout="minui"] .viora-cinema-badge {
   color: var(--color-accent);
   border-color: var(--color-accent-soft);
 }
 
-html[data-theme-layout="minui"] .harbor-chat-toast,
-html[data-theme-layout="minui"] .harbor-together-pill {
+html[data-theme-layout="minui"] .viora-chat-toast,
+html[data-theme-layout="minui"] .viora-together-pill {
   background-color: var(--color-surface) !important;
   background-image: none !important;
   border-color: var(--color-edge) !important;
@@ -1107,35 +1102,35 @@ html[data-theme-layout="minui"] .harbor-together-pill {
   box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--color-canvas) 28%, transparent);
 }
 
-.harbor-search-backdrop {
+.viora-search-backdrop {
   background: color-mix(in srgb, var(--color-canvas) 88%, transparent);
 }
 
 /* On a remote the screen underneath must not read through. At 88% the page
    behind stayed legible — Calendar's own text sat between the search chips —
    and a viewer cannot tell which layer a highlight belongs to. */
-html[data-input="dpad"] .harbor-search-backdrop {
+html[data-input="dpad"] .viora-search-backdrop {
   background: var(--color-canvas);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
 
-html[data-theme-layout="minui"] .harbor-search-backdrop {
+html[data-theme-layout="minui"] .viora-search-backdrop {
   background: var(--color-canvas);
   backdrop-filter: blur(22px) saturate(140%);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
 }
 
-html[data-theme-layout="minui"] .harbor-service-tile {
+html[data-theme-layout="minui"] .viora-service-tile {
   background: var(--color-surface);
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-ink) 6%, transparent), 0 2px 6px -2px color-mix(in srgb, var(--color-canvas) 18%, transparent);
 }
 
-html[data-theme-layout="minui"] .harbor-service-tile:hover {
+html[data-theme-layout="minui"] .viora-service-tile:hover {
   background: var(--color-elevated);
 }
 
-html[data-theme-layout="minui"] [data-harbor-player] {
+html[data-theme-layout="minui"] [data-viora-player] {
   --color-canvas: #0a0a0c;
   --color-surface: #15151a;
   --color-elevated: #1d1d24;
@@ -1171,7 +1166,7 @@ html[data-theme-card="crunch"] header.fixed.top-0.z-\[60\].h-20 > div {
   gap: 0.25rem;
 }
 
-html[data-theme-card="crunch"] header.fixed.top-0.z-\[60\].h-20 button[aria-label="Harbor home"] {
+html[data-theme-card="crunch"] header.fixed.top-0.z-\[60\].h-20 button[aria-label="Viora home"] {
   color: var(--color-accent);
   padding-right: 0.75rem;
 }
@@ -1245,12 +1240,12 @@ html[data-theme-card="crunch"] .glass-card {
   box-shadow: 0 8px 24px -10px color-mix(in srgb, var(--color-canvas) 55%, transparent) !important;
 }
 
-html[data-theme-card="crunch"] .harbor-poster {
+html[data-theme-card="crunch"] .viora-poster {
   border-radius: 4px;
 }
 
-html[data-theme-card="crunch"] .harbor-chat-toast,
-html[data-theme-card="crunch"] .harbor-together-pill {
+html[data-theme-card="crunch"] .viora-chat-toast,
+html[data-theme-card="crunch"] .viora-together-pill {
   background-color: var(--color-elevated) !important;
   background-image: none !important;
   border-color: var(--color-accent-soft) !important;
@@ -1258,19 +1253,19 @@ html[data-theme-card="crunch"] .harbor-together-pill {
   -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
 
-html[data-theme-card="crunch"] .harbor-search-backdrop {
+html[data-theme-card="crunch"] .viora-search-backdrop {
   background: color-mix(in srgb, var(--color-canvas) 92%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
-html[data-theme-card="crunch"] .harbor-cinema-badge {
+html[data-theme-card="crunch"] .viora-cinema-badge {
   color: var(--color-accent);
   border-color: var(--color-accent-soft);
 }
 
-html[data-theme-card="crunch"] [data-harbor-player] [role="slider"],
-html[data-theme-card="crunch"] [data-harbor-player] .player-progress-fill {
+html[data-theme-card="crunch"] [data-viora-player] [role="slider"],
+html[data-theme-card="crunch"] [data-viora-player] .player-progress-fill {
   background-color: var(--color-accent);
 }
 
@@ -1288,7 +1283,7 @@ html[data-theme-card="crunch"] header.fixed.top-0.z-\[60\].h-20 button[data-open
   color: var(--color-ink) !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown {
+html[data-theme-card="crunch"] .viora-profile-dropdown {
   position: fixed !important;
   top: 60px !important;
   right: 0 !important;
@@ -1308,26 +1303,26 @@ html[data-theme-card="crunch"] .harbor-profile-dropdown {
   z-index: 100 !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown > div {
+html[data-theme-card="crunch"] .viora-profile-dropdown > div {
   border-color: color-mix(in srgb, var(--color-ink) 5%, transparent) !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown > div:first-child {
+html[data-theme-card="crunch"] .viora-profile-dropdown > div:first-child {
   padding: 22px 24px !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown > div:first-child > div:first-child {
+html[data-theme-card="crunch"] .viora-profile-dropdown > div:first-child > div:first-child {
   font-size: 17px !important;
   font-weight: 700 !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown > div:first-child > div:last-child {
+html[data-theme-card="crunch"] .viora-profile-dropdown > div:first-child > div:last-child {
   font-size: 13px !important;
   margin-top: 4px !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown button,
-html[data-theme-card="crunch"] .harbor-profile-dropdown a {
+html[data-theme-card="crunch"] .viora-profile-dropdown button,
+html[data-theme-card="crunch"] .viora-profile-dropdown a {
   padding-top: 16px !important;
   padding-bottom: 16px !important;
   padding-left: 24px !important;
@@ -1336,13 +1331,13 @@ html[data-theme-card="crunch"] .harbor-profile-dropdown a {
   gap: 14px !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown button > svg,
-html[data-theme-card="crunch"] .harbor-profile-dropdown a > svg {
+html[data-theme-card="crunch"] .viora-profile-dropdown button > svg,
+html[data-theme-card="crunch"] .viora-profile-dropdown a > svg {
   width: 18px !important;
   height: 18px !important;
 }
 
-html[data-theme-card="crunch"] .harbor-profile-dropdown span.uppercase {
+html[data-theme-card="crunch"] .viora-profile-dropdown span.uppercase {
   font-size: 11.5px !important;
   padding: 14px 24px 6px !important;
 }
@@ -1428,8 +1423,8 @@ html[data-theme-card="noir"] .glass-card {
   box-shadow: none !important;
 }
 
-html[data-theme-card="noir"] .harbor-chat-toast,
-html[data-theme-card="noir"] .harbor-together-pill {
+html[data-theme-card="noir"] .viora-chat-toast,
+html[data-theme-card="noir"] .viora-together-pill {
   background-color: var(--color-surface) !important;
   background-image: none !important;
   border-color: color-mix(in srgb, var(--color-ink) 8%, transparent) !important;
@@ -1437,18 +1432,18 @@ html[data-theme-card="noir"] .harbor-together-pill {
   -webkit-backdrop-filter: none !important;
 }
 
-html[data-theme-card="noir"] .harbor-search-backdrop {
+html[data-theme-card="noir"] .viora-search-backdrop {
   background: color-mix(in srgb, var(--color-canvas) 96%, transparent);
   backdrop-filter: blur(20px) saturate(120%);
   -webkit-backdrop-filter: blur(20px) saturate(120%);
 }
 
-html[data-theme-card="noir"] .harbor-cinema-badge {
+html[data-theme-card="noir"] .viora-cinema-badge {
   color: var(--color-ink);
   border-color: color-mix(in srgb, var(--color-ink) 18%, transparent);
 }
 
-html[data-theme-card="noir"] [data-harbor-player] {
+html[data-theme-card="noir"] [data-viora-player] {
   --color-canvas: #000000;
   --color-surface: var(--color-surface);
   --color-elevated: var(--color-elevated);
@@ -1471,64 +1466,64 @@ html[data-theme-layout="minui"] .anime-award-banner-logo {
   filter: none;
 }
 
-@keyframes harbor-twinkle {
+@keyframes viora-twinkle {
   0%, 100% { opacity: 0.2; transform: scale(0.7); }
   50% { opacity: 1; transform: scale(1.1); }
 }
 
-@keyframes harbor-moon-bob {
+@keyframes viora-moon-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2.5px); }
 }
 
-.harbor-dracula-twinkle { animation: harbor-twinkle 3.2s ease-in-out infinite; }
-.harbor-dracula-moon { animation: harbor-moon-bob 4.5s ease-in-out infinite; }
+.viora-dracula-twinkle { animation: viora-twinkle 3.2s ease-in-out infinite; }
+.viora-dracula-moon { animation: viora-moon-bob 4.5s ease-in-out infinite; }
 
-@keyframes harbor-forest-ray {
+@keyframes viora-forest-ray {
   0%, 100% { opacity: 0.34; }
   50% { opacity: 0.58; }
 }
-.harbor-forest-ray { animation: harbor-forest-ray 7s ease-in-out infinite; }
+.viora-forest-ray { animation: viora-forest-ray 7s ease-in-out infinite; }
 
-@keyframes harbor-royal-bar-in {
+@keyframes viora-royal-bar-in {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.harbor-royal-bar {
-  animation: harbor-royal-bar-in 360ms var(--ease-out) both;
+.viora-royal-bar {
+  animation: viora-royal-bar-in 360ms var(--ease-out) both;
 }
-@keyframes harbor-royal-pop-in {
+@keyframes viora-royal-pop-in {
   from { opacity: 0; transform: scale(0.94) translateY(-4px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
-.harbor-royal-menu {
+.viora-royal-menu {
   transform-origin: top right;
-  animation: harbor-royal-pop-in 200ms var(--ease-out) both;
+  animation: viora-royal-pop-in 200ms var(--ease-out) both;
 }
-@keyframes harbor-royal-glint {
+@keyframes viora-royal-glint {
   0% { transform: translateY(-150%); opacity: 0; }
   45% { opacity: 0.18; }
   100% { transform: translateY(650%); opacity: 0; }
 }
-.harbor-royal-glint {
+.viora-royal-glint {
   opacity: 0;
-  animation: harbor-royal-glint 1600ms var(--ease-out) 380ms 1 forwards;
+  animation: viora-royal-glint 1600ms var(--ease-out) 380ms 1 forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .harbor-forest-ray, .harbor-royal-glint { animation: none; }
+  .viora-forest-ray, .viora-royal-glint { animation: none; }
 }
 
-.harbor-code .hc-com { color: #7f848e; font-style: italic; }
-.harbor-code .hc-str { color: #98c379; }
-.harbor-code .hc-num { color: #d19a66; }
-.harbor-code .hc-kw { color: #c678dd; }
-.harbor-code .hc-at { color: #56b6c2; }
-.harbor-code .hc-tag { color: #e06c75; }
-.harbor-code .hc-prop { color: #61afef; }
-.harbor-code .hc-attr { color: #d19a66; }
-.harbor-code .hc-punct { color: #828a99; }
-.harbor-code textarea::selection { background: #3e4451; }
+.viora-code .hc-com { color: #7f848e; font-style: italic; }
+.viora-code .hc-str { color: #98c379; }
+.viora-code .hc-num { color: #d19a66; }
+.viora-code .hc-kw { color: #c678dd; }
+.viora-code .hc-at { color: #56b6c2; }
+.viora-code .hc-tag { color: #e06c75; }
+.viora-code .hc-prop { color: #61afef; }
+.viora-code .hc-attr { color: #d19a66; }
+.viora-code .hc-punct { color: #828a99; }
+.viora-code textarea::selection { background: #3e4451; }
 
 @keyframes harborFontIn {
   from { opacity: 0; transform: translateY(5px) scale(0.985); }
@@ -1569,7 +1564,7 @@ html[data-theme-card="glass"] {
   --color-raised: color-mix(in srgb, var(--color-canvas) 79%, white);
 }
 
-html[data-theme-card="glass"] [data-harbor-player] {
+html[data-theme-card="glass"] [data-viora-player] {
   --color-surface: color-mix(in srgb, var(--color-canvas) 92%, white);
   --color-elevated: color-mix(in srgb, var(--color-canvas) 86%, white);
   --color-raised: color-mix(in srgb, var(--color-canvas) 80%, white);
@@ -1594,7 +1589,7 @@ html[data-theme-card="glass"] .glass-card {
     0 18px 50px -22px color-mix(in srgb, var(--color-canvas) 70%, transparent);
 }
 
-html[data-theme-card="glass"] .harbor-together-surface {
+html[data-theme-card="glass"] .viora-together-surface {
   background-color: color-mix(in srgb, var(--color-canvas) 90%, white);
   background-image: linear-gradient(
     color-mix(in srgb, var(--color-canvas) 86%, white),
@@ -1602,8 +1597,8 @@ html[data-theme-card="glass"] .harbor-together-surface {
   );
 }
 
-html[data-theme-card="glass"] .harbor-chat-toast,
-html[data-theme-card="glass"] .harbor-together-pill {
+html[data-theme-card="glass"] .viora-chat-toast,
+html[data-theme-card="glass"] .viora-together-pill {
   background-color: color-mix(in srgb, var(--color-canvas) 88%, white) !important;
   background-image: none !important;
   border-color: color-mix(in srgb, var(--color-ink) 14%, transparent) !important;
@@ -1623,7 +1618,7 @@ html[data-theme-card="glass"] .harbor-together-pill {
 }
 
 [dir="rtl"] .animate-popover-in,
-[dir="rtl"] .harbor-royal-menu {
+[dir="rtl"] .viora-royal-menu {
   transform-origin: top left;
 }
 
@@ -1631,11 +1626,11 @@ html[data-theme-card="glass"] .harbor-together-pill {
   transform-origin: bottom center;
 }
 
-[dir="rtl"] .harbor-key {
+[dir="rtl"] .viora-key {
   transform-origin: 69% 65%;
 }
 
-html[data-theme-card="crunch"][dir="rtl"] .harbor-profile-dropdown {
+html[data-theme-card="crunch"][dir="rtl"] .viora-profile-dropdown {
   right: auto !important;
   left: 0 !important;
   box-shadow: 10px 0 30px -10px color-mix(in srgb, var(--color-canvas) 65%, transparent) !important;
@@ -1833,10 +1828,10 @@ html[data-input="dpad"] [data-focusable="true"]:not([class*="rounded"]):focus {
    The transport sits on top of moving picture, where a box around a control
    fights the image behind it. Every icon here draws with currentColor, so the
    accent colour alone is enough to say which one the remote is on. */
-html[data-input="dpad"] [data-harbor-player] button:focus,
-html[data-input="dpad"] [data-harbor-player] a:focus,
-html[data-input="dpad"] [data-harbor-player] [tabindex]:focus,
-html[data-input="dpad"] [data-harbor-player] [data-focusable="true"]:focus {
+html[data-input="dpad"] [data-viora-player] button:focus,
+html[data-input="dpad"] [data-viora-player] a:focus,
+html[data-input="dpad"] [data-viora-player] [tabindex]:focus,
+html[data-input="dpad"] [data-viora-player] [data-focusable="true"]:focus {
   outline: none !important;
   box-shadow: none !important;
   background-color: transparent;
@@ -1848,9 +1843,9 @@ html[data-input="dpad"] [data-harbor-player] [data-focusable="true"]:focus {
    here" — the eye needs the edge. A thin accent line and a soft halo, on the
    surface the dialog already draws, rather than the heavy ring the rest of the
    app uses over artwork. */
-html[data-input="dpad"] [data-harbor-player] [data-focus-scope="modal"] button:focus,
-html[data-input="dpad"] [data-harbor-player] [data-focus-scope="modal"] a:focus,
-html[data-input="dpad"] [data-harbor-player] [data-focus-scope="modal"] [tabindex]:focus {
+html[data-input="dpad"] [data-viora-player] [data-focus-scope="modal"] button:focus,
+html[data-input="dpad"] [data-viora-player] [data-focus-scope="modal"] a:focus,
+html[data-input="dpad"] [data-viora-player] [data-focus-scope="modal"] [tabindex]:focus {
   outline: 1.5px solid color-mix(in srgb, var(--color-accent) 75%, transparent) !important;
   outline-offset: -1px;
   /* No radius of its own — the same lesson as the ring above. Eight pixels laid
@@ -1911,6 +1906,49 @@ html[data-input="dpad"] [data-focusable="true"]:has(> [data-preview-anchor]):foc
    hero is an ancestor of the row beneath it — so standing on the anime hero lit
    up all six cards in "Top Picks for You" at once. A card is the direct parent
    of its artwork, so that is the relationship to name. */
+/* And the same card when it is not itself the stop.
+
+   A cast card is a plain button, not a focusable one, so the remote settles on
+   the row cell holding it rather than on the card. The two rules above look for
+   the artwork as a direct child of whatever has focus, and a cell's direct
+   child is the button — so they never fired, and the generic `[tabindex]:focus`
+   ring took the whole cell instead. Measured on the device: the cell rings at
+   135x249 against a photo of 135x203, the extra 46 pixels being the actor's
+   name and the character they play, boxed in with the picture.
+
+   Naming the grandchild puts the frame back on the photograph without moving
+   where focus lands, which is the part that is not ours to change. */
+/* Depth is not the relationship, and the proof is directional.
+   Measured on the emulator, same card, same row: arriving from the left, focus
+   settles on the button inside the cell and the poster rings correctly at
+   3px/4px. Arriving from the right, focus settles on the *cell* — and from
+   there the artwork is three levels down (div > button > div), which matched
+   neither `> anchor` nor `> button > anchor`. So the cell took the generic ring
+   around its whole 166x262 self, caption included, and the tile lift below —
+   guarded by the same depth — scaled it to 176x278 and left it there. Not a
+   flash: at t500 it was still 1.06.
+
+   What is true either way is that the stop contains its artwork. */
+html[data-input="dpad"] [tabindex]:focus:has([data-preview-anchor]),
+html[data-input="dpad"] button:focus:has([data-preview-anchor]),
+html[data-input="dpad"] [data-tv-focused="true"]:has([data-preview-anchor]) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html[data-input="dpad"] [tabindex]:focus [data-preview-anchor]:not([data-tv-focused="true"] [role="gridcell"] [data-preview-anchor]),
+html[data-input="dpad"] [data-tv-focused="true"] [data-preview-anchor]:not([data-tv-focused="true"] [role="gridcell"] [data-preview-anchor]) {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+  /* And it does not lift.
+     A card in a row can rise into the clear because the row keeps space above
+     it. This one sits directly under its heading, and the ring already stands
+     7px proud of the photograph — 3px of line at a 4px offset — so raising it
+     another 8px pushed the top edge past what the row will draw and the frame
+     came out open at the top. Standing still, the whole rectangle fits. */
+  z-index: 2;
+}
+
 html[data-input="dpad"] button:focus > [data-preview-anchor],
 html[data-input="dpad"] [data-tv-focused="true"] > [data-preview-anchor] {
   /* Same three pixels as every other stop, so a card and a button are the same
@@ -1919,7 +1957,6 @@ html[data-input="dpad"] [data-tv-focused="true"] > [data-preview-anchor] {
      image. */
   outline: 3px solid var(--color-accent);
   outline-offset: 4px;
-  border-radius: calc(var(--poster-radius, 12px) + 4px);
   /* Up a little, so the card separates from its row across a room. The poster
      alone moves; the name below it stays on its line, which is what keeps a row
      of captions readable while one of them is picked out. */
@@ -1933,8 +1970,58 @@ html[data-input="dpad"] [data-tv-focused="true"] > [data-preview-anchor] {
    of whatever holds them: measured on the Discover type menu, the focused item
    went from its container's 298px to 316px and hung 9px past each edge, where
    the list clipped it — so the ring lost its sides and showed as two orange
-   lines above and below the row. Cards get their lift on the poster itself. */
-html[data-input="dpad"] [role="gridcell"]:focus {
+   lines above and below the row. Cards get their lift on the poster itself.
+
+   Which is why a cell holding a card is excluded. That was already true for
+   every card that is its own focus stop, because then the cell never takes
+   focus — but a cast card is a plain button, so focus settles on the cell and
+   it read as a tile. The two lifts stacked: measured on the device, the cell
+   grew 7.5px upward at 1.06 and the poster then rose 8 more inside it, putting
+   the top of the ring 6.2px outside what the row draws. The card keeps its
+   lift; the cell underneath it stops taking one. */
+/* A radius only where there is none to keep.
+   A card that wraps its poster in a plain block — to hold a rank badge outside
+   the picture, or to carry the lift — marks that block, and a plain block has
+   square corners, so the frame needed a radius given to it: the poster's, plus
+   the four pixels the ring stands off. The shared poster is the opposite case.
+   It already carries `--poster-radius`, and forcing the sum onto it would round
+   the artwork itself from 12 to 16 the moment it took focus — the picture
+   changing shape under the frame. Chrome expands an outline's corners by the
+   offset on its own, so the poster needs nothing said about it. */
+html[data-input="dpad"] [data-preview-anchor]:not(.viora-poster) {
+  border-radius: calc(var(--poster-radius, 12px) + 4px);
+}
+
+/* One frame per card, even when two blocks claim to be the artwork.
+   The shared poster marks itself, so a card that also marks a block around it
+   now has two. The outer one is the truthful one: it is what moves and what any
+   badge belongs to. An artwork block inside another is not a second frame. */
+/* A channel card wears its frame on the outside.
+
+   The focusable inside one of these fills the card exactly, and the card clips
+   its children for the sake of its rounded corners — so the ring was painted
+   and then thrown away, and a focused channel was indistinguishable from the
+   rest. An element's own outline is not clipped by its own overflow, so the
+   frame belongs to the card rather than to the button inside it, where it can
+   stand clear of the border the card already has. */
+html[data-input="dpad"] [data-live-card]:has(:focus) {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 1rem;
+  z-index: 2;
+}
+
+html[data-input="dpad"] [data-live-card] :focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html[data-input="dpad"] [data-preview-anchor] [data-preview-anchor] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+html[data-input="dpad"] [role="gridcell"]:focus:not(:has([data-preview-anchor])) {
   transform: scale(1.06);
   transition: transform 120ms ease-out;
 }
@@ -1943,7 +2030,7 @@ html[data-input="dpad"] [role="gridcell"]:focus {
    never drags: focus decides where the row should sit, and the browser then
    re-snapping to its own nearest boundary drags the focused card back out of
    view. Precision beats settling here. */
-html[data-input="dpad"] .harbor-row-track {
+html[data-input="dpad"] .viora-row-track {
   scroll-snap-type: none;
 }
 
@@ -1953,32 +2040,14 @@ html[data-input="dpad"] .harbor-row-track {
    app rather than the same app. Modern TVs do not overscan, and the layout was
    already designed for a 16:9 screen. */
 
-/* Hover affordances never fire from a D-pad or a finger; make them permanent
-   rather than unreachable. */
-html[data-input="dpad"] .harbor-hover-only,
-html[data-input="touch"] .harbor-hover-only {
+/* Hover affordances never fire from a D-pad; make them permanent rather than
+   unreachable. */
+html[data-input="dpad"] .viora-hover-only {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Touch targets below ~44px are hard to hit reliably. */
-html[data-input="touch"] button,
-html[data-input="touch"] a[role="button"],
-html[data-input="touch"] [data-focusable="true"] {
-  min-height: 44px;
-}
-
-html[data-input="touch"] {
-  /* Kill the 300ms tap delay and iOS double-tap zoom. */
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html[data-form-factor="phone"] {
-  font-size: 15px;
-}
-
-/* Respect the notch / gesture bar on phones and the rounded corners on TV. */
+/* Respect the rounded corners and any inset the TV reports. */
 html[data-os="android"] body {
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
@@ -1986,43 +2055,18 @@ html[data-os="android"] body {
   padding-right: env(safe-area-inset-right);
 }
 
-/* Phone: the bottom tab bar occupies the foot of the screen, so scroll
-   containers need to clear it or their last row sits under the tabs. */
-html[data-form-factor="phone"] body {
-  padding-bottom: calc(56px + env(safe-area-inset-bottom));
-}
-
-/* The desktop chrome assumes a 960px-wide window. At phone width the fixed
-   side rails and their content offsets have nothing to align to. */
-html[data-form-factor="phone"] [data-harbor-rail],
-html[data-form-factor="phone"] [data-harbor-siderail] {
-  display: none;
-}
-
-/* Rows scroll horizontally on desktop with hover arrows that touch cannot
-   reach; let the finger scroll them directly with snapping instead. */
-html[data-input="touch"] [data-harbor-row] {
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
-}
-html[data-input="touch"] [data-harbor-row] > * {
-  scroll-snap-align: start;
-}
-
-/* The player chrome is sized for a mouse. Fingers and remotes need bigger
-   targets, and the scrubber in particular is unusable at desktop height. */
+/* The player chrome was sized for a mouse. A remote needs bigger targets, and
+   the scrubber in particular is unusable at desktop height. */
 /* The transport's own controls, not everything that happens to be inside a
    panel over the player. A chip in the subtitle menu is 28px tall and about as
    wide as its label; forcing it to 44 square turned "All 2" into a circle with
    the count pushed out of it. Menus draw their own targets, and they are read
    from a list, not aimed at. */
-html[data-input="touch"] [data-harbor-player] button:not([data-focus-scope="modal"] button),
-html[data-input="dpad"] [data-harbor-player] button:not([data-focus-scope="modal"] button) {
+html[data-input="dpad"] [data-viora-player] button:not([data-focus-scope="modal"] button) {
   min-height: 44px;
   min-width: 44px;
 }
-html[data-input="touch"] [data-harbor-player] [role="slider"],
-html[data-input="dpad"] [data-harbor-player] [role="slider"] {
+html[data-input="dpad"] [data-viora-player] [role="slider"] {
   padding-block: 12px;
 }
 
@@ -2030,9 +2074,8 @@ html[data-input="dpad"] [data-harbor-player] [role="slider"] {
    purpose — the TV should be the same app at the same scale, not a magnified
    one. Only the focus ring above is added, because a D-pad has no cursor. */
 
-/* Scrollbars are pointer furniture; a remote or a finger never uses them. */
-html[data-form-factor="tv"] ::-webkit-scrollbar,
-html[data-input="touch"] ::-webkit-scrollbar {
+/* Scrollbars are pointer furniture; a remote never uses them. */
+html[data-form-factor="tv"] ::-webkit-scrollbar {
   display: none;
 }
 
@@ -2074,4 +2117,23 @@ html[data-input="dpad"] main {
 /* Section headings above rows carry desktop-sized breathing room. */
 html[data-input="dpad"] main section + section {
   margin-block-start: clamp(1rem, 2vw, 1.75rem);
+}
+
+/* The mark's pulse, shared by every place it waits.
+   The boot screen animates itself in index.html because it must run before any
+   stylesheet lands; this is the same timing for everything after it, so the
+   beat does not change speed as the app takes over. */
+.viora-beat {
+  animation: vioraBeat 2600ms ease-in-out infinite;
+}
+@keyframes vioraBeat {
+  0%   { transform: scale(1);    opacity: 0.86; }
+  8%   { transform: scale(1.07); opacity: 1; }
+  16%  { transform: scale(1);    opacity: 0.92; }
+  24%  { transform: scale(1.04); opacity: 1; }
+  34%  { transform: scale(1);    opacity: 0.86; }
+  100% { transform: scale(1);    opacity: 0.86; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .viora-beat { animation: none; }
 }

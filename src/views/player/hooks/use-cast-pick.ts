@@ -85,7 +85,7 @@ export function useCastPick(params: {
     async (device: CastDeviceInfo) => {
       if (device.audio_only) {
         setCastIncompatError(
-          `${device.name} is an audio-only device. Harbor can't transcode video to audio yet, so this device can only stream audio files. Pick a TV, Chromecast, or display-equipped device to stream video.`,
+          `${device.name} is an audio-only device. Viora can't transcode video to audio yet, so this device can only stream audio files. Pick a TV, Chromecast, or display-equipped device to stream video.`,
         );
         closeCastMenu();
         return;
@@ -112,10 +112,10 @@ export function useCastPick(params: {
             : "winget install Gyan.FFmpeg";
         setCastErrorInfo({
           title: "Install ffmpeg",
-          message: `${resolved.caps.label} can't decode this stream natively (${resolved.reasons.join(", ")}). Harbor uses ffmpeg to convert it into a format your TV understands.`,
+          message: `${resolved.caps.label} can't decode this stream natively (${resolved.reasons.join(", ")}). Viora uses ffmpeg to convert it into a format your TV understands.`,
           steps: [
             `Open a terminal and run: ${installCmd}`,
-            "Restart Harbor after the install completes.",
+            "Restart Viora after the install completes.",
             "Open the cast menu and try this device again.",
           ],
           deviceName: device.name,

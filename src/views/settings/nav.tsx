@@ -94,16 +94,6 @@ function IconVideoTune(p: IconProps) {
     </IconBase>
   );
 }
-
-function IconAnime(p: IconProps) {
-  return (
-    <IconBase {...p}>
-      <path d="M9.5 3l1.6 4.4 4.4 1.6-4.4 1.6L9.5 15l-1.6-4.4L3.5 9l4.4-1.6z" fill="currentColor" stroke="none" />
-      <path d="M17 13l.8 2.2 2.2.8-2.2.8L17 19l-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor" stroke="none" />
-    </IconBase>
-  );
-}
-
 function IconPlayer(p: IconProps) {
   return (
     <IconBase {...p}>
@@ -141,29 +131,6 @@ function IconTrakt(p: IconProps) {
       <circle cx="12" cy="12" r="9" />
       <path d="M6 13.5l4-4 6 6" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M6 9.5l4-4 8 8" strokeLinecap="round" strokeLinejoin="round" />
-    </IconBase>
-  );
-}
-
-function IconAnilist(p: IconProps) {
-  return (
-    <IconBase {...p}>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="3.5" />
-      <path d="M8 16.5l3-9 3 9" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M9 13.5h4" strokeLinecap="round" />
-      <path d="M15.5 7.5v9h2" strokeLinecap="round" strokeLinejoin="round" />
-    </IconBase>
-  );
-}
-
-function IconMal(p: IconProps) {
-  return (
-    <IconBase {...p}>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="3.5" />
-      <path d="M6 15V9l2.5 3 2.5-3v6" strokeLinejoin="round" />
-      <path d="M11.5 15 13.25 9 15 15" strokeLinejoin="round" />
-      <path d="M12.2 12.5h2.1" />
-      <path d="M15.5 9v6h3.8" strokeLinejoin="round" />
     </IconBase>
   );
 }
@@ -227,7 +194,7 @@ type NavItem = {
  * Sections with nothing behind them on a television.
  *
  * Not a judgement about what a viewer wants — a fact about what the build
- * contains. `src-tauri/src/lib.rs` puts `mpv`, `anime4k`, `svp`, `pip`,
+ * contains. `src-tauri/src/lib.rs` puts `mpv`, `svp`, `pip`,
  * `hdr_overlay`, `discord_rp`, `tray` and `multiview` behind `#[cfg(desktop)]`,
  * so none of them are compiled into the Android binary. Asking the device
  * confirms it: `mpv_available` answers "command not found". Video tuning is five
@@ -270,18 +237,6 @@ const NAV_GROUPS_ALL: Array<{ heading: string | null; items: NavItem[] }> = [
         label: "Trakt",
         Icon: IconTrakt,
         keywords: ["scrobble", "history", "sync", "watchlist"],
-      },
-      {
-        id: "anilist",
-        label: "AniList",
-        Icon: IconAnilist,
-        keywords: ["anime", "lists", "watching", "kitsu"],
-      },
-      {
-        id: "mal",
-        label: "MyAnimeList",
-        Icon: IconMal,
-        keywords: ["mal", "myanimelist", "anime", "lists", "watching", "jikan"],
       },
       {
         id: "simkl",
@@ -356,12 +311,6 @@ const NAV_GROUPS_ALL: Array<{ heading: string | null; items: NavItem[] }> = [
         keywords: ["mpv", "advanced mpv", "mpv.conf", "mpv options", "video quality", "picture quality", "performance", "potato", "low end", "weak pc", "shit computer", "hardware decoding", "hwdec", "buffer", "downmix", "upscaling", "scaling", "tonemap", "tuning", "quality preset"],
       },
       {
-        id: "anime",
-        label: "Anime tweaks",
-        Icon: IconAnime,
-        keywords: ["anime", "anime4k", "anime 4k", "upscale", "upscaling", "shaders", "smooth motion", "motion smoothing", "interpolation", "svp", "smoothvideo", "frame interpolation", "60fps", "48fps", "fluid"],
-      },
-      {
         id: "hotkeys",
         label: "Hotkeys",
         Icon: IconHotkeys,
@@ -417,7 +366,7 @@ const NAV_GROUPS = NAV_GROUPS_ALL.map((g) => ({
 
 const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Play button behavior", section: "player", anchorTitle: "Play button behavior", keywords: ["play mode", "instant", "instant play", "autoplay", "auto start", "manual picker", "choose stream", "source picker", "quality picker"] },
-  { label: "Player engine", section: "player", anchorTitle: "Player engine", keywords: ["mpv", "html5", "engine", "playback", "embed mpv", "inline", "separate window", "hdr", "sdr", "tonemap", "tonemapping", "hdr display mode", "hdr separate window", "opaque", "passthrough", "line-free", "line free", "brightness line", "motion smoothing", "frame interpolation", "direct torrent", "stremio server", "built-in engine", "rust engine", "p2p", "re-encode", "transcode", "cast", "dlna", "anime4k", "upscale", "upscaling", "anime4k indicator", "fps", "av1", "dts-hd", "truehd", "codec"] },
+  { label: "Player engine", section: "player", anchorTitle: "Player engine", keywords: ["mpv", "html5", "engine", "playback", "embed mpv", "inline", "separate window", "hdr", "sdr", "tonemap", "tonemapping", "hdr display mode", "hdr separate window", "opaque", "passthrough", "line-free", "line free", "brightness line", "motion smoothing", "frame interpolation", "direct torrent", "stremio server", "built-in engine", "rust engine", "p2p", "re-encode", "transcode", "cast", "dlna", "fps", "av1", "dts-hd", "truehd", "codec"] },
   { label: "Aspect ratio", section: "player", anchorTitle: "Aspect ratio", keywords: ["aspect ratio", "fit", "fill", "zoom", "crop", "stretch", "black bars", "widescreen", "4:3", "16:9", "21:9"] },
   { label: "Seek bar", section: "theme", anchorTitle: "Seek bar", keywords: ["seek", "seek bar", "scrubber", "progress", "timeline", "thumbnail preview", "trickplay", "hover preview", "bar style", "flat", "glass", "pinstripe", "rainbow", "bar height", "bar color", "bar image", "seek dot", "dot shape", "circle", "square", "custom dot", "hidden dot", "dot size", "nyan cat", "sticker"] },
   { label: "Subtitle style", section: "language", anchorTitle: "Subtitle style", keywords: ["subtitle", "subtitles", "subs", "caption", "sub style", "drop shadow", "outline", "black bar", "ass", "styled subs", "background opacity", "outline thickness", "bold", "pip subtitles", "picture in picture", "subtitle size", "subtitle opacity", "distance from bottom", "margin", "alignment", "left", "center", "right", "text color", "outline color", "box color", "font", "inter", "rounded", "serif", "arabic font", "upload font", "custom font", "reset"] },
@@ -434,7 +383,6 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Local torrent engine", section: "p2p", anchorTitle: "Local engine", keywords: ["local engine", "torrent engine", "p2p", "librqbit", "self-test", "self test", "restart engine", "peer test", "connectivity"] },
   { label: "Your streaming server address", section: "p2p", anchorTitle: "Your streaming server address", keywords: ["streaming server", "server address", "localhost", "wifi", "lan", "start server", "stop server", "restart server", "harbor in browser", "web ui", "11470", "11471", "web version", "use exclusively", "strict"] },
   { label: "Remote streaming server", section: "p2p", anchorTitle: "Remote streaming server", keywords: ["remote server", "server url", "ip address", "test connection", "forget server", "use exclusively", "strict", "vpn", "home server", "stremio service"] },
-  { label: "Anime4K presets & modes", section: "player", anchorTitle: "Anime4K presets", keywords: ["anime4k", "setup", "download shaders", "install anime4k", "re-download", "quality", "performance", "mode a", "mode b", "mode c", "apply to anime only", "anime detection"] },
   { label: "Internet speed / bandwidth", section: "player", anchorTitle: "Internet speed", keywords: ["internet speed", "bandwidth", "cap", "limit", "mbps", "gbps", "speed test", "fiber", "gigabit", "data"] },
   { label: "Remember last stream", section: "player", anchorTitle: "Remember last stream", keywords: ["remember last stream", "resume stream", "last source", "addon memory", "source memory"] },
   { label: "Custom CSS / JS / HTML code", section: "advanced", anchorTitle: "Custom code", keywords: ["custom code", "custom css", "custom js", "javascript", "custom html overlay", "inject", "mod", "power user", "retheme"] },
@@ -447,15 +395,14 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Downmix surround to stereo", section: "mpv", anchorTitle: "Audio", keywords: ["downmix", "stereo", "surround", "5.1", "7.1", "laptop speakers", "headphones", "quiet dialogue", "audio channels"] },
   { label: "Advanced mpv options (mpv.conf)", section: "mpv", anchorTitle: "Advanced (mpv.conf)", keywords: ["advanced mpv", "mpv.conf", "mpv options", "extra options", "tone-mapping", "inverse tone mapping", "custom mpv", "key=value", "power user", "raw config"] },
 
-  { label: "Anime4K upscaling", section: "anime", anchorTitle: "Anime4K upscaling", keywords: ["anime4k", "anime 4k", "upscale", "upscaling", "shaders", "sharper anime", "anime only", "anime4k indicator", "fps badge", "gpu upscale"] },
-  { label: "Smooth motion (interpolation) & SVP", section: "anime", anchorTitle: "Smooth motion", keywords: ["smooth motion", "motion smoothing", "interpolation", "frame interpolation", "svp", "smoothvideo", "60fps", "48fps", "fluid", "judder", "soap opera", "vapoursynth"] },
+  { label: "Smooth motion (interpolation) & SVP", section: "player", anchorTitle: "Smooth motion", keywords: ["smooth motion", "motion smoothing", "interpolation", "frame interpolation", "svp", "smoothvideo", "60fps", "48fps", "fluid", "judder", "soap opera", "vapoursynth"] },
 
-  { label: "Home layout", section: "library", anchorTitle: "Home layout", keywords: ["home layout", "rails", "rows", "addon rows", "duplicate rails", "watchlist saved only", "playlists tab", "m3u", "xtream", "keep anime in anime room", "continue watching advance", "advance next episode"] },
+  { label: "Home layout", section: "library", anchorTitle: "Home layout", keywords: ["home layout", "rails", "rows", "addon rows", "duplicate rails", "watchlist saved only", "playlists tab", "m3u", "xtream", "continue watching advance", "advance next episode"] },
   { label: "Spoilers (blur)", section: "library", anchorTitle: "Spoilers", keywords: ["spoiler", "spoilers", "blur", "blur thumbnails", "blur titles", "blur descriptions", "hide spoilers", "next episode visible"] },
   { label: "Continue Watching screenshots", section: "library", anchorTitle: "Continue Watching screenshots", keywords: ["continue watching", "screenshots", "snapshots", "frames", "retention", "clear frames", "storage"] },
   { label: "Region & language", section: "language", anchorTitle: "Region & language", keywords: ["region", "country", "availability", "location", "iso"] },
   { label: "Metadata providers (TMDB, OMDb, RPDB, MDBList, Fanart, TVDB)", section: "library", anchorTitle: "Metadata providers", keywords: ["metadata", "tmdb", "omdb", "rpdb", "mdblist", "letterboxd", "fanart", "tvdb", "api key", "ratings", "scores", "custom poster service", "btttr", "posters", "hide titles under posters", "imdb score", "rotten tomatoes", "mal score", "hover preview", "peek", "badge position"] },
-  { label: "Content filters (hide anime / live tv / sports / adult)", section: "library", anchorTitle: "Content filters", keywords: ["content filters", "hide anime", "hide live tv", "hide sports", "hide adult", "age", "filter"] },
+  { label: "Content filters (hide anime / live tv / sports / adult)", section: "library", anchorTitle: "Content filters", keywords: ["content filters", "hide live tv", "hide sports", "hide adult", "age", "filter"] },
 
   { label: "Display language", section: "language", anchorTitle: "Display language", keywords: ["display language", "ui language", "interface language", "rtl", "arabic", "menus", "buttons", "translation"] },
   { label: "Subtitle languages & autoload", section: "language", anchorTitle: "Subtitle languages", keywords: ["subtitle languages", "preferred subs", "start with subtitles off", "subs off", "prefer embedded", "forced subs", "native audio", "never auto-select", "block tracks", "commentary", "descriptive"] },
@@ -470,7 +417,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Usenet (Easynews+)", section: "streaming", anchorTitle: "Usenet", keywords: ["usenet", "easynews", "nzb", "addon"] },
   { label: "Streaming catalogs (Netflix, Disney+, etc.)", section: "streaming", anchorTitle: "Streaming catalogs", keywords: ["streaming catalogs", "netflix", "disney", "hulu", "prime", "apple tv", "max", "paramount", "peacock", "providers", "services"] },
 
-  { label: "Watch Together relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["watch together", "relay", "party", "p2p", "host", "cloudflare", "deploy", "share"] },
+  { label: "Watch Together relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["watch together", "relay", "party", "p2p", "host", "cloudflare", "deploy", "share"] },
 
   { label: "Theme preset", section: "theme", anchorTitle: "Theme", keywords: ["theme", "color", "preset", "cool grey", "warm gold", "deep purple", "sunset orange", "rose pink", "custom theme", "palette", "dark", "appearance"] },
   { label: "Background image / wallpaper", section: "theme", anchorTitle: "Background image", keywords: ["background", "wallpaper", "image", "choose image", "replace", "remove", "dim overlay"] },
@@ -490,12 +437,11 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Stremio library repair", section: "advanced", anchorTitle: "Stremio library repair", keywords: ["stremio library repair", "fix library", "schema", "repair"] },
   { label: "About (version / build)", section: "advanced", anchorTitle: "About", keywords: ["about", "version", "build", "platform", "bug reports"] },
 
-  { label: "Harbor identity (avatar / color)", section: "account", anchorTitle: "Harbor identity", keywords: ["avatar", "profile photo", "upload photo", "color", "identity", "picture"] },
+  { label: "Viora identity (avatar / color)", section: "account", anchorTitle: "Viora identity", keywords: ["avatar", "profile photo", "upload photo", "color", "identity", "picture"] },
   { label: "Stremio account (email / sign out)", section: "account", anchorTitle: "Stremio account", keywords: ["stremio", "email", "sign out", "logout", "re-authenticate", "login", "account"] },
   { label: "Synced addons", section: "account", anchorTitle: "Synced addons", keywords: ["synced addons", "addons", "stremio addons", "installed addons"] },
 
   { label: "Trakt connection", section: "trakt", keywords: ["trakt", "scrobble", "sync", "watchlist", "connect", "disconnect", "avatar", "history"] },
-  { label: "AniList connection", section: "anilist", keywords: ["anilist", "anime", "lists", "sync", "connect", "disconnect", "avatar", "watch progress", "mal", "kitsu"] },
   { label: "Simkl connection", section: "simkl", keywords: ["simkl", "sync", "watched", "watchlist", "connect", "disconnect", "avatar", "anime"] },
   { label: "Letterboxd connection", section: "letterboxd", keywords: ["letterboxd", "stremboxd", "watchlist", "diary", "films", "ratings", "friends", "connect", "disconnect", "top 250", "popular"] },
   { label: "Webhooks (Discord / Telegram)", section: "webhooks", keywords: ["webhooks", "discord", "telegram", "notifications", "alerts", "calendar sources", "rules", "upcoming"] },
@@ -508,13 +454,13 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "How Play works", section: "basics", anchorTitle: "How Play works", keywords: ["instant", "manual picker", "play mode", "source picker", "autoplay", "best stream", "play button", "recommended"] },
   { label: "Languages", section: "basics", keywords: ["language", "audio language", "subtitle language", "preferred languages"] },
   { label: "Theme & appearance", section: "basics", keywords: ["theme", "appearance", "recolor", "fonts", "poster size", "wallpaper", "customize"] },
-  { label: "Harbor identity", section: "account", anchorTitle: "Harbor identity", keywords: ["display name", "nickname", "rename", "edit name", "watch together name", "identity", "profile"] },
-  { label: "Upload photo", section: "account", anchorTitle: "Harbor identity", keywords: ["avatar", "upload", "profile picture", "custom photo", "image", "change avatar"] },
-  { label: "or use one of our avatars", section: "account", anchorTitle: "Harbor identity", keywords: ["avatar catalog", "built-in avatars", "browse avatars", "picker", "characters", "netflix style"] },
-  { label: "Random avatar", section: "account", anchorTitle: "Harbor identity", keywords: ["random", "shuffle", "surprise avatar", "dice"] },
-  { label: "Reset to Stremio avatar", section: "account", anchorTitle: "Harbor identity", keywords: ["reset avatar", "default avatar", "remove photo", "revert", "reset to default"] },
-  { label: "Your color", section: "account", anchorTitle: "Harbor identity", keywords: ["color", "cursor color", "chat color", "name pill", "custom color", "hex picker", "swatch"] },
-  { label: "Profiles (switch, add, edit)", section: "account", anchorTitle: "Harbor identity", keywords: ["profiles", "profile", "who's watching", "whos watching", "who is watching", "switch profile", "add profile", "new profile", "edit profile", "manage profiles", "default profile", "kids profile", "child profile", "multiple profiles", "profile screen", "startup profile", "household"] },
+  { label: "Viora identity", section: "account", anchorTitle: "Viora identity", keywords: ["display name", "nickname", "rename", "edit name", "watch together name", "identity", "profile"] },
+  { label: "Upload photo", section: "account", anchorTitle: "Viora identity", keywords: ["avatar", "upload", "profile picture", "custom photo", "image", "change avatar"] },
+  { label: "or use one of our avatars", section: "account", anchorTitle: "Viora identity", keywords: ["avatar catalog", "built-in avatars", "browse avatars", "picker", "characters", "netflix style"] },
+  { label: "Random avatar", section: "account", anchorTitle: "Viora identity", keywords: ["random", "shuffle", "surprise avatar", "dice"] },
+  { label: "Reset to Stremio avatar", section: "account", anchorTitle: "Viora identity", keywords: ["reset avatar", "default avatar", "remove photo", "revert", "reset to default"] },
+  { label: "Your color", section: "account", anchorTitle: "Viora identity", keywords: ["color", "cursor color", "chat color", "name pill", "custom color", "hex picker", "swatch"] },
+  { label: "Profiles (switch, add, edit)", section: "account", anchorTitle: "Viora identity", keywords: ["profiles", "profile", "who's watching", "whos watching", "who is watching", "switch profile", "add profile", "new profile", "edit profile", "manage profiles", "default profile", "kids profile", "child profile", "multiple profiles", "profile screen", "startup profile", "household"] },
   { label: "Sign in", section: "account", anchorTitle: "Stremio account", keywords: ["login", "sign in", "stremio", "connect account", "not signed in"] },
   { label: "Re-authenticate", section: "account", anchorTitle: "Stremio account", keywords: ["reauth", "refresh session", "login again", "expired token", "re-login"] },
   { label: "Sign out", section: "account", anchorTitle: "Stremio account", keywords: ["logout", "sign out", "log off", "disconnect account"] },
@@ -524,7 +470,6 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Show every addon row", section: "library", anchorTitle: "Home layout", keywords: ["addon rows", "duplicate rows", "dedup", "merged rails", "show all rows", "catalogs"] },
   { label: "Watchlist shows only saved titles", section: "library", anchorTitle: "Home layout", keywords: ["watchlist", "bookmarked only", "saved titles", "library tab", "auto added", "stremio saves"] },
   { label: "Show Playlists tab", section: "library", anchorTitle: "Home layout", keywords: ["playlists", "m3u", "xtream", "iptv", "nav tab", "sidebar"] },
-  { label: "Keep anime in the Anime room only", section: "library", anchorTitle: "Home layout", keywords: ["anime", "continue watching", "anime tab", "hide anime on home", "anime room"] },
   { label: "Advance Continue Watching to the next episode", section: "library", anchorTitle: "Home layout", keywords: ["continue watching", "next episode", "advance", "auto next", "cw card", "zero minutes"] },
   { label: "Hide watched titles in catalogs", section: "library", anchorTitle: "Home layout", keywords: ["hide watched", "already seen", "watched filter", "history", "trakt", "catalogs"] },
   { label: "Hide unreleased titles", section: "library", anchorTitle: "Home layout", keywords: ["unreleased", "upcoming", "future release", "coming soon", "hide", "release date"] },
@@ -564,8 +509,6 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Show TMDB score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["tmdb score", "fallback rating", "unreleased rating", "card badge"] },
   { label: "Show Rotten Tomatoes score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["rotten tomatoes", "rt badge", "tomato", "splat", "fresh", "critic score"] },
   { label: "Show audience score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["popcornmeter", "audience score", "popcorn", "rt audience", "percent"] },
-  { label: "Show MAL score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["mal", "myanimelist", "anime score", "anime badge", "anime rating"] },
-  { label: "Anime card rating source", section: "library", anchorTitle: "Metadata providers", keywords: ["mal vs imdb", "anime rating source", "mal", "imdb", "anime cards", "fallback"] },
   { label: "Show Metacritic score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["metacritic", "metascore", "critic rating", "green yellow red"] },
   { label: "Show Letterboxd score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["letterboxd", "letterbox", "film rating", "out of 5", "card badge"] },
   { label: "Show MDBList score on cards", section: "library", anchorTitle: "Metadata providers", keywords: ["mdblist score", "aggregate score", "all sources", "card badge"] },
@@ -577,39 +520,23 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Badge position", section: "library", anchorTitle: "Metadata providers", keywords: ["badge placement", "top", "bottom", "score position", "chip position"] },
   { label: "Max badges per card", section: "library", anchorTitle: "Metadata providers", keywords: ["badge limit", "max badges", "number of scores", "2 3 4 5 6", "cap"] },
   { label: "Watchlist badge", section: "library", anchorTitle: "Metadata providers", keywords: ["bookmark badge", "watchlist icon", "corner", "off", "top left", "top right", "bottom left", "bottom right"] },
-  { label: "Hide anime", section: "library", anchorTitle: "Content filters", keywords: ["hide anime", "no anime", "remove anime tab", "anime rows"] },
   { label: "Hide Live TV", section: "library", anchorTitle: "Content filters", keywords: ["hide live tv", "remove tv tab", "no live", "sidebar"] },
   { label: "Hide adult content", section: "library", anchorTitle: "Content filters", keywords: ["adult filter", "nsfw", "xxx", "safe mode", "adult catalogs"] },
   { label: "Connect your Trakt account", section: "trakt", keywords: ["trakt", "connect", "tracking", "scrobble", "watchlist", "recommendations"] },
   { label: "Connect Trakt", section: "trakt", keywords: ["trakt login", "device code", "authorize", "link trakt"] },
   { label: "About Trakt", section: "trakt", keywords: ["trakt.tv", "what is trakt", "info", "website"] },
   { label: "Open Trakt profile", section: "trakt", keywords: ["open profile", "trakt profile", "view profile", "my trakt", "profile page"] },
-  { label: "Use my Trakt avatar as my Harbor avatar", section: "trakt", keywords: ["trakt avatar", "profile picture", "avatar sync", "wear avatar"] },
+  { label: "Use my Trakt avatar as my Viora avatar", section: "trakt", keywords: ["trakt avatar", "profile picture", "avatar sync", "wear avatar"] },
   { label: "Disconnect from Trakt", section: "trakt", keywords: ["disconnect", "unlink", "remove trakt", "stop scrobbling", "sign out"] },
   { label: "Export to Trakt", section: "trakt", keywords: ["export watchlist", "copy watchlist", "send to trakt", "upload", "move watchlist"] },
   { label: "Import from Trakt", section: "trakt", keywords: ["import watchlist", "pull watchlist", "trakt to harbor", "download", "move watchlist"] },
   { label: "Show comments on detail pages", section: "trakt", keywords: ["trakt comments", "community comments", "reviews", "discussion", "episodes"] },
   { label: "Blur Trakt comments by default", section: "trakt", keywords: ["blur comments by default", "blur comments", "spoiler comments", "hide reviews", "reveal"] },
-  { label: "Connect your AniList account", section: "anilist", keywords: ["anilist", "connect", "anime lists", "link account", "anime tracking", "rails"] },
-  { label: "Connect AniList", section: "anilist", keywords: ["anilist login", "authorize", "oauth", "link"] },
-  { label: "About AniList", section: "anilist", keywords: ["anilist.co", "info", "website", "what is anilist"] },
-  { label: "Open AniList profile", section: "anilist", keywords: ["open profile", "anilist profile", "view profile", "profile page", "my anilist"] },
-  { label: "Sync watch progress", section: "anilist", keywords: ["anilist sync", "episode progress", "auto update", "forward only", "tracking"] },
-  { label: "Use my AniList avatar as my Harbor avatar", section: "anilist", keywords: ["anilist avatar", "profile picture", "avatar", "wear avatar"] },
-  { label: "Show AniList comments", section: "anilist", keywords: ["anilist comments", "forum threads", "anime discussion", "detail pages"] },
-  { label: "Blur AniList comments by default", section: "anilist", keywords: ["blur comments by default", "blur comments", "spoilers", "hide comments", "reveal", "anime pages"] },
-  { label: "Disconnect from AniList", section: "anilist", keywords: ["disconnect", "unlink", "remove anilist", "stop sync"] },
-  { label: "Connect your MyAnimeList account", section: "mal", keywords: ["mal", "myanimelist", "connect", "anime lists", "link account", "anime tracking", "oauth"] },
-  { label: "MAL Client ID", section: "mal", keywords: ["mal client id", "api key", "myanimelist api", "client id", "register app"] },
-  { label: "Connect MyAnimeList", section: "mal", keywords: ["mal login", "authorize", "oauth", "pin code", "link"] },
-  { label: "About MyAnimeList", section: "mal", keywords: ["myanimelist.net", "info", "website", "what is mal"] },
-  { label: "Open MAL profile", section: "mal", keywords: ["open profile", "mal profile", "view profile", "profile page", "myanimelist profile"] },
-  { label: "Disconnect from MyAnimeList", section: "mal", keywords: ["disconnect", "unlink", "remove mal", "stop sync"] },
   { label: "Connect your Simkl account", section: "simkl", keywords: ["simkl", "connect", "tracking", "plan to watch", "mark watched", "sync"] },
   { label: "Connect Simkl", section: "simkl", keywords: ["simkl login", "device code", "authorize", "link"] },
   { label: "About Simkl", section: "simkl", keywords: ["simkl.com", "info", "website", "what is simkl"] },
   { label: "Open Simkl profile", section: "simkl", keywords: ["open profile", "simkl profile", "view profile", "profile page", "my simkl"] },
-  { label: "Use my Simkl avatar as my Harbor avatar", section: "simkl", keywords: ["simkl avatar", "profile picture", "avatar", "wear avatar"] },
+  { label: "Use my Simkl avatar as my Viora avatar", section: "simkl", keywords: ["simkl avatar", "profile picture", "avatar", "wear avatar"] },
   { label: "Disconnect from Simkl", section: "simkl", keywords: ["disconnect", "unlink", "remove simkl", "stop sync"] },
   { label: "Enable Letterboxd integration", section: "letterboxd", keywords: ["letterboxd", "letterbox", "stremboxd", "enable", "films", "diary", "watchlist"] },
   { label: "Mode", section: "letterboxd", keywords: ["public mode", "full mode", "username only", "password mode", "segmented"] },
@@ -624,18 +551,18 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Blur reviews by default", section: "letterboxd", keywords: ["blur reviews", "spoilers", "film pages", "reveal"] },
   { label: "Hidden catalogs", section: "letterboxd", keywords: ["unhide", "show hidden", "restore catalog", "hidden rows"] },
   { label: "Disconnect", section: "letterboxd", keywords: ["logout", "disconnect", "sign out letterboxd", "unlink", "full mode"] },
-  { label: "Harbor Relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["relay", "watch together", "cloudflare worker", "rooms", "sync server", "copy url", "hosted relay"] },
-  { label: "Deploy a relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["deploy", "cloudflare", "worker", "self host", "setup relay", "desktop only"] },
-  { label: "Use Harbor's public relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["public relay", "hosted relay", "default relay", "quota", "pub relay"] },
-  { label: "Enter an existing relay URL:", section: "relay", anchorTitle: "Harbor Relay", keywords: ["relay url", "wss", "workers.dev", "custom relay", "paste url", "save"] },
-  { label: "Test relay connection", section: "relay", anchorTitle: "Harbor Relay", keywords: ["test connection", "run test", "ping", "health", "reachable", "verify relay"] },
-  { label: "Backup credentials", section: "relay", anchorTitle: "Harbor Relay", keywords: ["export", "backup", "api token", "credentials", "json file", "cloudflare token"] },
-  { label: "Stop relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["stop", "delete worker", "remove relay", "teardown"] },
-  { label: "Forget URL", section: "relay", anchorTitle: "Harbor Relay", keywords: ["forget", "clear url", "reset relay", "remove url"] },
-  { label: "Use a different URL", section: "relay", anchorTitle: "Harbor Relay", keywords: ["change relay", "switch relay", "different url", "replace"] },
-  { label: "Deploy mine instead", section: "relay", anchorTitle: "Harbor Relay", keywords: ["own relay", "deploy mine", "self host", "migrate"] },
-  { label: "Redeploy", section: "relay", anchorTitle: "Harbor Relay", keywords: ["redeploy", "update relay", "upgrade", "new version", "redeploy instructions"] },
-  { label: "Documentation: run your own relay", section: "relay", anchorTitle: "Harbor Relay", keywords: ["docs", "documentation", "guide", "run your own", "instructions"] },
+  { label: "Viora Relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["relay", "watch together", "cloudflare worker", "rooms", "sync server", "copy url", "hosted relay"] },
+  { label: "Deploy a relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["deploy", "cloudflare", "worker", "self host", "setup relay", "desktop only"] },
+  { label: "Use Viora's public relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["public relay", "hosted relay", "default relay", "quota", "pub relay"] },
+  { label: "Enter an existing relay URL:", section: "relay", anchorTitle: "Viora Relay", keywords: ["relay url", "wss", "workers.dev", "custom relay", "paste url", "save"] },
+  { label: "Test relay connection", section: "relay", anchorTitle: "Viora Relay", keywords: ["test connection", "run test", "ping", "health", "reachable", "verify relay"] },
+  { label: "Backup credentials", section: "relay", anchorTitle: "Viora Relay", keywords: ["export", "backup", "api token", "credentials", "json file", "cloudflare token"] },
+  { label: "Stop relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["stop", "delete worker", "remove relay", "teardown"] },
+  { label: "Forget URL", section: "relay", anchorTitle: "Viora Relay", keywords: ["forget", "clear url", "reset relay", "remove url"] },
+  { label: "Use a different URL", section: "relay", anchorTitle: "Viora Relay", keywords: ["change relay", "switch relay", "different url", "replace"] },
+  { label: "Deploy mine instead", section: "relay", anchorTitle: "Viora Relay", keywords: ["own relay", "deploy mine", "self host", "migrate"] },
+  { label: "Redeploy", section: "relay", anchorTitle: "Viora Relay", keywords: ["redeploy", "update relay", "upgrade", "new version", "redeploy instructions"] },
+  { label: "Documentation: run your own relay", section: "relay", anchorTitle: "Viora Relay", keywords: ["docs", "documentation", "guide", "run your own", "instructions"] },
   { label: "Picker layout", section: "streaming", anchorTitle: "Picker layout", keywords: ["condensed", "stremio layout", "picker style", "flat list", "quality tiles", "drawer", "source list"] },
   { label: "Show torrent name", section: "streaming", anchorTitle: "Torrent name", keywords: ["torrent name", "filename", "release name", "raw title", "release filename"] },
   { label: "Show full descriptions", section: "streaming", anchorTitle: "Stream descriptions", keywords: ["full description", "aiostreams", "stream info", "trim", "tidier rows", "addon description"] },
@@ -670,7 +597,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Copy diagnostics", section: "p2p", anchorTitle: "Power tools & diagnostics", keywords: ["diagnostics", "debug json", "bug report", "engine status", "copy debug"] },
   { label: "Reveal engine folder", section: "p2p", anchorTitle: "Power tools & diagnostics", keywords: ["engine folder", "dht.json", "open folder", "explorer", "torrent data"] },
   { label: "Start server", section: "p2p", anchorTitle: "Your streaming server address", keywords: ["start server", "stop server", "restart server", "streaming server", "stremio server", "antivirus"] },
-  { label: "Harbor in your browser", section: "p2p", anchorTitle: "Your streaming server address", keywords: ["web ui", "browser app", "serve web", "phone", "tv browser", "11471", "web version"] },
+  { label: "Viora in your browser", section: "p2p", anchorTitle: "Your streaming server address", keywords: ["web ui", "browser app", "serve web", "phone", "tv browser", "11471", "web version"] },
   { label: "Use exclusively (never fall back to local)", section: "p2p", anchorTitle: "Remote streaming server", keywords: ["strict remote", "vpn", "no fallback", "exclusive", "playback fails"] },
   { label: "Test remote server connection", section: "p2p", anchorTitle: "Remote streaming server", keywords: ["test connection", "run test", "probe", "reachable", "ping server", "settings endpoint"] },
   { label: "Forget", section: "p2p", anchorTitle: "Remote streaming server", keywords: ["forget server", "clear url", "remove server", "reset"] },
@@ -711,7 +638,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Auto", section: "player", anchorTitle: "Player engine", keywords: ["auto engine", "default engine", "best engine", "automatic pick"] },
   { label: "HTML5", section: "player", anchorTitle: "Player engine", keywords: ["html5", "webview playback", "browser player", "native video", "limited codecs"] },
   { label: "mpv", section: "player", anchorTitle: "Player engine", keywords: ["mpv", "libmpv", "truehd", "dts", "av1", "hdr player", "plays anything"] },
-  { label: "Embed mpv inside Harbor window", section: "player", anchorTitle: "Player engine", keywords: ["embedded mpv", "separate window", "inline playback", "detached player", "external window"] },
+  { label: "Embed mpv inside Viora window", section: "player", anchorTitle: "Player engine", keywords: ["embedded mpv", "separate window", "inline playback", "detached player", "external window"] },
   { label: "Tonemap to SDR", section: "player", anchorTitle: "Player engine", keywords: ["hdr to sdr", "tonemap", "washed out hdr", "grey hdr", "bt2446a", "sdr display"] },
   { label: "True HDR, separate window", section: "player", anchorTitle: "Player engine", keywords: ["true hdr", "hdr window", "real hdr", "hdr10", "brightness slider dimming", "separate playback window"] },
   { label: "True HDR, embedded", section: "player", anchorTitle: "Player engine", keywords: ["embedded hdr", "hdr inside harbor", "experimental hdr", "overlay controls", "floating controls"] },
@@ -757,18 +684,13 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Mix surround sound down to stereo", section: "mpv", anchorTitle: "Audio", keywords: ["downmix stereo", "5.1 to stereo", "7.1", "quiet dialogue", "hollow sound", "headphones fix"] },
   { label: "Advanced (mpv.conf)", section: "mpv", anchorTitle: "Advanced (mpv.conf)", keywords: ["mpv conf", "mpv options", "custom mpv flags", "key=value", "power user", "escape hatch", "extra options"] },
   { label: "See the mpv.conf your dials above generate", section: "mpv", anchorTitle: "Advanced (mpv.conf)", keywords: ["generated config", "compiled mpv conf", "preview options", "show config", "dials output"] },
-  { label: "Enable Anime4K", section: "anime", anchorTitle: "Anime4K upscaling", keywords: ["anime4k on", "upscale anime", "sharper lines", "cleaner gradients", "real time upscale"] },
-  { label: "Show Anime4K indicator", section: "anime", anchorTitle: "Anime4K upscaling", keywords: ["anime4k badge", "fps indicator", "overlay badge", "status chip", "live fps"] },
-  { label: "Anime4K presets", section: "anime", keywords: ["mode a", "mode b", "mode c", "mode a+a", "mode b+b", "mode c+a", "quality performance tier", "shader modes", "restore denoise"] },
-  { label: "Set up Anime4K", section: "anime", keywords: ["download shaders", "install anime4k", "shader pack", "one time setup", "get shaders"] },
-  { label: "Re-download", section: "anime", keywords: ["redownload shaders", "update anime4k", "refresh shader pack", "reinstall shaders"] },
-  { label: "Smooth motion", section: "anime", anchorTitle: "Smooth motion", keywords: ["frame interpolation", "judder", "smooth panning", "motion smoothing", "fps boost", "drawn on twos"] },
-  { label: "Motion smoothing", section: "anime", anchorTitle: "Smooth motion", keywords: ["built in interpolation", "smooth motion", "60fps feel", "soap opera effect", "panning judder", "lighter than svp"] },
-  { label: "SVP frame interpolation", section: "anime", anchorTitle: "SVP frame interpolation", keywords: ["svp", "smooth video project", "60fps anime", "vapoursynth", "svpflow", "interpolation engine"] },
-  { label: "Get SVP (free)", section: "anime", anchorTitle: "SVP frame interpolation", keywords: ["install svp", "download svp", "svp free tier", "svp team"] },
-  { label: "Open SVP", section: "anime", anchorTitle: "SVP frame interpolation", keywords: ["launch svp", "svp manager", "tray svp", "start svp"] },
-  { label: "Enable SVP", section: "anime", anchorTitle: "SVP frame interpolation", keywords: ["svp on", "real interpolation", "48fps", "60fps", "black screen svp", "restart playback"] },
-  { label: "Apply SVP to", section: "anime", anchorTitle: "SVP frame interpolation", keywords: ["svp scope", "anime only", "all content", "movies and tv", "limit svp", "live action"] },
+  { label: "Smooth motion", section: "player", anchorTitle: "Smooth motion", keywords: ["frame interpolation", "judder", "smooth panning", "motion smoothing", "fps boost", "drawn on twos"] },
+  { label: "Motion smoothing", section: "player", anchorTitle: "Smooth motion", keywords: ["built in interpolation", "smooth motion", "60fps feel", "soap opera effect", "panning judder", "lighter than svp"] },
+  { label: "SVP frame interpolation", section: "player", anchorTitle: "SVP frame interpolation", keywords: ["svp", "smooth video project", "60fps anime", "vapoursynth", "svpflow", "interpolation engine"] },
+  { label: "Get SVP (free)", section: "player", anchorTitle: "SVP frame interpolation", keywords: ["install svp", "download svp", "svp free tier", "svp team"] },
+  { label: "Open SVP", section: "player", anchorTitle: "SVP frame interpolation", keywords: ["launch svp", "svp manager", "tray svp", "start svp"] },
+  { label: "Enable SVP", section: "player", anchorTitle: "SVP frame interpolation", keywords: ["svp on", "real interpolation", "48fps", "60fps", "black screen svp", "restart playback"] },
+  { label: "Apply SVP to", section: "player", anchorTitle: "SVP frame interpolation", keywords: ["svp scope", "all content", "movies and tv", "limit svp", "live action"] },
   { label: "Default / Stremio", section: "playerLayout", keywords: ["player theme", "chrome theme", "stremio layout", "harbor layout", "button order", "layout tabs"] },
   { label: "True black menus", section: "playerLayout", keywords: ["black menus", "pure black panels", "oled black", "ignore theme tint", "player menus"] },
   { label: "Edit player layout", section: "playerLayout", keywords: ["customize player controls", "move buttons", "hide buttons", "reorder controls", "layout editor", "custom icons", "live preview"] },
@@ -807,9 +729,6 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Screenshot", section: "hotkeys", anchorTitle: "Player", keywords: ["capture frame", "png screenshot", "snapshot", "p key", "pictures folder"] },
   { label: "Record GIF", section: "hotkeys", anchorTitle: "Player", keywords: ["gif recording", "capture gif", "o key", "animated gif"] },
   { label: "Save video clip", section: "hotkeys", anchorTitle: "Player", keywords: ["clip last 30 seconds", "save clip", "video capture", "c key", "clip with audio"] },
-  { label: "Toggle Anime4K", section: "hotkeys", anchorTitle: "Player", keywords: ["anime4k hotkey", "a key", "upscale toggle", "shader toggle"] },
-  { label: "Anime4K on", section: "hotkeys", anchorTitle: "Player", keywords: ["anime4k enable key", "ctrl 1", "upscaling on", "force anime4k"] },
-  { label: "Anime4K off", section: "hotkeys", anchorTitle: "Player", keywords: ["anime4k disable key", "ctrl 0", "upscaling off", "stop shaders"] },
   { label: "Seek back", section: "hotkeys", anchorTitle: "Player", keywords: ["rewind", "arrow left", "jump back", "skip backward"] },
   { label: "Seek forward", section: "hotkeys", anchorTitle: "Player", keywords: ["fast forward", "arrow right", "jump ahead", "skip forward"] },
   { label: "Seek back 30s", section: "hotkeys", anchorTitle: "Player", keywords: ["back thirty seconds", "comma key", "big rewind", "30 second jump"] },
@@ -846,7 +765,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Your themes", section: "theme", anchorTitle: "Your themes", keywords: ["theme studio", "community themes", "custom themes", "import themes", "my themes"] },
   { label: "Theme Library", section: "theme", anchorTitle: "Your themes", keywords: ["browse themes", "theme gallery", "apply theme", "one click theme", "library", "featured themes"] },
   { label: "Build a Theme", section: "theme", anchorTitle: "Your themes", keywords: ["theme studio", "create theme", "make your own theme", "no code theming", "open studio"] },
-  { label: "Import a Theme", section: "theme", anchorTitle: "Your themes", keywords: ["import theme file", "harborstyle", "shared theme", "drop theme", "choose file"] },
+  { label: "Import a Theme", section: "theme", anchorTitle: "Your themes", keywords: ["import theme file", "viorastyle", "shared theme", "drop theme", "choose file"] },
   { label: "Edit colors", section: "theme", anchorTitle: "Your themes", keywords: ["customize theme colors", "tweak palette", "color editor", "adjust theme"] },
   { label: "Copy theme", section: "theme", anchorTitle: "Your themes", keywords: ["export theme", "share theme", "copy theme text", "send theme"] },
   { label: "Poster card style", section: "theme", anchorTitle: "Poster card style", keywords: ["poster size", "card size", "corner radius", "poster scale", "width height", "live preview"] },
@@ -886,10 +805,9 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "My Trakt", section: "webhooks", anchorTitle: "What to send", keywords: ["trakt watchlist alerts", "trakt upcoming", "trakt notifications", "watchlist pings"] },
   { label: "Anticipated", section: "webhooks", anchorTitle: "What to send", keywords: ["trakt anticipated", "most hyped", "anticipated releases", "no login source"] },
   { label: "Custom calendar", section: "webhooks", anchorTitle: "What to send", keywords: ["tracked people", "genres providers countries", "custom calendar alerts", "my calendar"] },
-  { label: "Media types", section: "webhooks", anchorTitle: "Media types", keywords: ["filter type", "movies tv anime filter", "type filter", "media filter"] },
+  { label: "Media types", section: "webhooks", anchorTitle: "Media types", keywords: ["filter type", "type filter", "media filter"] },
   { label: "Movies", section: "webhooks", anchorTitle: "Media types", keywords: ["movie alerts", "films only", "movie filter", "notify movies"] },
   { label: "TV", section: "webhooks", anchorTitle: "Media types", keywords: ["tv alerts", "series only", "shows", "notify tv"] },
-  { label: "Anime", section: "webhooks", anchorTitle: "Media types", keywords: ["anime alerts", "anime only", "notify anime", "anime filter"] },
   { label: "AUTOMATIONS", section: "webhooks", keywords: ["rules", "automations", "custom alert rules", "triggers", "ping rules", "rule list"] },
   { label: "New rule", section: "webhooks", keywords: ["create rule", "new automation", "when then", "tracked person trigger", "genre trigger", "streamer trigger", "country trigger", "live tv reminder", "lead minutes"] },
   { label: "What broke?", section: "bug", anchorTitle: "What broke?", keywords: ["report bug", "describe issue", "bug form", "broken feature"] },
@@ -900,7 +818,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "What actually happened", section: "bug", anchorTitle: "What broke?", keywords: ["actual behavior", "what went wrong", "actual result", "instead"] },
   { label: "Screenshots and recordings", section: "bug", anchorTitle: "Screenshots and recordings", keywords: ["attach screenshot", "screen recording", "upload clip", "drag and drop files", "evidence", "mp4 gif"] },
   { label: "Player log", section: "bug", anchorTitle: "Player log", keywords: ["mpv log", "player log export", "playback log", "stream misbehaves"] },
-  { label: "Export player log", section: "bug", anchorTitle: "Player log", keywords: ["export log", "save log to downloads", "harbor-mpv-log", "diagnostics file", "attach log"] },
+  { label: "Export player log", section: "bug", anchorTitle: "Player log", keywords: ["export log", "save log to downloads", "viora-mpv-log", "diagnostics file", "attach log"] },
   { label: "Credit (optional)", section: "bug", anchorTitle: "Credit (optional)", keywords: ["reporter name", "github username", "contact", "anonymous report", "display name"] },
   { label: "Credit me in the release notes if this report leads to a fix.", section: "bug", anchorTitle: "Credit (optional)", keywords: ["release notes credit", "attribution consent", "credit reporter", "name in notes"] },
   { label: "Want to fix it yourself?", section: "bug", keywords: ["contribute fix", "pull request", "open repo", "github pr", "browse pull requests"] },
@@ -922,7 +840,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Always on top", section: "advanced", anchorTitle: "System tray", keywords: ["pin window", "on top", "above other windows", "floating window"] },
   { label: "Pause when minimized", section: "advanced", anchorTitle: "System tray", keywords: ["pause on minimize", "background pause", "stop when minimized", "auto pause"] },
   { label: "Pause when unfocused", section: "advanced", anchorTitle: "System tray", keywords: ["pause on focus loss", "alt tab pause", "unfocused pause", "another window"] },
-  { label: "Catch stremio:// install links inside Harbor", section: "advanced", anchorTitle: "Stremio install links", keywords: ["protocol handler", "stremio link handler", "in app installer", "addon install", "default app", "configure and install"] },
+  { label: "Catch stremio:// install links inside Viora", section: "advanced", anchorTitle: "Stremio install links", keywords: ["protocol handler", "stremio link handler", "in app installer", "addon install", "default app", "configure and install"] },
   { label: "Show on Discord", section: "advanced", anchorTitle: "Discord Rich Presence", keywords: ["discord presence", "watching status", "show activity", "profile status"] },
   { label: "Hide the title", section: "advanced", anchorTitle: "Discord Rich Presence", keywords: ["private watching", "hide show name", "watching something", "no poster"] },
   { label: "Show while paused", section: "advanced", anchorTitle: "Discord Rich Presence", keywords: ["presence when paused", "keep status paused", "paused visibility"] },
@@ -941,7 +859,7 @@ const SETTINGS_OPTIONS: SettingsOption[] = [
   { label: "Custom JS", section: "advanced", anchorTitle: "Custom code", keywords: ["javascript injection", "userscript", "scripts", "mod client", "no sandbox"] },
   { label: "Custom HTML overlay", section: "advanced", anchorTitle: "Custom code", keywords: ["html overlay", "custom widget", "fixed overlay", "injected html", "pointer events"] },
   { label: "About", section: "advanced", anchorTitle: "About", keywords: ["version", "build info", "bug email", "app version", "desktop or web"] },
-  { label: "Get Harbor for desktop", section: "advanced", keywords: ["download desktop app", "desktop version", "web limitations", "install harbor"] },
+  { label: "Get Viora for desktop", section: "advanced", keywords: ["download desktop app", "desktop version", "web limitations", "install harbor"] },
   { label: "Source code", section: "advanced", keywords: ["github repo", "open source", "source", "code repository"] },
 ];
 
@@ -956,8 +874,8 @@ export function SettingsNav({
   const { goBack, canGoBack, setView } = useView();
   const t = useT();
   const isNew = useSettingsNew();
-  const navLayout = activeLayout(settings.theme);
-  const showBack = navLayout === "custom" || navLayout === "minui";
+  // A custom chrome may not draw a Back of its own, so the panel keeps one.
+  const showBack = activeLayout(settings.theme) === "custom";
   const [query, setQuery] = useState("");
   /** Open while the remote types a settings search on the on-screen keyboard. */
   const [tvSearchOpen, setTvSearchOpen] = useState(false);
@@ -1026,10 +944,9 @@ export function SettingsNav({
   const status: Record<SectionId, string | null> = {
     basics: null,
     account: null,
+    mpv: null,
     library: libraryKeys > 0 ? `${libraryKeys}/5` : null,
     trakt: null,
-    anilist: null,
-    mal: null,
     simkl: null,
     letterboxd: settings.letterboxd.enabled ? (settings.letterboxd.mode === "full" ? "FULL" : "ON") : null,
     relay: relayLive,
@@ -1038,8 +955,6 @@ export function SettingsNav({
     p2p: null,
     language: langChip,
     player: settings.playerEngine === "auto" ? null : settings.playerEngine,
-    mpv: (settings.mpvQuality ?? "balanced") === "balanced" ? null : settings.mpvQuality === "performance" ? "lite" : "max",
-    anime: settings.playerAnime4k ? "on" : null,
     playerLayout: null,
     theme: settings.theme.preset === "cool-grey" && settings.theme.fontPair === "sentient-switzer" ? null : "•",
     webhooks: webhookActive ? "live" : null,

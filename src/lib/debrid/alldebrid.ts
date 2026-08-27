@@ -14,7 +14,7 @@ import {
 } from "./types";
 
 const BASE = "https://api.alldebrid.com/v4";
-const AGENT = "Harbor";
+const AGENT = "Viora";
 const VIDEO_EXTS = [".mkv", ".mp4", ".avi", ".m4v", ".webm", ".ts", ".mov", ".wmv"];
 const POLL_DELAY_MS = 1500;
 const POLL_MAX_ATTEMPTS = 12;

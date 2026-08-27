@@ -3,7 +3,6 @@ import { isDpadPrimary } from "@/lib/platform";
 import { Popcorn } from "lucide-react";
 import type { ReactNode } from "react";
 import { ImdbIcon } from "@/components/icons/imdb-icon";
-import { MalLogo } from "@/components/icons/mal-logo";
 import { RtBadge } from "@/components/rt-badge";
 import { HoverTooltip } from "@/components/hover-tooltip";
 import { useT } from "@/lib/i18n";
@@ -66,26 +65,22 @@ function metacriticBand(value: number): string {
 
 export function HeroRatings({
   rating,
-  isAnime,
   scores,
   mdblist,
   imdbId,
   mediaType,
   onOpenUrl,
   ratingSource = "imdb",
-  animeImdbRating,
   bare = false,
   tmdbRating,
 }: {
   rating?: string;
-  isAnime: boolean;
   scores: OmdbScores | null;
   mdblist: MdblistScores | null;
   imdbId: string | null;
   mediaType: "movie" | "show";
   onOpenUrl: (url: string) => void;
   ratingSource?: "imdb" | "tmdb";
-  animeImdbRating?: string | null;
   bare?: boolean;
   tmdbRating?: string | null;
 }) {
@@ -93,11 +88,8 @@ export function HeroRatings({
   const { settings } = useSettings();
   const metacritic = mdblist?.metacritic ?? scores?.metascore ?? null;
   const showPrimary = settings.showDetailRatings;
-  const primaryProviderOn = isAnime
-    ? settings.showMalDetail
-    : ratingSource === "tmdb"
-      ? settings.showTmdbDetail
-      : settings.showImdbDetail;
+  const primaryProviderOn =
+    ratingSource === "tmdb" ? settings.showTmdbDetail : settings.showImdbDetail;
 
   const { rating: simklCommunityRating } = useSimklCommunityRating(imdbId);
 
@@ -107,17 +99,15 @@ export function HeroRatings({
     items.push(
       <ScoreItem
         key="imdb"
-        label={isAnime ? t("MyAnimeList") : ratingSource === "tmdb" ? t("TMDB") : t("IMDb")}
-        sublabel={isAnime ? t("Score /10") : t("Rating /10")}
+        label={ratingSource === "tmdb" ? t("TMDB") : t("IMDb")}
+        sublabel={t("Rating /10")}
         onClick={
-          !isAnime && ratingSource !== "tmdb" && imdbId
+          ratingSource !== "tmdb" && imdbId
             ? () => onOpenUrl(`https://www.imdb.com/title/${imdbId}/`)
             : undefined
         }
       >
-        {isAnime ? (
-          <MalLogo className="h-[14px] w-auto text-ink-muted" />
-        ) : ratingSource === "tmdb" ? (
+        {ratingSource === "tmdb" ? (
           <span className="text-[10px] font-bold tracking-tight text-ink-muted">TMDB</span>
         ) : (
           <ImdbIcon className="h-[15px] w-auto rounded-[3px]" />
@@ -127,21 +117,8 @@ export function HeroRatings({
     );
   }
 
-  if (isAnime && animeImdbRating && showPrimary && settings.showImdbDetail) {
-    items.push(
-      <ScoreItem
-        key="anime-imdb"
-        label={t("IMDb")}
-        sublabel={t("Rating /10")}
-        onClick={imdbId ? () => onOpenUrl(`https://www.imdb.com/title/${imdbId}/`) : undefined}
-      >
-        <ImdbIcon className="h-[15px] w-auto rounded-[3px]" />
-        <span>{animeImdbRating}</span>
-      </ScoreItem>,
-    );
-  }
 
-  if (tmdbRating && showPrimary && settings.showTmdbDetail && ratingSource !== "tmdb" && !isAnime) {
+  if (tmdbRating && showPrimary && settings.showTmdbDetail && ratingSource !== "tmdb") {
     items.push(
       <ScoreItem key="tmdb" label={t("TMDB")} sublabel={t("Rating /10")}>
         <span className="text-[10px] font-bold tracking-tight text-ink-muted">TMDB</span>

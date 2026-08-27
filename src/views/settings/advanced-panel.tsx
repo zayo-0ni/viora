@@ -14,9 +14,6 @@ import {
 } from "@/lib/providers/omdb";
 import { useSettings } from "@/lib/settings";
 import { repairStremioLibrary, type RepairProgress, type RepairResult } from "@/lib/stremio-library-repair";
-import { findCorruptAnimeEntries, healCorruptAnimeEntries } from "@/lib/anime-cw-repair";
-import { clearResurfaceCache } from "@/lib/cw-resurface";
-import type { LibraryItem } from "@/lib/stremio";
 import { openUrl } from "@/lib/window";
 import { IS_BETA_BUILD } from "@/lib/build-info";
 import { BackupRow } from "./backup-row";
@@ -40,7 +37,7 @@ export function AdvancedPanel() {
 
       <Section
         title={t("Backup & restore")}
-        subtitle={t("Export your entire Harbor setup to a single file, then restore it on a new computer or keep it as a backup. Everything is included except your Stremio sign-in.")}
+        subtitle={t("Export your entire Viora setup to a single file, then restore it on a new computer or keep it as a backup. Everything is included except your Stremio sign-in.")}
       >
         <SettingsRecoverRow />
         <BackupRow />
@@ -48,14 +45,14 @@ export function AdvancedPanel() {
 
       <Section
         title={t("Downloads")}
-        subtitle={t("Where Harbor saves videos when you hit Download in the player. Pick any folder, including one on a different drive.")}
+        subtitle={t("Where Viora saves videos when you hit Download in the player. Pick any folder, including one on a different drive.")}
       >
         <DownloadsSection />
       </Section>
 
       <Section
         title={t("Privacy")}
-        subtitle={t("Harbor sends no telemetry. This also drops outbound ad, analytics, and tracker requests that addons or metadata providers try to make, before they leave your machine.")}
+        subtitle={t("Viora sends no telemetry. This also drops outbound ad, analytics, and tracker requests that addons or metadata providers try to make, before they leave your machine.")}
       >
         <PrivacyRow />
       </Section>
@@ -80,7 +77,6 @@ export function AdvancedPanel() {
       >
         <DesktopOnlyBlock>
           <LibraryRepairRow />
-          <AnimeRepairRow />
         </DesktopOnlyBlock>
       </Section>
 
@@ -107,7 +103,7 @@ function LegalDisclaimer() {
         Legal
       </span>
       <p className="mt-2 text-[12px] leading-relaxed text-ink-muted">
-        Harbor is an independent, open-source desktop and web client. It is{" "}
+        Viora is an independent, open-source desktop and web client. It is{" "}
         <span className="font-semibold text-ink">not affiliated with, endorsed by, sponsored by, or in any way associated with Stremio Ltd.</span>,{" "}
         the maker of <span className="font-semibold text-ink">Stremio</span>, or with any company,
         addon author, or trademark holder referenced inside the app.
@@ -118,7 +114,7 @@ function LegalDisclaimer() {
         and are used here only for compatibility and identification.
       </p>
       <p className="mt-2 text-[12px] leading-relaxed text-ink-muted">
-        Harbor itself does not host, distribute, or index any media. All streams come from
+        Viora itself does not host, distribute, or index any media. All streams come from
         third-party addons, debrid services, or your own Stremio account that you configure
         yourself. You are responsible for what you choose to play and for complying with the
         laws of your jurisdiction.
@@ -153,7 +149,7 @@ function WebBuildBanner() {
           {t("Where your data lives")}
         </h2>
         <p className="text-[13.5px] leading-relaxed text-ink-muted">
-          {t("Everything you save here stays in this browser. Your Stremio login, API keys, watch progress, picker cache, dismissed tips. Harbor servers never see any of it. Clearing your browser data wipes it.")}
+          {t("Everything you save here stays in this browser. Your Stremio login, API keys, watch progress, picker cache, dismissed tips. Viora servers never see any of it. Clearing your browser data wipes it.")}
         </p>
         <p className="text-[13.5px] leading-relaxed text-ink-muted">
           {t("The web build can't run mpv, the trickplay generator, the local bandwidth probe, or your own Cloudflare relay. If you want HDR passthrough, TrueHD or DTS-HD audio, and smoother seeking, grab the desktop app.")}
@@ -165,7 +161,7 @@ function WebBuildBanner() {
             className="flex h-10 w-fit items-center gap-2 rounded-xl bg-ink px-4 text-[13.5px] font-semibold text-canvas transition-transform hover:scale-[1.02] active:scale-[0.97]"
           >
             <Download size={14} strokeWidth={2.4} />
-            {t("Get Harbor for desktop")}
+            {t("Get Viora for desktop")}
           </FocusButton>}
           {SOURCE_URL && <FocusButton
             type="button"
@@ -375,7 +371,7 @@ function LibraryRepairRow() {
         "."
       );
     }
-    if (!progress) return t("Rewrites every library item to match Stremio's exact schema. Run once if your Stremio app started crashing after Harbor synced playback.");
+    if (!progress) return t("Rewrites every library item to match Stremio's exact schema. Run once if your Stremio app started crashing after Viora synced playback.");
     if (progress.phase === "fetching") {
       return progress.total ? t("Fetching {n} items…", { n: progress.total }) : t("Fetching library index…");
     }
@@ -403,85 +399,4 @@ function LibraryRepairRow() {
   );
 }
 
-function AnimeRepairRow() {
-  const t = useT();
-  const { authKey } = useAuth();
-  const [phase, setPhase] = useState<"idle" | "scanning" | "scanned" | "removing" | "done" | "error">("idle");
-  const [found, setFound] = useState<LibraryItem[]>([]);
-  const [removed, setRemoved] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-
-  const scan = async () => {
-    if (!authKey) return;
-    setPhase("scanning");
-    setError(null);
-    try {
-      const items = await findCorruptAnimeEntries(authKey);
-      setFound(items);
-      setPhase("scanned");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-      setPhase("error");
-    }
-  };
-
-  const remove = async () => {
-    if (!authKey || found.length === 0) return;
-    setPhase("removing");
-    try {
-      const n = await healCorruptAnimeEntries(authKey, found);
-      clearResurfaceCache();
-      setRemoved(n);
-      setPhase("done");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-      setPhase("error");
-    }
-  };
-
-  if (!authKey) {
-    return (
-      <ActionRow
-        label={t("Repair anime library")}
-        sub={t("Sign in to Stremio first. This scans the active profile's library.")}
-      />
-    );
-  }
-
-  const names =
-    found.slice(0, 4).map((i) => i.name || i._id).join(", ") + (found.length > 4 ? "…" : "");
-  const showRemove = phase === "scanned" && found.length > 0;
-  const busy = phase === "scanning" || phase === "removing";
-  const sub = (() => {
-    if (error) return t("Failed: {error}", { error });
-    if (phase === "scanning") return t("Scanning your library…");
-    if (phase === "scanned")
-      return found.length === 0
-        ? t("No issues found. Your anime library looks clean.")
-        : t("Found {n}: {names}. These are saved under the wrong id, which breaks Continue Watching and Trakt marking.", { n: found.length, names });
-    if (phase === "removing") return t("Removing…");
-    if (phase === "done") return t("Removed {n}. Rewatch and they re-add correctly.", { n: removed });
-    return t("Finds anime saved under a movie or series id (which breaks Continue Watching and Trakt) and removes just those so they re-add correctly.");
-  })();
-  const cta = (() => {
-    if (phase === "scanning") return t("Scanning…");
-    if (phase === "removing") return t("Removing…");
-    if (showRemove) return t("Remove {n}", { n: found.length });
-    if (phase === "done" || phase === "error" || (phase === "scanned" && found.length === 0))
-      return t("Scan again");
-    return t("Scan for corruption");
-  })();
-
-  return (
-    <ActionRow
-      label={t("Fix corrupted anime")}
-      sub={sub}
-      cta={cta}
-      icon={busy ? <Loader2 size={13} strokeWidth={2.4} className="animate-spin" /> : <Wrench size={13} strokeWidth={2.4} />}
-      onClick={showRemove ? remove : scan}
-      disabled={busy}
-      tone={phase === "done" && removed > 0 ? "success" : undefined}
-    />
-  );
-}
 

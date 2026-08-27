@@ -1,26 +1,16 @@
-import { FocusButton } from "@/lib/tv-focus";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronRight } from "lucide-react";
 import { Row } from "@/components/row";
 import { useT } from "@/lib/i18n";
 import { computeTvgIdCounts } from "@/lib/iptv/epg-resolver";
 import type { EpgIndex, IptvChannel } from "@/lib/iptv/types";
-import { isHydratableChannel } from "@/lib/iptv/channel-hydration";
 import { flagUrl } from "@/lib/iptv/country-detect";
+import { isHydratableChannel } from "@/lib/iptv/channel-hydration";
+import { useChannelHydration } from "./hooks/use-channel-hydration";
 import { clearCountries, toggleCountry, useCountryPrefs } from "@/lib/iptv/country-prefs";
 import { useFavorites } from "@/lib/iptv/favorites";
-import { DEFAULT_SPORTS_LEAGUES, LEAGUES } from "@/lib/sports/espn";
-import { useSettings } from "@/lib/settings";
-import { useView } from "@/lib/view";
-import { useChannelHydration } from "./hooks/use-channel-hydration";
 import { CountryBar } from "./live-home/country-bar";
-import { SportsMarquee } from "./live-home/sports/sports-marquee";
-import { useSports } from "./live-home/use-sports";
 import { GuideCard } from "./live-home/guide-card";
-import { LiveHero } from "./live-home/live-hero";
-import { MoreOnNow } from "./live-home/more-on-now";
 import { NowCard } from "./live-home/now-card";
-import { fmtClock } from "./live-home/now-format";
 import { buildNowItem, hydrationKey, useLiveHome, type ChannelRail } from "./live-home/use-live-home";
 
 export function LiveHome({
@@ -43,8 +33,7 @@ export function LiveHome({
   onOpenCategory: (group: string) => void;
 }) {
   const t = useT();
-  const { openMatchDetail } = useView();
-  const { spotlight, guide, rails, categoryRails, countries } = useLiveHome({
+  const { guide, rails, categoryRails, countries } = useLiveHome({
     channels,
     epg,
     nowMs,
@@ -54,71 +43,10 @@ export function LiveHome({
   });
   const countryPrefs = useCountryPrefs(sourceId);
   const tvgCounts = useMemo(() => computeTvgIdCounts(channels), [channels]);
-  const { settings, update } = useSettings();
-  const userSportsLeagues = settings.sportsLeagues?.length
-    ? settings.sportsLeagues
-    : DEFAULT_SPORTS_LEAGUES;
-
-  const saveSportsLeagues = (keys: string[]) => {
-    update({ sportsLeagues: keys });
-  };
-
-  const [sportsLeague, setSportsLeague] = useState<string>(() => {
-    try {
-      return localStorage.getItem("harbor.sports.league") || "all";
-    } catch {
-      return "all";
-    }
-  });
-  const pickLeague = (k: string) => {
-    setSportsLeague(k);
-    try {
-      localStorage.setItem("harbor.sports.league", k);
-    } catch {}
-  };
-  const sportsLeagues = useMemo(
-    () => (sportsLeague === "all" ? userSportsLeagues : [sportsLeague]),
-    [sportsLeague, userSportsLeagues],
-  );
-  const sports = useSports({ enabled: true, leagues: sportsLeagues });
-
-  const heroHydrations = useChannelHydration(
-    useMemo(() => {
-      const set = new Set<string>();
-      for (const it of spotlight) if (isHydratableChannel(it.channel)) set.add(hydrationKey(it));
-      return [...set];
-    }, [spotlight]),
-  );
-
   const railProps = { sourceId, epg, nowMs, tvgCounts, onPlay, onOpenCategory };
 
   return (
     <div className="flex flex-col gap-8 pb-12">
-      <div className="flex flex-col gap-5">
-        <div className="flex items-baseline gap-2.5 ps-[9px]">
-          <h1 className="font-display text-[30px] font-medium leading-none tracking-tight text-ink">
-            {t("Your TV")}
-          </h1>
-          <span className="text-[16px] text-ink-subtle">{t("at {time}", { time: fmtClock(nowMs) })}</span>
-        </div>
-        {spotlight.length > 0 && (
-          <div className="flex gap-5">
-            <LiveHero items={spotlight} nowMs={nowMs} hydrations={heroHydrations} onPlay={onPlay} />
-            <MoreOnNow items={spotlight} hydrations={heroHydrations} onPlay={onPlay} />
-          </div>
-        )}
-      </div>
-      {(sports.length > 0 || sportsLeague !== "all" || userSportsLeagues.length > 0) && (
-        <SportsMarquee
-          games={sports}
-          leagues={LEAGUES}
-          selected={sportsLeague}
-          selectedLeagues={userSportsLeagues}
-          onLeague={pickLeague}
-          onLeaguesChange={saveSportsLeagues}
-          onSelect={openMatchDetail}
-        />
-      )}
       {guide.length > 0 && (
         <Row title={t("On now")} shape="landscape" min={300} scrollKey={`live-home:${sourceId}:guide`}>
           {guide.map((it) => (
@@ -174,7 +102,6 @@ function RailRow({
   nowMs,
   tvgCounts,
   onPlay,
-  onOpenCategory,
 }: {
   rail: ChannelRail;
   sourceId: string;
@@ -182,7 +109,6 @@ function RailRow({
   nowMs: number;
   tvgCounts: Map<string, number>;
   onPlay: (ch: IptvChannel) => void;
-  onOpenCategory: (group: string) => void;
 }) {
   const items = useMemo(
     () => rail.channels.map((ch) => buildNowItem(ch, epg, tvgCounts, nowMs)),
@@ -195,21 +121,20 @@ function RailRow({
       return [...set];
     }, [items]),
   );
-  const title = rail.group ? (
-    <FocusButton
-      onClick={() => onOpenCategory(rail.group!)}
-      className="group/see inline-flex items-center gap-2 text-ink transition-colors hover:text-ink-muted"
-    >
+  /*
+    A heading, not a stop.
+
+    The category name opened its own screen, which made it a control the remote
+    had to walk through on the way down the page — a title that took the
+    highlight and drew a frame around itself between one row of channels and the
+    next. The channels are what the viewer came for, and every one of them is
+    still one press away.
+  */
+  const title = (
+    <span className="inline-flex items-center gap-2 text-ink">
       {rail.flagCode && <RailFlag code={rail.flagCode} />}
       <span dir="auto">{rail.title}</span>
-      <ChevronRight
-        size={18}
-        strokeWidth={2.4}
-        className="dir-icon text-ink-subtle transition-transform duration-200 group-hover/see:translate-x-0.5 rtl:group-hover/see:-translate-x-0.5"
-      />
-    </FocusButton>
-  ) : (
-    rail.title
+    </span>
   );
   return (
     <Row title={title} shape="landscape" min={300} scrollKey={`live-home:${sourceId}:${rail.key}`}>

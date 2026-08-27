@@ -5,11 +5,11 @@ import {
   type CustomColors,
   type ThemeSettings,
 } from "@/lib/theme";
-import { languageName } from "@/lib/subtitles/language";
 import { sanitizeSeekStep } from "@/lib/seek-step";
 import { migrateModelId } from "@/lib/ai-models";
 import { DEFAULT, STORAGE_KEY } from "./defaults";
 import type { Settings } from "./types";
+import { deriveLanguages, seedContentLanguages } from "@/lib/language";
 
 const HEX_RE = /^#[0-9a-f]{6}$/i;
 
@@ -73,8 +73,42 @@ export function sanitizeTheme(t: Partial<ThemeSettings> | undefined): ThemeSetti
   };
 }
 
+// Rebuilding the settings object on every call is what made this the second
+// hottest function on the television. The parse is only the beginning of it:
+// what follows is thirty-odd object spreads and two array maps through
+// languageName. It is called from the metadata mappers, once per title, so a
+// screen of a hundred cards rebuilt the whole thing a hundred times over to
+// read one boolean.
+//
+// The stored string is the cache key, which is what makes the memo safe: every
+// write to settings produces a different string, so a hit can only mean nothing
+// has changed. Reading that string back is itself a copy of a blob that runs to
+// tens of kilobytes, so within a burst the store is not consulted again either;
+// a quarter of a second of staleness is invisible here, because the interface
+// renders from the provider's own state and these callers are data mappers.
+const RECHECK_MS = 250;
+type Cached = { raw: string | null; value: Settings; checkedAt: number };
+const cache = new Map<string, Cached>();
+
+export function invalidateStoredSettings(): void {
+  cache.clear();
+}
+
 export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
+  const now = Date.now();
+  const hit = cache.get(rawKey);
+  if (hit && now - hit.checkedAt < RECHECK_MS) return hit.value;
   const raw = localStorage.getItem(rawKey);
+  if (hit && hit.raw === raw) {
+    hit.checkedAt = now;
+    return hit.value;
+  }
+  const value = buildStoredSettings(raw);
+  cache.set(rawKey, { raw, value, checkedAt: now });
+  return value;
+}
+
+function buildStoredSettings(raw: string | null): Settings {
   if (!raw) {
     return {
       ...DEFAULT,
@@ -90,11 +124,9 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
       _mpvEmbedV2?: boolean;
       _mpvEmbedV3?: boolean;
       _mpvEmbedV4?: boolean;
-      _anime4kIndicatorOffV1?: boolean;
       _pickerLayoutStremio?: boolean;
       _pickerLayoutStremioV2?: boolean;
       _stremioDeeplinkOnByDefault?: boolean;
-      _anilistSyncOnV1?: boolean;
       _rememberLastStreamOnV1?: boolean;
       _streamSortAddonV1?: boolean;
       scrapers?: unknown;
@@ -109,10 +141,6 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
     if (!parsed._stremioDeeplinkOnByDefault) {
       parsed.stremioDeeplinkInstall = true;
       parsed._stremioDeeplinkOnByDefault = true;
-    }
-    if (!parsed._anilistSyncOnV1) {
-      parsed.anilistAutoSync = true;
-      parsed._anilistSyncOnV1 = true;
     }
     if (!parsed._rememberLastStreamOnV1) {
       parsed.rememberLastStream = true;
@@ -133,10 +161,6 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
     if (!parsed._mpvEmbedV4) {
       parsed.playerMpvEmbed = true;
       parsed._mpvEmbedV4 = true;
-    }
-    if (!parsed._anime4kIndicatorOffV1) {
-      parsed.playerAnime4kIndicator = false;
-      parsed._anime4kIndicatorOffV1 = true;
     }
     if (!parsed._subStyleV2) {
       if (parsed.subFontSize === 55) parsed.subFontSize = DEFAULT.subFontSize;
@@ -173,11 +197,6 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
         ...DEFAULT.letterboxd,
         ...(parsed.letterboxd ?? {}),
       },
-      preferredSubLangs: (parsed.preferredSubLangs ?? DEFAULT.preferredSubLangs).map(languageName),
-      preferredAudioLangs: (parsed.preferredAudioLangs ?? DEFAULT.preferredAudioLangs).map(
-        languageName,
-      ),
-      showMalBadge: parsed.showMalBadge ?? DEFAULT.showMalBadge,
       badgePlacement:
         parsed.badgePlacement === "top" || parsed.badgePlacement === "bottom"
           ? parsed.badgePlacement
@@ -187,7 +206,6 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
           ? parsed.harborColor
           : DEFAULT.harborColor,
       traktClientId: parsed.traktClientId ?? DEFAULT.traktClientId,
-      traktClientSecret: parsed.traktClientSecret ?? DEFAULT.traktClientSecret,
       traktAccessToken: parsed.traktAccessToken ?? DEFAULT.traktAccessToken,
       traktRefreshToken: parsed.traktRefreshToken ?? DEFAULT.traktRefreshToken,
       traktExpiresAt: parsed.traktExpiresAt ?? DEFAULT.traktExpiresAt,
@@ -225,24 +243,23 @@ export function loadStoredSettings(rawKey: string = STORAGE_KEY): Settings {
         mediaTypes: {
           movie: parsed.customCalendar?.mediaTypes?.movie !== false,
           tv: parsed.customCalendar?.mediaTypes?.tv !== false,
-          anime: parsed.customCalendar?.mediaTypes?.anime !== false,
         },
       },
       webhookRules: Array.isArray(parsed.webhookRules) ? parsed.webhookRules : [],
       customStreamFilters: Array.isArray(parsed.customStreamFilters) ? parsed.customStreamFilters : DEFAULT.customStreamFilters,
-      animeFavoriteGenres: Array.isArray(parsed.animeFavoriteGenres)
-        ? parsed.animeFavoriteGenres.filter((g): g is number => typeof g === "number")
-        : DEFAULT.animeFavoriteGenres,
-      animePicksDismissedAt:
-        typeof parsed.animePicksDismissedAt === "number"
-          ? parsed.animePicksDismissedAt
-          : DEFAULT.animePicksDismissedAt,
-      animeAnilistRowsHidden: Array.isArray(parsed.animeAnilistRowsHidden)
-        ? parsed.animeAnilistRowsHidden.filter((k): k is string => typeof k === "string")
-        : DEFAULT.animeAnilistRowsHidden,
-      tmdbImageLangs: Array.isArray(parsed.tmdbImageLangs)
-        ? parsed.tmdbImageLangs.filter((l): l is string => typeof l === "string")
-        : DEFAULT.tmdbImageLangs,
+      // Every language field but one is computed, never read from storage.
+      //
+      // The viewer answers once, in `contentLanguages`; subtitles, audio,
+      // artwork, metadata, add-on ranking and the home rows are all shapes of
+      // that same answer. Anyone upgrading keeps what they had — their old
+      // subtitle list, or failing that their stream languages, is carried into
+      // the single list the first time these settings are read.
+      ...(() => {
+        const stored = Array.isArray(parsed.contentLanguages)
+          ? parsed.contentLanguages.filter((l): l is string => typeof l === "string")
+          : seedContentLanguages(parsed as Record<string, unknown>);
+        return { contentLanguages: stored, ...deriveLanguages(stored) };
+      })(),
     };
   } catch {
     return DEFAULT;

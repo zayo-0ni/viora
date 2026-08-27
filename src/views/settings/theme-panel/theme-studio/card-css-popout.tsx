@@ -21,7 +21,7 @@ const STARTER = `/* Custom cards: .your-card targets each poster. */
 const HOOKS = [
   { sel: ".your-card", note: "each poster" },
   { sel: ".group:hover .your-card", note: "on hover" },
-  { sel: ".harbor-poster", note: "poster image" },
+  { sel: ".viora-poster", note: "poster image" },
 ];
 
 const FALLBACK: Array<{ id: string; name: string; poster: string }> = [
@@ -144,7 +144,7 @@ export function CardCssPopout({
                     className="group relative flex w-full min-w-0 cursor-default flex-col gap-2 text-start transition-[z-index] hover:z-10"
                   >
                     <div className="your-card relative aspect-[2/3] rounded-xl bg-elevated">
-                      <div className="harbor-poster absolute inset-0 overflow-hidden rounded-[inherit]">
+                      <div className="viora-poster absolute inset-0 overflow-hidden rounded-[inherit]">
                         <img
                           src={p.poster}
                           alt=""

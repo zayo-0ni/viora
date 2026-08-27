@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { meta as fetchCinemetaMeta, narrowMediaType, type Meta } from "@/lib/cinemeta";
 import { useOmdbScores } from "@/lib/providers/omdb";
-import { harborImdbTitle } from "@/lib/providers/harbor-imdb";
+import { harborImdbTitle } from "@/lib/providers/viora-imdb";
 
 export function useImdbRating(meta: Meta, resolvedImdb?: string | null): string | undefined {
   const omdb = useOmdbScores(resolvedImdb ?? undefined);
   const [cinemetaRating, setCinemetaRating] = useState<string | undefined>(undefined);
-  const [harborRating, setHarborRating] = useState<string | undefined>(undefined);
+  const [harborRating, setVioraRating] = useState<string | undefined>(undefined);
   const isImdbId = meta.id.startsWith("tt");
   useEffect(() => {
     setCinemetaRating(undefined);
@@ -22,13 +22,13 @@ export function useImdbRating(meta: Meta, resolvedImdb?: string | null): string 
     };
   }, [isImdbId, resolvedImdb, meta.type]);
   useEffect(() => {
-    setHarborRating(undefined);
+    setVioraRating(undefined);
     const tt = isImdbId ? meta.id : resolvedImdb;
     if (!tt || !tt.startsWith("tt")) return;
     let cancelled = false;
     harborImdbTitle(tt)
       .then((r) => {
-        if (!cancelled && r != null) setHarborRating(r.toFixed(1));
+        if (!cancelled && r != null) setVioraRating(r.toFixed(1));
       })
       .catch(() => {});
     return () => {

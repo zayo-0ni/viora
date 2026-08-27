@@ -8,7 +8,6 @@ import {
   tmdbMovieRelease,
   tmdbTvUpcoming,
 } from "./providers/tmdb/tmdb-calendar";
-import { aniZipByAnilist, aniZipByKitsu, aniZipByMal, pickEpisodeTitle } from "./providers/anizip";
 import type { CalendarItem } from "./calendar";
 
 const SERIES_LIMIT = 80;
@@ -39,7 +38,6 @@ type ResolvedEpisode = {
 type ResolvedSeries = {
   name: string;
   poster: string | null;
-  isAnime: boolean;
   episodes: ResolvedEpisode[];
 };
 
@@ -69,13 +67,6 @@ function inMonthFactory(year: number, month: number): (iso: string) => boolean {
   };
 }
 
-function isAnimationGenre(genres: string[] | undefined): boolean {
-  if (!genres) return false;
-  return genres.some((g) => {
-    const l = g.toLowerCase();
-    return l === "animation" || l === "anime";
-  });
-}
 
 async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
   const out: R[] = [];
@@ -85,48 +76,8 @@ async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promis
   return out;
 }
 
-function isAnimeId(id: string): boolean {
-  return id.startsWith("kitsu:") || id.startsWith("mal:") || id.startsWith("anilist:");
-}
 
-function animeNumericId(id: string): number | null {
-  const n = Number(id.split(":")[1]);
-  return Number.isFinite(n) ? n : null;
-}
 
-async function animeUpcoming(
-  id: string,
-  inWindow: (date: string) => boolean,
-): Promise<ResolvedSeries | null> {
-  const numId = animeNumericId(id);
-  if (numId == null) return null;
-  const mapping = id.startsWith("kitsu:")
-    ? await aniZipByKitsu(numId)
-    : id.startsWith("mal:")
-      ? await aniZipByMal(numId)
-      : await aniZipByAnilist(numId);
-  if (!mapping?.episodes) return null;
-  const episodes: ResolvedEpisode[] = [];
-  for (const [k, ep] of Object.entries(mapping.episodes)) {
-    const date = (ep.airDate ?? ep.airDateUtc ?? "").slice(0, 10);
-    if (!date || !inWindow(date)) continue;
-    episodes.push({
-      season: ep.seasonNumber ?? 1,
-      number: ep.episodeNumber ?? (Number(k) || 0),
-      name: pickEpisodeTitle(ep) ?? "",
-      airDate: date,
-      image: ep.image ?? null,
-      overview: ep.overview ?? "",
-      voteAverage: 0,
-    });
-  }
-  return {
-    name: mapping.titles?.en ?? mapping.titles?.["x-jat"] ?? "",
-    poster: null,
-    isAnime: true,
-    episodes,
-  };
-}
 
 async function tmdbSeries(
   id: string,
@@ -165,7 +116,7 @@ async function cinemetaSeriesUpcoming(
     });
   }
   if (episodes.length === 0) return null;
-  return { name: m.name, poster: m.poster ?? null, isAnime: isAnimationGenre(m.genres), episodes };
+  return { name: m.name, poster: m.poster ?? null, episodes };
 }
 
 async function seriesUpcoming(
@@ -173,7 +124,6 @@ async function seriesUpcoming(
   inWindow: (date: string) => boolean,
   tmdbKey: string,
 ): Promise<ResolvedSeries | null> {
-  if (isAnimeId(c.id)) return animeUpcoming(c.id, inWindow);
   if (c.id.startsWith("tt")) {
     const cm = await cinemetaSeriesUpcoming(c.id, inWindow);
     if (cm) return cm;
@@ -187,7 +137,6 @@ async function seriesUpcoming(
       return {
         name: up.show.name,
         poster: up.show.image,
-        isAnime: up.show.isAnime,
         episodes: up.episodes.map((e) => ({
           season: e.season,
           number: e.number,
@@ -224,7 +173,6 @@ async function movieRelease(
       poster: m.poster,
       background: m.background,
       releaseDate: m.releaseDate,
-      isAnime: m.isAnime,
       overview: m.overview,
       voteAverage: m.voteAverage,
     };
@@ -242,7 +190,6 @@ async function movieRelease(
       poster: m.poster ?? null,
       background: m.background ?? null,
       releaseDate: date,
-      isAnime: isAnimationGenre(m.genres),
       overview: m.description ?? "",
       voteAverage: parseFloat(m.imdbRating ?? "0") || 0,
     };
@@ -373,7 +320,6 @@ export async function resolveSavedCalendar(
         poster: ep.image ?? r.poster ?? null,
         background: null,
         releaseDate: ep.airDate,
-        isAnime: r.isAnime,
         overview: ep.overview,
         voteAverage: ep.voteAverage,
       });

@@ -73,7 +73,7 @@ function ChatBubble({
   const fallbackColor = color ?? `oklch(0.78 0.13 ${nameHue(msg.name)})`;
 
   return (
-    <div className="harbor-chat-toast animate-slide-from-right rtl:animate-slide-from-left pointer-events-auto flex w-full max-w-[320px] items-start gap-2.5 rounded-xl border border-edge-soft/70 bg-elevated/80 px-3.5 py-2.5 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+    <div className="viora-chat-toast animate-slide-from-right rtl:animate-slide-from-left pointer-events-auto flex w-full max-w-[320px] items-start gap-2.5 rounded-xl border border-edge-soft/70 bg-elevated/80 px-3.5 py-2.5 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.55)] backdrop-blur-sm">
       {avatar && !avatarFailed ? (
         <img
           src={avatar}

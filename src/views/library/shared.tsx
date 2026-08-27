@@ -221,9 +221,14 @@ export function GroupedGrid<
     <div className="flex flex-col gap-7">
       {groups.map((g) => (
         <div key={g.label} className="flex flex-col gap-3">
-          <h3 className="text-[11px] font-bold uppercase tracking-[0.24em] text-ink-subtle">
-            {t(g.label)} <span className="ms-1 text-ink-subtle/70">{g.items.length}</span>
-          </h3>
+          {/* A heading is for telling groups apart. With one group there is
+              nothing to tell apart, and "Everything 509" only repeats the
+              "509 items" already sitting above it. */}
+          {groups.length > 1 && (
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.24em] text-ink-subtle">
+              {t(g.label)} <span className="ms-1 text-ink-subtle/70">{g.items.length}</span>
+            </h3>
+          )}
           <Grid>
             {g.items.map((it) => (
               <WatchlistCard
@@ -246,7 +251,7 @@ export function EmptyWatchlist({ connected }: { connected: boolean }) {
       <Bookmark size={28} strokeWidth={1.6} className="text-ink-subtle" />
       <h2 className="text-[16px] font-semibold text-ink">{t("Your watchlist is empty")}</h2>
       <p className="max-w-md text-[13px] leading-relaxed text-ink-muted">
-        {t("Right-click any title in Harbor or hit \"Add to Watchlist\" on its detail page to save it here.")}
+        {t("Right-click any title in Viora or hit \"Add to Watchlist\" on its detail page to save it here.")}
         {connected
           ? t(" Anything you save also syncs to your Trakt account.")
           : t(" Connect Trakt in Settings to sync this list across devices.")}

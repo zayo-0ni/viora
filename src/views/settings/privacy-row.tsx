@@ -13,8 +13,8 @@ export function PrivacyRow() {
 
   const sub = settings.blockTrackers
     ? count > 0
-      ? t("{count} tracker request blocked this session. Harbor itself sends zero telemetry.", { count: count.toLocaleString() })
-      : t("Watching for ad, analytics, and tracking requests. Harbor itself sends zero telemetry.")
+      ? t("{count} tracker request blocked this session. Viora itself sends zero telemetry.", { count: count.toLocaleString() })
+      : t("Watching for ad, analytics, and tracking requests. Viora itself sends zero telemetry.")
     : t("Ad, analytics, and tracking requests pass through untouched.");
 
   return (

@@ -1,0 +1,148 @@
+import { FocusButton } from "@/lib/tv-focus";
+import { Check, ExternalLink, Loader2, Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSettings } from "@/lib/settings";
+import { useT } from "@/lib/i18n";
+import { openUrl } from "@/lib/window";
+import { svpApply, svpLaunch, svpStatus, type SvpStatus } from "@/lib/svp";
+import { Section, ToggleRow } from "../shared";
+
+export function SvpSection() {
+  const { settings, update } = useSettings();
+  const t = useT();
+  const [status, setStatus] = useState<SvpStatus | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    svpStatus().then(setStatus).catch(() => {});
+  }, []);
+
+  const installed = status?.installed ?? false;
+  const ready = status?.ready ?? false;
+  const loadFailed = ready && status?.loadable === false;
+
+  const openSvp = async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      await svpLaunch();
+    } catch (e) {
+      setError(t("Couldn't start SVP Manager: {err}", { err: String(e) }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onToggle = async (on: boolean) => {
+    setError(null);
+    if (!on) {
+      update({ playerSvp: false });
+      return;
+    }
+    setBusy(true);
+    try {
+      const vpy = await svpApply("60");
+      update({ playerSvp: true, svpVpyPath: vpy });
+      svpStatus().then(setStatus).catch(() => {});
+    } catch (e) {
+      setError(t("Couldn't set up SVP: {err}", { err: String(e) }));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Section
+      title={t("SVP frame interpolation")}
+      subtitle={t("Genuine 48/60fps motion on anime, rendered right inside Viora's player. SVP supplies the engine (VapourSynth + svpflow) and runs in your tray for licensing; Viora's own player applies the interpolation, so it stays embedded and fully under your control. One-time install, then flip it on.")}
+    >
+      <Step n={1} title={t("SVP (free)")} ok={ready && !loadFailed}>
+        <p className="text-[12.5px] leading-relaxed text-ink-muted">
+          {loadFailed
+            ? t("SVP's files are here but its VapourSynth engine won't load ({err}). This usually means a stale VapourSynth entry or a missing Microsoft VC++ runtime. Reinstall SVP, or install the latest \"Visual C++ Redistributable (x64)\" from Microsoft, then reopen Viora.", { err: status?.load_error ?? "load error" })
+            : ready
+              ? t("Installed and detected. Viora found its interpolation engine and will drive it directly.")
+              : installed
+                ? t("SVP is installed but Viora couldn't find its engine files (svpflow + VapourSynth). Try repairing the SVP install, or reopen SVP once.")
+                : t("Install SVP once (the free tier is enough). It bundles VapourSynth + svpflow; Viora reuses them, no extra setup.")}
+        </p>
+        <div className="flex flex-wrap items-center gap-2">
+          {installed ? (
+            <FocusButton
+              type="button"
+              onClick={openSvp}
+              disabled={busy}
+              className="flex h-9 items-center gap-1.5 rounded-lg border border-edge px-3 text-[12.5px] font-semibold text-ink transition-colors hover:bg-elevated disabled:opacity-60"
+            >
+              {busy ? <Loader2 size={13} className="animate-spin" /> : <Play size={13} strokeWidth={2.2} />}
+              {t("Open SVP")}
+            </FocusButton>
+          ) : (
+            <LinkButton label={t("Get SVP (free)")} url="https://www.svp-team.com/get/" />
+          )}
+        </div>
+      </Step>
+
+      <ToggleRow
+        label={t("Enable SVP")}
+        sub={
+          ready
+            ? t("Viora's player applies the interpolation itself, embedded like normal playback, and starts SVP Manager in the tray for licensing. Restart playback to apply. If video goes black or won't start, turn this off.")
+            : t("Finish the install above first. Flipping this on now won't do anything until Viora can find SVP's engine.")
+        }
+        value={settings.playerSvp}
+        onChange={(v) => void onToggle(v)}
+      />
+
+
+      {error && (
+        <div className="flex items-start gap-2.5 rounded-xl border border-danger/40 bg-danger/10 px-3.5 py-3 text-[12px] leading-snug text-ink">
+          <span className="mt-0.5 shrink-0 font-bold text-danger">!</span>
+          <span>{error}</span>
+        </div>
+      )}
+    </Section>
+  );
+}
+
+function Step({
+  n,
+  title,
+  ok,
+  children,
+}: {
+  n: number;
+  title: string;
+  ok?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex gap-3.5 rounded-xl border border-edge-soft bg-canvas/40 p-4">
+      <span
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${
+          ok ? "bg-emerald-500/15 text-emerald-400" : "bg-raised text-ink-muted"
+        }`}
+      >
+        {ok ? <Check size={14} strokeWidth={2.8} /> : n}
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <span className="text-[13.5px] font-semibold text-ink">{title}</span>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function LinkButton({ label, url }: { label: string; url: string }) {
+  return (
+    <FocusButton
+      type="button"
+      onClick={() => openUrl(url)}
+      className="inline-flex items-center gap-1.5 self-start rounded-lg border border-edge bg-elevated/60 px-3 py-1.5 text-[11.5px] font-semibold text-ink transition-colors hover:border-ink"
+    >
+      {label}
+      <ExternalLink size={11} strokeWidth={2.2} />
+    </FocusButton>
+  );
+}

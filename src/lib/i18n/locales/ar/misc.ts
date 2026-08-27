@@ -33,29 +33,29 @@ const misc: Record<string, string> = {
   "Custom HTML overlay": "طبقة HTML مخصصة",
   "Injected into a fixed-position layer above the app (pointer-events disabled by default). Wrap in a div with pointer-events:auto to make it interactive.": "تُحقن في طبقة ثابتة فوق التطبيق. ضعها في div مع pointer-events:auto لجعلها تفاعلية.",
   "Custom code": "كود مخصص",
-  "Power-user knob. Inject your own CSS, JS, and HTML into Harbor. Lives in your local settings; nothing leaves your machine.": "أداة للمحترفين. احقن أكواد CSS و JS و HTML الخاصة بك. يتم حفظها في إعداداتك المحلية ولا شيء يغادر جهازك.",
-  "You're modding your own client. Custom JS has full access to your Harbor session. Only paste code you wrote or fully trust.": "أنت تقوم بتعديل نسختك الخاصة. الكود يمتلك وصولاً كاملاً لجلستك. لا تلصق إلا أكواداً تثق بها تماماً.",
+  "Power-user knob. Inject your own CSS, JS, and HTML into Viora. Lives in your local settings; nothing leaves your machine.": "أداة للمحترفين. احقن أكواد CSS و JS و HTML الخاصة بك. يتم حفظها في إعداداتك المحلية ولا شيء يغادر جهازك.",
+  "You're modding your own client. Custom JS has full access to your Viora session. Only paste code you wrote or fully trust.": "أنت تقوم بتعديل نسختك الخاصة. الكود يمتلك وصولاً كاملاً لجلستك. لا تلصق إلا أكواداً تثق بها تماماً.",
   
   "Close to the system tray": "التصغير إلى علبة النظام (System tray)",
-  "Closing the window tucks Harbor into the tray instead of quitting, so it reopens instantly. Right-click the tray icon for quick controls, or pick Quit to exit fully.": "إغلاق النافذة يُخفي Harbor في العلبة بدلاً من إنهائه تماماً، ليُفتح لاحقاً بلمح البصر. انقر بالزر الأيمن على الأيقونة للتحكم السريع، أو اختر 'إنهاء' لإغلاقه بالكامل.",
+  "Closing the window tucks Viora into the tray instead of quitting, so it reopens instantly. Right-click the tray icon for quick controls, or pick Quit to exit fully.": "إغلاق النافذة يُخفي Viora في العلبة بدلاً من إنهائه تماماً، ليُفتح لاحقاً بلمح البصر. انقر بالزر الأيمن على الأيقونة للتحكم السريع، أو اختر 'إنهاء' لإغلاقه بالكامل.",
   "Always on top": "دائماً في المقدمة",
-  "Keep the Harbor window above other windows.": "إبقاء نافذة Harbor فوق النوافذ الأخرى.",
+  "Keep the Viora window above other windows.": "إبقاء نافذة Viora فوق النوافذ الأخرى.",
   "Pause when minimized": "إيقاف مؤقت عند التصغير",
-  "Stop playback when you minimize Harbor or send it to the tray.": "إيقاف التشغيل مؤقتاً عند تصغير Harbor أو إخفائه في العلبة.",
+  "Stop playback when you minimize Viora or send it to the tray.": "إيقاف التشغيل مؤقتاً عند تصغير Viora أو إخفائه في العلبة.",
   "Pause when unfocused": "إيقاف مؤقت عند فقدان التركيز",
   "Stop playback whenever another window takes focus.": "إيقاف التشغيل مؤقتاً عندما تنتقل للعمل على نافذة أخرى.",
   "Block ads & trackers": "حظر الإعلانات والمتتبعات",
-  "Watching for ad, analytics, and tracking requests. Harbor itself sends zero telemetry.": "مراقبة طلبات الإعلانات والتحليلات والتتبع وحظرها. Harbor نفسه لا يرسل أي بيانات تتبع.",
+  "Watching for ad, analytics, and tracking requests. Viora itself sends zero telemetry.": "مراقبة طلبات الإعلانات والتحليلات والتتبع وحظرها. Viora نفسه لا يرسل أي بيانات تتبع.",
   "Export everything": "تصدير كل شيء",
-  "Saves your whole Harbor setup to one file: theme, home layout, settings, addons, profiles, watchlist, player layouts, watch progress, and more. Your Stremio sign-in is left out on purpose.": "حفظ إعدادات Harbor بالكامل في ملف واحد: المظهر، واجهة الرئيسية، الإعدادات، الإضافات، الملفات الشخصية، قائمة المشاهدة، واجهة المشغل، سجل المشاهدة، والمزيد. (يتم استثناء تسجيل الدخول لـ Stremio عمداً).",
+  "Saves your whole Viora setup to one file: theme, home layout, settings, addons, profiles, watchlist, player layouts, watch progress, and more. Your Stremio sign-in is left out on purpose.": "حفظ إعدادات Viora بالكامل في ملف واحد: المظهر، واجهة الرئيسية، الإعدادات، الإضافات، الملفات الشخصية، قائمة المشاهدة، واجهة المشغل، سجل المشاهدة، والمزيد. (يتم استثناء تسجيل الدخول لـ Stremio عمداً).",
   "Export": "تصدير",
   "Restore from a backup": "استعادة من نسخة احتياطية",
   "Loads a backup file and replaces your current setup with it. Perfect for a new computer. Your Stremio sign-in on this device stays as is.": "تحميل ملف النسخة الاحتياطية واستبدال إعداداتك الحالية به. مثالي عند الانتقال لجهاز جديد. تسجيل الدخول لـ Stremio على هذا الجهاز لن يتأثر.",
   Restore: "استعادة",
   "Restore this backup?": "استعادة هذه النسخة؟",
-  "This replaces your current Harbor setup (theme, home layout, settings, addons, profiles, and more) with the {n} saved entries in this file. Your Stremio sign-in stays as is. Harbor reloads when it finishes.": "سيستبدل هذا إعدادات Harbor الحالية (المظهر، الرئيسية، الإعدادات، الإضافات، الملفات الشخصية...) بـ {n} من المدخلات المحفوظة في هذا الملف. لن يتأثر حساب Stremio. سيعاد تشغيل Harbor عند الانتهاء.",
+  "This replaces your current Viora setup (theme, home layout, settings, addons, profiles, and more) with the {n} saved entries in this file. Your Stremio sign-in stays as is. Viora reloads when it finishes.": "سيستبدل هذا إعدادات Viora الحالية (المظهر، الرئيسية، الإعدادات، الإضافات، الملفات الشخصية...) بـ {n} من المدخلات المحفوظة في هذا الملف. لن يتأثر حساب Stremio. سيعاد تشغيل Viora عند الانتهاء.",
   "an unknown date": "تاريخ غير معروف",
-  "Saved {when} from Harbor {app}.": "تم الحفظ في {when} من Harbor {app}.",
+  "Saved {when} from Viora {app}.": "تم الحفظ في {when} من Viora {app}.",
   "Restoring...": "جاري الاستعادة...",
   "Restore and reload": "استعادة وإعادة تشغيل",
 
@@ -67,8 +67,8 @@ const misc: Record<string, string> = {
   "List view": "عرض القائمة",
   Beta: "تجريبي",
   "How is this build treating you?": "ما رأيك في هذه النسخة؟",
-  "Does Harbor {version} feel better or worse than the version you had before?":
-    "هل إصدار Harbor {version} أفضل أم أسوأ من الإصدار السابق؟",
+  "Does Viora {version} feel better or worse than the version you had before?":
+    "هل إصدار Viora {version} أفضل أم أسوأ من الإصدار السابق؟",
   "Much worse": "أسوأ بكثير",
   Worse: "أسوأ",
   "About the same": "بدون تغيير / عادي",
@@ -330,7 +330,7 @@ const misc: Record<string, string> = {
   "Browse by Genre": "تصفح حسب التصنيف",
   "Choose a source to save offline. You can track progress on the Downloads page.": "اختر مصدراً للحفظ دون اتصال. يمكنك متابعة التقدم في صفحة التنزيلات.",
   "Last source wasn't actually cached on your debrid yet. Pick another from the list.": "لم يكن المصدر الأخير مخزنًا مؤقتًا بالفعل على debrid الخاص بك. اختر مصدراً آخر من القائمة.",
-  "Harbor couldn't resolve a usable ID for this title. Add a TMDB key in Library settings or sign in to Stremio to broaden coverage.": "لم يتمكن Harbor من حل معرّف صالح لهذا العمل. أضف مفتاح TMDB في إعدادات المكتبة أو سجّل الدخول إلى Stremio لتوسيع التغطية.",
+  "Viora couldn't resolve a usable ID for this title. Add a TMDB key in Library settings or sign in to Stremio to broaden coverage.": "لم يتمكن Viora من حل معرّف صالح لهذا العمل. أضف مفتاح TMDB في إعدادات المكتبة أو سجّل الدخول إلى Stremio لتوسيع التغطية.",
   "No playable streams turned up, and no debrid is configured. Real-Debrid, TorBox, AllDebrid, Premiumize, or Debrid-Link will unlock raw torrent results. Some addons bake debrid in (Sootio, Comet/ElfHosted, MediaFusion/ElfHosted) and play without your own keys.": "لم تظهر أي مصادر قابلة للتشغيل، ولم يتم تكوين debrid. سيؤدي استخدام Real-Debrid أو TorBox أو AllDebrid أو Premiumize أو Debrid-Link إلى إظهار نتائج التورنت الخام. بعض الإضافات تدمج debrid داخلها وتعمل بدون مفاتيحك الخاصة.",
   "Set up a debrid": "إعداد debrid",
   "Only 1 source after filtering": "مصدر واحد فقط بعد التصفية",
@@ -340,8 +340,8 @@ const misc: Record<string, string> = {
   "Show everything anyway": "إظهار كل شيء على أي حال",
   "No source returned a stream": "لم يرجع أي مصدر نتائج",
   "Anime sources are usually richer through Torrentio's anime config or AIOStreams. Make sure one is installed in Stremio.": "غالبًا ما تكون مصادر الأنمي أغنى من خلال تكوين أنمي Torrentio أو AIOStreams. تأكد من تثبيت أحدهما في Stremio.",
-  "On the web, Harbor can only reach addons that allow browser access (Torrentio, TorBox, Cinemeta). For unreleased titles, no source typically exists yet.": "على الويب، لا يمكن لـ Harbor الوصول إلا إلى الإضافات التي تسمح بوصول المتصفح. بالنسبة للأعمال غير الصادرة، لا يوجد مصدر عادةً.",
-  "Try signing in to Stremio so Harbor can use your addon collection. Older or foreign titles often need Torrentio + a debrid addon to find anything.": "حاول تسجيل الدخول إلى Stremio حتى يتمكن Harbor من استخدام مجموعة إضافاتك. غالبًا ما تحتاج الأعمال القديمة أو الأجنبية إلى Torrentio + إضافة debrid للعثور على أي شيء.",
+  "On the web, Viora can only reach addons that allow browser access (Torrentio, TorBox, Cinemeta). For unreleased titles, no source typically exists yet.": "على الويب، لا يمكن لـ Viora الوصول إلا إلى الإضافات التي تسمح بوصول المتصفح. بالنسبة للأعمال غير الصادرة، لا يوجد مصدر عادةً.",
+  "Try signing in to Stremio so Viora can use your addon collection. Older or foreign titles often need Torrentio + a debrid addon to find anything.": "حاول تسجيل الدخول إلى Stremio حتى يتمكن Viora من استخدام مجموعة إضافاتك. غالبًا ما تحتاج الأعمال القديمة أو الأجنبية إلى Torrentio + إضافة debrid للعثور على أي شيء.",
   "Tried IDs: ": "المعرفات المجربة: ",
   "Strict filters dropped everything": "الفلاتر الصارمة تجاهلت كل شيء",
   "Search wider": "بحث أوسع",
@@ -397,13 +397,13 @@ const misc: Record<string, string> = {
   "Back to relay": "العودة إلى المرحل",
   "Documentation": "التوثيق",
   "Self-host": "استضافة ذاتية",
-  "Run your own Harbor Relay": "قم بتشغيل Harbor Relay الخاص بك",
-  "Two paths: Harbor handles the deploy for you, or you do it yourself with wrangler.": "مساران: يتولى Harbor عملية النشر نيابةً عنك، أو تقوم بها بنفسك باستخدام wrangler.",
+  "Run your own Viora Relay": "قم بتشغيل Viora Relay الخاص بك",
+  "Two paths: Viora handles the deploy for you, or you do it yourself with wrangler.": "مساران: يتولى Viora عملية النشر نيابةً عنك، أو تقوم بها بنفسك باستخدام wrangler.",
   "Requirements": "المتطلبات",
   "A free Cloudflare account.": "حساب Cloudflare مجاني.",
   "About two minutes for the auto-deploy path.": "حوالي دقيقتين لمسار النشر التلقائي.",
-  "Auto-deploy from Harbor": "النشر التلقائي من Harbor",
-  "Open Settings, then Harbor Relay.": "افتح الإعدادات، ثم Harbor Relay.",
+  "Auto-deploy from Viora": "النشر التلقائي من Viora",
+  "Open Settings, then Viora Relay.": "افتح الإعدادات، ثم Viora Relay.",
   "Pick the Cloudflare account to deploy under.": "اختر حساب Cloudflare للنشر ضمنه.",
   "Manual deploy with wrangler": "النشر اليدوي باستخدام wrangler",
   "For users who want to deploy themselves or already have a wrangler workflow.": "للمستخدمين الذين يفضلون النشر بأنفسهم أو لديهم سير عمل باستخدام wrangler مسبقاً.",
@@ -520,16 +520,16 @@ const misc: Record<string, string> = {
   "update.downloading": "جارٍ تنزيل التحديث",
   "update.failed": "فشل التحديث",
   "update.available": "تحديث متاح",
-  "update.harborVersion": "Harbor {version}",
+  "update.harborVersion": "Viora {version}",
   "update.downloadComplete": "اكتمل التنزيل",
   "update.fetching": "جلب أحدث إصدار",
   "update.errorServer": "حدث خطأ أثناء الاتصال بخادم التحديث.",
   "update.later": "لاحقاً",
   "update.download": "تنزيل",
   "update.installRestart": "تثبيت وإعادة تشغيل",
-  "update.restartAuto": "سيعاد تشغيل Harbor تلقائياً.",
+  "update.restartAuto": "سيعاد تشغيل Viora تلقائياً.",
   "update.tryAgain": "المحاولة مرة أخرى",
-  "update.keepUsing": "استمر في استخدام Harbor أثناء التنزيل",
+  "update.keepUsing": "استمر في استخدام Viora أثناء التنزيل",
   "update.of": "{downloaded} من {total}",
   "Hide password": "إخفاء كلمة المرور",
   "Show password": "عرض كلمة المرور",
@@ -675,7 +675,7 @@ const misc: Record<string, string> = {
   "Addon order saved on this device": "رُتِّبت الإضافات وحُفظت على هذا الجهاز",
   "Curated for popularity and reliability. No paid placements. Install anything else by URL on the Browse tab.": "محتوى منتقى للشعبية والموثوقية. لا توجد مواضع مدفوعة. ثبّت أي شيء آخر عبر URL في تبويب التصفّح.",
   "Sign in to sync your addons across devices": "سجّل الدخول لمزامنة إضافاتك عبر الأجهزة",
-  "Anything you install in Harbor pushes back to your Stremio account so it shows up on mobile too. Sign in via the avatar in the bottom-left of the sidebar.": "كل ما تثبّته في Harbor يُرسَل إلى حساب Stremio الخاص بك ليظهر على الجوال أيضًا. سجّل الدخول عبر الصورة الرمزية في أسفل يسار الشريط الجانبي.",
+  "Anything you install in Viora pushes back to your Stremio account so it shows up on mobile too. Sign in via the avatar in the bottom-left of the sidebar.": "كل ما تثبّته في Viora يُرسَل إلى حساب Stremio الخاص بك ليظهر على الجوال أيضًا. سجّل الدخول عبر الصورة الرمزية في أسفل يسار الشريط الجانبي.",
   "Starters": "البدايات",
   "Common picks for a fresh setup.": "اختيارات شائعة لإعداد جديد.",
   "Streaming": "البث",
@@ -691,7 +691,7 @@ const misc: Record<string, string> = {
   "OTA channels + IPTV": "قنوات OTA + IPTV",
   "New": "جديد",
   "You've reached the end · {n} addons": "لقد وصلت إلى النهاية · {n} إضافة",
-  "Trending tracks star growth across your Harbor visits. Open the addons page again tomorrow and the top risers will appear here.": "يتتبّع قسم الرائج نمو النجوم عبر زيارات Harbor. افتح صفحة الإضافات غدًا وستظهر هنا أكثر الإضافات صعودًا.",
+  "Trending tracks star growth across your Viora visits. Open the addons page again tomorrow and the top risers will appear here.": "يتتبّع قسم الرائج نمو النجوم عبر زيارات Viora. افتح صفحة الإضافات غدًا وستظهر هنا أكثر الإضافات صعودًا.",
   "Head to Discover. Cinemeta and OpenSubtitles cover the basics; Torrentio + a debrid key cover almost everything else.": "انتقل إلى الاكتشاف. يغطّي Cinemeta و OpenSubtitles الأساسيات؛ ويغطّي Torrentio + مفتاح debrid كل شيء تقريبًا.",
   "No installed addon matches that.": "لا توجد إضافة مثبّتة تطابق ذلك.",
   "Clear the search to see all {n} installed.": "امسح البحث لرؤية جميع الـ{n} مثبّتة.",
@@ -732,7 +732,7 @@ const misc: Record<string, string> = {
   "Cancel": "إلغاء",
   "Click below to open": "انقر أدناه لفتح",
   "'s setup page. Pick your options, then copy the install link it gives you and paste it below to update the addon.": " صفحة الإعداد. اختر خياراتك، ثم انسخ رابط التثبيت الذي يمنحك إياه والصقه أدناه لتحديث الإضافة.",
-  "'s setup page in Harbor's built-in browser. Pick your options. When you click Install on their page, Harbor catches the link automatically and updates the addon.": " صفحة الإعداد في متصفّح Harbor المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتهم، يلتقط Harbor الرابط تلقائيًا ويحدّث الإضافة.",
+  "'s setup page in Viora's built-in browser. Pick your options. When you click Install on their page, Viora catches the link automatically and updates the addon.": " صفحة الإعداد في متصفّح Viora المدمج. اختر خياراتك. عند النقر على تثبيت في صفحتهم، يلتقط Viora الرابط تلقائيًا ويحدّث الإضافة.",
   "Heads-up: a few addons don't pre-fill from the URL. If the form loads blank, paste the existing manifest URL into their \"Import from URL\" field to restore your settings.": "تنبيه: بعض الإضافات لا تملأ النموذج مسبقًا من الرابط. إذا حُمِّل النموذج فارغًا، الصق رابط المانيفست الحالي في حقل \"الاستيراد من رابط\" لاستعادة إعداداتك.",
   "Saving to library": "الحفظ في المكتبة",
   "Syncing to Stremio": "المزامنة مع Stremio",
@@ -742,15 +742,15 @@ const misc: Record<string, string> = {
   "Add a TMDB key in Settings to load Arabic content.":
     "أضف مفتاح TMDB في الإعدادات لتحميل المحتوى العربي.",
 
-  "Add a TMDB key for the full Harbor": "أضف مفتاح TMDB لتجربة Harbor الكاملة",
+  "Add a TMDB key for the full Viora": "أضف مفتاح TMDB لتجربة Viora الكاملة",
   "Free key unlocks Trending, In Theaters, and per-service catalogs. 60 seconds.":
     "المفتاح المجاني يفتح الرائج وفي دور السينما وكتالوجات كل خدمة. 60 ثانية.",
 
   "Built for desktop resolutions": "مصمَّم لدقّات شاشات سطح المكتب",
-  "This instance of Harbor is made for desktop. Our standalone iOS and Android apps are coming soon, each with a bespoke, mobile-first experience built for its native platform.":
-    "هذه النسخة من Harbor مصمَّمة لسطح المكتب. تطبيقاتنا المستقلّة لنظامي iOS و Android قادمة قريبًا، لكلٍّ منها تجربة مخصّصة تركّز على الهاتف أولًا ومبنيّة لمنصّته الأصلية.",
-  "For now, please open this site on a desktop, or build Harbor from source.":
-    "في الوقت الحالي، يُرجى فتح هذا الموقع على سطح المكتب، أو بناء Harbor من المصدر.",
+  "This instance of Viora is made for desktop. Our standalone iOS and Android apps are coming soon, each with a bespoke, mobile-first experience built for its native platform.":
+    "هذه النسخة من Viora مصمَّمة لسطح المكتب. تطبيقاتنا المستقلّة لنظامي iOS و Android قادمة قريبًا، لكلٍّ منها تجربة مخصّصة تركّز على الهاتف أولًا ومبنيّة لمنصّته الأصلية.",
+  "For now, please open this site on a desktop, or build Viora from source.":
+    "في الوقت الحالي، يُرجى فتح هذا الموقع على سطح المكتب، أو بناء Viora من المصدر.",
   "Build from source": "البناء من المصدر",
 
   "Wrong PIN": "رمز PIN خاطئ",
@@ -790,7 +790,7 @@ const misc: Record<string, string> = {
   "Skip setup": "تخطّي الإعداد",
   "Skip for now": "تخطّي الآن",
   "Get Started": "ابدأ الآن",
-  "Enter Harbor": "ادخل إلى Harbor",
+  "Enter Viora": "ادخل إلى Viora",
 
   "A client for the Stremio protocol. Two minutes to set up; most of it optional. You stay in control of every key.":
     "عميل لبروتوكول Stremio. دقيقتان للإعداد، ومعظمه اختياري. تبقى أنت المتحكّم في كل مفتاح.",
@@ -806,12 +806,12 @@ const misc: Record<string, string> = {
 
   "For watching things": "لمشاهدة الأشياء",
 
-  "Harbor curated": "اختيار Harbor",
+  "Viora curated": "اختيار Viora",
   "Hero, Top 10, Trending, In Theaters, per-service rails. Your addons append underneath.":
     "الواجهة البارزة، وأفضل 10، والرائج، وفي دور السينما، وصفوف كل خدمة. تُضاف إضافاتك في الأسفل.",
   "Classic Stremio": "Stremio الكلاسيكي",
-  "Continue Watching, then your addon catalogs in install order. No hero, no Harbor rails.":
-    "متابعة المشاهدة، ثم كتالوجات إضافاتك بترتيب التثبيت. بلا واجهة بارزة، وبلا صفوف Harbor.",
+  "Continue Watching, then your addon catalogs in install order. No hero, no Viora rails.":
+    "متابعة المشاهدة، ثم كتالوجات إضافاتك بترتيب التثبيت. بلا واجهة بارزة، وبلا صفوف Viora.",
   "Pick a home layout": "اختر تخطيط الصفحة الرئيسية",
   "You can switch later in Settings under Library & metadata.":
     "يمكنك التبديل لاحقًا من الإعدادات ضمن المكتبة والبيانات الوصفية.",
@@ -822,8 +822,8 @@ const misc: Record<string, string> = {
   "Get a free key at themoviedb.org": "احصل على مفتاح مجاني من themoviedb.org",
   "v3 API key": "مفتاح API الإصدار 3",
   Verify: "تحقّق",
-  "Skip if you'd rather just use Cinemeta. Harbor still works, you'll just see fewer rails.":
-    "تخطَّ إن كنت تفضّل استخدام Cinemeta فقط. سيظل Harbor يعمل، لكنك سترى صفوفًا أقل.",
+  "Skip if you'd rather just use Cinemeta. Viora still works, you'll just see fewer rails.":
+    "تخطَّ إن كنت تفضّل استخدام Cinemeta فقط. سيظل Viora يعمل، لكنك سترى صفوفًا أقل.",
 
   "Sign-in failed": "فشل تسجيل الدخول",
   "Step 2 · Stremio": "الخطوة 2 · Stremio",
@@ -835,22 +835,22 @@ const misc: Record<string, string> = {
   "Don't have an account?": "ليس لديك حساب؟",
   "Create one": "أنشئ واحدًا",
   "Bring in your library": "أحضِر مكتبتك",
-  "Sign in to mirror your Continue Watching, watchlist, and any addons you've already curated. Optional; Harbor works fully signed-out.":
-    "سجّل الدخول لتعكس متابعة المشاهدة وقائمة مشاهدتك وأي إضافات نظّمتها مسبقًا. اختياري؛ يعمل Harbor بالكامل دون تسجيل الدخول.",
+  "Sign in to mirror your Continue Watching, watchlist, and any addons you've already curated. Optional; Viora works fully signed-out.":
+    "سجّل الدخول لتعكس متابعة المشاهدة وقائمة مشاهدتك وأي إضافات نظّمتها مسبقًا. اختياري؛ يعمل Viora بالكامل دون تسجيل الدخول.",
   "Sign in with": "تسجيل الدخول عبر",
   "Don't have an account? Create one →": "ليس لديك حساب؟ أنشئ واحدًا ←",
 
   "Step 3 · Streaming": "الخطوة 3 · البث",
   "Pick what you actually use": "اختر ما تستخدمه فعلًا",
-  "Harbor pulls the most popular titles each service has right now. Toggle off anything you don't subscribe to.":
-    "يجلب Harbor أكثر العناوين شهرة لدى كل خدمة الآن. عطّل أي خدمة لست مشتركًا بها.",
+  "Viora pulls the most popular titles each service has right now. Toggle off anything you don't subscribe to.":
+    "يجلب Viora أكثر العناوين شهرة لدى كل خدمة الآن. عطّل أي خدمة لست مشتركًا بها.",
   "These rails activate once a TMDB key is set. You can come back to this anytime in Settings.":
     "تُفعَّل هذه الصفوف بمجرد تعيين مفتاح TMDB. يمكنك العودة إلى هذا في أي وقت من الإعدادات.",
 
   "Step 4 · Subtitles": "الخطوة 4 · الترجمات",
   "Pick your subtitle languages": "اختر لغات الترجمة",
-  "When playback starts, Harbor finds and loads a subtitle in one of these languages automatically. The first available match wins, so put your main language first.":
-    "عند بدء التشغيل، يبحث Harbor تلقائيًا عن ترجمة بإحدى هذه اللغات ويحمّلها. تُعتمد أول مطابقة متاحة، لذا ضع لغتك الأساسية أولًا.",
+  "When playback starts, Viora finds and loads a subtitle in one of these languages automatically. The first available match wins, so put your main language first.":
+    "عند بدء التشغيل، يبحث Viora تلقائيًا عن ترجمة بإحدى هذه اللغات ويحمّلها. تُعتمد أول مطابقة متاحة، لذا ضع لغتك الأساسية أولًا.",
 
   "You're set.": "أنت جاهز.",
   "TMDB connected. {n} streaming {services} on. Welcome aboard.":

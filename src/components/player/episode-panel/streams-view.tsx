@@ -2,7 +2,7 @@ import { FocusButton } from "@/lib/tv-focus";
 import { ChevronLeft, X } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import { resolveAddonLogo } from "@/components/addon-logo";
-import { HarborLoader } from "@/components/harbor-loader";
+import { VioraLoader } from "@/components/viora-loader";
 import { useAuth } from "@/lib/auth";
 import type { Meta } from "@/lib/cinemeta";
 import { useDebridClients } from "@/lib/debrid/registry";
@@ -119,7 +119,7 @@ export function StreamsView({
       <div className="flex-1 overflow-y-auto px-4 pb-6">
         {loading && totalStreams === 0 && (
           <div className="flex flex-col items-center justify-center gap-3 py-16">
-            <HarborLoader size="sm" />
+            <VioraLoader size="sm" />
             <p className="text-[12px] text-ink-subtle">{t("Searching sources…")}</p>
           </div>
         )}

@@ -1,4 +1,4 @@
-const DB_NAME = "harbor-theme";
+const DB_NAME = "viora-theme";
 const DB_VERSION = 1;
 const STORE = "kv";
 const BG_KEY = "bg";

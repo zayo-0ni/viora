@@ -83,7 +83,7 @@ export function CommunityDetail({
                   done ? "bg-emerald-400 text-black" : "bg-ink text-canvas hover:opacity-90"
                 }`}
               >
-                {downloading ? <Loader2 size={16} className="animate-spin" /> : done ? <Check key="done" size={16} className="harbor-pop" /> : <Download size={16} />}
+                {downloading ? <Loader2 size={16} className="animate-spin" /> : done ? <Check key="done" size={16} className="viora-pop" /> : <Download size={16} />}
                 {done ? "Added to library" : downloading ? "Downloading…" : "Download"}
               </FocusButton>
               <FocusButton

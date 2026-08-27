@@ -3,7 +3,6 @@ import { useAuth } from "@/lib/auth";
 import { downloadText } from "@/lib/download-text";
 import { getCuesAnySource } from "@/lib/subtitles/extract";
 import { toSrt } from "@/lib/subtitles/serialize";
-import { isWindowsDesktop } from "@/lib/platform";
 import { isAssTrack, isImageSubTrack } from "@/lib/player/sub-format";
 import { clearImportedSubs } from "@/lib/player/imported-subs";
 import { readPlayerVolume } from "@/lib/player-volume";
@@ -22,12 +21,9 @@ import { useStremioSync } from "./use-stremio-sync";
 import { useSubDrop } from "./use-sub-drop";
 import { useSubStyleApply } from "./use-sub-style-apply";
 import { useTrackAutoload } from "./use-track-autoload";
-import { useAutoSync } from "./use-auto-sync";
 import { useReferenceSync } from "./use-reference-sync";
 import { useVideoDownload } from "./use-video-download";
 import { useWebviewMemory } from "./use-webview-memory";
-
-const HDR_NATIVE_GAMMAS = new Set(["pq", "hlg"]);
 
 export function usePlayerMedia(params: {
   src: PlayerSrc;
@@ -109,19 +105,16 @@ export function usePlayerMedia(params: {
     authKey,
   });
 
-  useAutoSync({ bridgeRef, src, snap, engine, settings });
   // Sync against another subtitle rather than the audio. The two are
   // complementary: the audio path needs an ffmpeg binary and so never runs on
   // Android, and this one needs a second subtitle to compare against.
   useReferenceSync({ bridgeRef, src, snap });
 
   const subEmbed = engine === "mpv" && settings.playerMpvEmbed;
-  const hdrNativeSurface =
-    engine === "mpv" &&
-    isWindowsDesktop() &&
-    !settings.playerHdrToSdr &&
-    HDR_NATIVE_GAMMAS.has(snap.hdrGamma) &&
-    (settings.playerHdrOpaqueWindow || (settings.playerMpvEmbed && settings.playerHdrStage !== "off"));
+  // HDR passthrough was a Windows-only path: mpv handed the frames to a native
+  // surface so the WebView compositor never touched the colours. Nothing on
+  // this platform can do that, so the surface is never native here.
+  const hdrNativeSurface = false;
   const selectedSubTrack = snap.subtitleTracks.find((t) => t.selected) ?? null;
   const subAssOverridden = settings.subAssOverride !== "no" && settings.subAssOverride !== "scale";
   const selectedAssSub = isAssTrack(selectedSubTrack);
@@ -180,7 +173,7 @@ export function usePlayerMedia(params: {
       ? `${src.meta.name ?? "Subtitle"} S${src.episode.season}E${src.episode.episode}`
       : src.meta.name ?? "Subtitle";
     const fileName = `${base.replace(/[\\/:*?"<>|]+/g, " ").trim() || "Subtitle"}.srt`;
-    const res = await getCuesAnySource(b, src.url, src.headers);
+    const res = await getCuesAnySource(b);
     if (res.ok && res.source.cues.length > 0) {
       await downloadText(fileName, toSrt(res.source.cues), ["srt"], "Subtitle");
     }

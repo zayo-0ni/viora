@@ -49,11 +49,11 @@ export function TogetherPopover({
   const handleJoin = () => {
     const value = joinCode.trim();
     if (!value) return;
-    if (/^https?:\/\//i.test(value) || value.includes("harbor-relay=")) {
+    if (/^https?:\/\//i.test(value) || value.includes("viora-relay=")) {
       try {
         const url = new URL(value.startsWith("http") ? value : `https://x${value.startsWith("?") ? value : `?${value}`}`);
-        const relay = url.searchParams.get("harbor-relay");
-        const room = url.searchParams.get("harbor-room");
+        const relay = url.searchParams.get("viora-relay");
+        const room = url.searchParams.get("viora-room");
         if (relay && room) {
           if (settings.togetherRelayUrl !== relay) {
             update({ togetherRelayUrl: relay });
@@ -109,7 +109,7 @@ export function TogetherPopover({
       role="dialog"
       aria-modal="true"
       aria-label={t("Watch together")}
-      className={`harbor-together-surface flex max-h-[80vh] w-[400px] flex-col gap-4 overflow-y-auto border border-edge p-5 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.7)] animate-popover-in ${
+      className={`viora-together-surface flex max-h-[80vh] w-[400px] flex-col gap-4 overflow-y-auto border border-edge p-5 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.7)] animate-popover-in ${
         connectStyle === "tab"
           ? placement === "above-left"
             ? "rounded-t-2xl rounded-b-none"

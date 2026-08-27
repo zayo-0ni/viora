@@ -72,7 +72,7 @@ function SpeedResultBadge({ value }: { value: string }) {
         <div
           role="tooltip"
           className="absolute end-0 top-[calc(100%+8px)] z-30 w-[300px] origin-top-right rtl:origin-top-left rounded-xl border border-edge bg-elevated p-3.5 text-start shadow-[0_18px_48px_-12px_rgba(0,0,0,0.65)]"
-          style={{ animation: "harbor-fade-in 140ms ease-out both" }}
+          style={{ animation: "viora-fade-in 140ms ease-out both" }}
         >
           <div className="mb-2 flex items-center gap-2">
             <img
@@ -86,7 +86,7 @@ function SpeedResultBadge({ value }: { value: string }) {
             </span>
           </div>
           <p className="mb-2.5 text-[12.5px] leading-snug text-ink-muted">
-            Harbor opens 4 parallel HTTP streams to{" "}
+            Viora opens 4 parallel HTTP streams to{" "}
             <span className="font-medium text-ink">speed.cloudflare.com</span>, runs for 8 seconds,
             and discards the first 1.5s of warmup so TCP slow-start doesn't tank the result.
           </p>

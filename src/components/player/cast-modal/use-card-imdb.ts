@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
-import { harborImdbTitle } from "@/lib/providers/harbor-imdb";
+import { harborImdbTitle } from "@/lib/providers/viora-imdb";
 import { tmdbImdbId } from "@/lib/providers/tmdb";
 import { useSettings } from "@/lib/settings";
 

@@ -13,6 +13,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://image.tmdb.org" crossorigin />
+    <!--
+      The two hosts the artwork actually waits on.
+
+      Measured on the television: a poster from cdn.myanimelist.net takes about
+      600 ms the first time and up to a second, against 150 ms from TMDB, and
+      there are more of them on the home screen than from anywhere else. TMDB was
+      already named here; these two were not, so every screen paid for a fresh
+      name lookup, connection and handshake at the moment the artwork was wanted
+      rather than before it.
+
+      Only the first view pays it. Once an image has been seen the engine keeps
+      it — measured at 1 ms to show again, against 982 ms for the same picture
+      with a fresh address — so this is entirely about the first time.
+    -->
+    <link rel="preconnect" href="https://cdn.myanimelist.net" crossorigin />
+    <link rel="preconnect" href="https://images.metahub.space" crossorigin />
     <link rel="preconnect" href="https://api.themoviedb.org" crossorigin />
     <link rel="preconnect" href="https://v3-cinemeta.strem.io" crossorigin />
     <link rel="preconnect" href="https://api.strem.io" crossorigin />
@@ -33,7 +49,7 @@
         margin: 0;
         height: 100%;
       }
-      #harbor-boot {
+      #viora-boot {
         position: fixed;
         inset: 0;
         display: flex;
@@ -44,21 +60,21 @@
         pointer-events: none;
         transition: opacity 280ms ease-out;
       }
-      #harbor-boot.gone { opacity: 0; }
+      #viora-boot.gone { opacity: 0; }
       .boot-lockup {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 14px;
       }
-      #harbor-boot svg {
-        width: 96px;
+      /* An image now, not a drawing. Larger than the old glyph was, because the
+         mark carries detail — the film perforations and the gold edge — that a
+         96px square would throw away on a television seen from a sofa. */
+      #viora-boot img {
+        width: 168px;
         height: auto;
-        color: #f5f5f5;
         filter: drop-shadow(0 10px 30px rgba(232, 170, 108, 0.22));
-        animation:
-          harborBootBob 2400ms ease-in-out infinite,
-          harborBootGlow 2400ms ease-in-out infinite;
+        animation: harborBootBeat 2600ms ease-in-out infinite;
       }
       .boot-name {
         font: 600 30px/1 "Iowan Old Style", Georgia, serif;
@@ -72,23 +88,25 @@
           "Lucida Handwriting", "Apple Chancery", cursive;
         color: #8a8a8a;
       }
-      @keyframes harborBootBob {
-        0%   { transform: translateY(0)    scale(0.98); }
-        50%  { transform: translateY(-4px) scale(1.02); }
-        100% { transform: translateY(0)    scale(0.98); }
-      }
-      @keyframes harborBootGlow {
-        0%, 100% { opacity: 0.78; }
-        50%      { opacity: 1; }
+      /* A heartbeat, not a bob: two beats close together and then a rest, the
+         way a pulse actually goes. The second beat is the smaller one, and the
+         long tail is what makes it read as breathing rather than throbbing. */
+      @keyframes harborBootBeat {
+        0%   { transform: scale(1);    opacity: 0.86; }
+        8%   { transform: scale(1.07); opacity: 1; }
+        16%  { transform: scale(1);    opacity: 0.92; }
+        24%  { transform: scale(1.04); opacity: 1; }
+        34%  { transform: scale(1);    opacity: 0.86; }
+        100% { transform: scale(1);    opacity: 0.86; }
       }
     </style>
     <script>
       (function () {
         try {
           var p = new URLSearchParams(window.location.search);
-          if (p.get('harbor-modal') === '1') {
+          if (p.get('viora-modal') === '1') {
             var s = document.createElement('style');
-            s.textContent = '#harbor-boot{display:none !important}';
+            s.textContent = '#viora-boot{display:none !important}';
             document.head.appendChild(s);
           }
         } catch (e) {}
@@ -107,28 +125,42 @@
         // satisfies both minimums at this panel's real aspect ratio, and is
         // never smaller than what the device already reports — a 4K set is left
         // untouched rather than being scaled to someone's idea of a TV.
+        // This used to run only behind `(pointer: none)`, and on a real
+        // Changhong set it never ran at all — that panel claims a pointer, which
+        // is the same lie platform.ts documents. The consequence was measurable
+        // in a screenshot: the side rail drew 144 device pixels wide, which is
+        // its 72px collapsed width at this panel's 2x density, when an applied
+        // 1280px viewport would have made it 312. Every `lg:` class in the app
+        // — 154 of them across 41 files — sat dead behind a 1024px breakpoint
+        // that a 960px viewport can never cross, so the rail had no labels, no
+        // expanded width, and a toggle that changed its own icon and nothing
+        // else.
+        //
+        // The gate is gone rather than made cleverer. It existed to keep this
+        // away from desktop and phone, and neither is built any more. The
+        // `target > w` test below already leaves alone anything wide enough —
+        // a 4K set, or `pnpm dev` in a 1920px browser window — so applying it
+        // everywhere costs nothing and stops depending on a signal that lies.
         try {
           var DESIGN_W = 1280;
           var DESIGN_H = 720;
-          if (window.matchMedia && window.matchMedia('(pointer: none)').matches) {
-            var w = document.documentElement.clientWidth || window.innerWidth || 0;
-            var h = document.documentElement.clientHeight || window.innerHeight || 0;
-            if (w > 0 && h > 0) {
-              // Width needed for the height minimum, at this aspect ratio.
-              var forHeight = Math.round(DESIGN_H * (w / h));
-              var target = Math.max(w, DESIGN_W, forHeight);
-              if (target > w) {
-                var vp = document.querySelector('meta[name="viewport"]');
-                // The scale is not optional. A width on its own tells the engine
-                // how wide to lay the page out but nothing about how big to draw
-                // it, and Android WebView's answer is 1:1 — so a 1280px layout in
-                // a 960px window simply had its right and bottom quarter hanging
-                // outside the screen. Stating the ratio makes the whole layout
-                // land exactly on the panel, which is the entire point of
-                // choosing a width in the first place.
-                var scale = w / target;
-                if (vp) vp.setAttribute('content', 'width=' + target + ', initial-scale=' + scale);
-              }
+          var w = document.documentElement.clientWidth || window.innerWidth || 0;
+          var h = document.documentElement.clientHeight || window.innerHeight || 0;
+          if (w > 0 && h > 0) {
+            // Width needed for the height minimum, at this aspect ratio.
+            var forHeight = Math.round(DESIGN_H * (w / h));
+            var target = Math.max(w, DESIGN_W, forHeight);
+            if (target > w) {
+              var vp = document.querySelector('meta[name="viewport"]');
+              // The scale is not optional. A width on its own tells the engine
+              // how wide to lay the page out but nothing about how big to draw
+              // it, and Android WebView's answer is 1:1 — so a 1280px layout in
+              // a 960px window simply had its right and bottom quarter hanging
+              // outside the screen. Stating the ratio makes the whole layout
+              // land exactly on the panel, which is the entire point of
+              // choosing a width in the first place.
+              var scale = w / target;
+              if (vp) vp.setAttribute('content', 'width=' + target + ', initial-scale=' + scale);
             }
           }
         } catch (e) {}
@@ -136,19 +168,13 @@
     </script>
   </head>
   <body>
-    <div id="harbor-boot">
+    <div id="viora-boot">
       <div class="boot-lockup">
-        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="60" height="60" rx="17" fill="currentColor" />
-          <path
-            d="M19.5 21 L32 43.5 L44.5 21"
-            stroke="#0a0a0a"
-            stroke-width="6.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            fill="none"
-          />
-        </svg>
+        <!-- The owner's own mark, and the only image on the boot screen.
+             It is in `public/`, so it is served at this path from the very
+             first frame without waiting for the bundle — which is the point of
+             this screen. The name and the signature sit beneath it. -->
+        <img src="/viora-mark.png" alt="" aria-hidden="true" draggable="false" />
         <div class="boot-name">Viora</div>
         <div class="boot-sig">zayo0ni</div>
       </div>

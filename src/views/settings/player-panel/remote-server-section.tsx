@@ -31,7 +31,7 @@ async function probeServer(url: string): Promise<TestResult> {
     window.clearTimeout(timer);
     if (!res.ok) return { ok: false, message: tr("The server answered with status {status}. Is that a streaming server?", { status: res.status }) };
     const ms = Math.max(1, Math.round(performance.now() - started));
-    return { ok: true, message: tr("Server reachable in {ms}ms. Harbor will use it for torrent streaming.", { ms }) };
+    return { ok: true, message: tr("Server reachable in {ms}ms. Viora will use it for torrent streaming.", { ms }) };
   } catch {
     return { ok: false, message: tr("Could not reach the server within 1.5 seconds. Check the address and that the server machine is online.") };
   }
@@ -87,7 +87,7 @@ export function RemoteServerSection() {
         <div className="flex flex-col gap-1">
           <h2 className="text-[19px] font-medium tracking-tight text-ink">{t("Remote streaming server")}</h2>
           <p className="text-[13.5px] leading-relaxed text-ink-muted">
-            {t("Point Harbor at a streaming server on another machine, like the Stremio service on a home server. Torrents download and stream from that machine instead of this one.")}
+            {t("Point Viora at a streaming server on another machine, like the Stremio service on a home server. Torrents download and stream from that machine instead of this one.")}
           </p>
         </div>
         <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider ${pill.chip}`}>

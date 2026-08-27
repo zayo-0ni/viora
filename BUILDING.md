@@ -55,16 +55,15 @@ Keep the keystore safe and backed up. Android identifies an app by its
 signature, so losing it means you can never ship an update to anyone who
 installed the old build — they would have to uninstall first.
 
-## Desktop
+## There is no desktop build
 
-```bash
-pnpm run setup:libmpv     # Windows only: fetches libmpv-2.dll
-node scripts/fetch-binaries.mjs
-pnpm exec tauri build
-```
+Android is the only target. `cargo check` against the host will fail on the
+desktop bundle metadata — that is expected, not a broken tree. Build the APK to
+check the Rust side.
 
-Desktop needs libmpv and the ffmpeg/yt-dlp sidecars. Neither ships in the
-Android build — see `src/lib/capabilities.ts` for what each platform supports.
+To work on the frontend without a device, `pnpm dev` serves it in a browser and
+the arrow keys stand in for the D-pad. The Tauri bridge is absent there, so
+anything native is off; `src/lib/capabilities.ts` is the table that decides.
 
 ## Version
 
@@ -74,8 +73,18 @@ Set in three places that have to agree:
 - `src-tauri/Cargo.toml` → `[package] version`
 - `src-tauri/tauri.conf.json` → `version`
 
-Android's `versionCode` and `versionName` are generated from the Tauri config;
-do not edit `gen/android/app/tauri.properties` by hand.
+`build-apk.mjs` writes `gen/android/app/tauri.properties` from `package.json`
+on every build, and `app/build.gradle.kts` reads the APK's `versionName` and
+`versionCode` from there. Do not edit that file by hand — it is overwritten.
+
+`versionCode` is derived as `major*1000000 + minor*1000 + patch`, so 1.0.2
+becomes 1000002. It has to increase between releases: Android refuses an update
+whose code is not greater than the installed one, and the viewer would have to
+uninstall — losing their library — before they could move forward.
+
+This used to be a trap. `tauri android build` regenerates that file, but this
+script deliberately does not call it (see above), so nothing kept it in step and
+every APK shipped 1.0.0 / 1000000 no matter what the three files above said.
 
 ## After moving the project directory
 

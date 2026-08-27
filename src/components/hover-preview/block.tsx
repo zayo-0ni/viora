@@ -5,16 +5,13 @@ import type { PreviewData } from "@/lib/hover-preview/preview-data";
 import { tmdbImdbCached } from "@/lib/providers/tmdb";
 import { toggleWatchlist, useInWatchlist } from "@/lib/watchlist";
 import { ImdbIcon } from "../icons/imdb-icon";
-import { MalLogo } from "../icons/mal-logo";
 
 function DecisionLine({ data }: { data: PreviewData }) {
   const parts: ReactNode[] = [];
   if (data.rating) {
     parts.push(
       <span key="rating" className="inline-flex items-center gap-1 align-middle">
-        {data.rating.kind === "mal" ? (
-          <MalLogo className="h-[11px] w-auto text-ink-muted" />
-        ) : data.rating.kind === "tmdb" ? (
+        {data.rating.kind === "tmdb" ? (
           <Star className="h-[11px] w-[11px] text-amber-400" fill="currentColor" strokeWidth={0} />
         ) : (
           <ImdbIcon className="h-[11px] w-auto rounded-[2px]" />

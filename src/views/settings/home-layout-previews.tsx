@@ -7,7 +7,6 @@ export type HomeRowKind =
   | "all-addon-rows"
   | "watchlist-saved"
   | "playlists-tab"
-  | "anime-room"
   | "cw-advance"
   | "hide-watched";
 
@@ -20,8 +19,6 @@ export function HomeRowPreview({ kind }: { kind: HomeRowKind }) {
       return <WatchlistSaved art={art} />;
     case "playlists-tab":
       return <PlaylistsTab />;
-    case "anime-room":
-      return <AnimeRoom art={art} />;
     case "cw-advance":
       return <CwAdvance art={art} />;
     case "hide-watched":
@@ -171,36 +168,6 @@ function PlaylistsTab() {
         </div>
       </div>
       <Caption>{t("Adds a Playlists tab to the nav for your M3U and Xtream libraries.")}</Caption>
-    </>
-  );
-}
-
-function AnimeRoom({ art }: { art: PreviewArt | null }) {
-  const t = useT();
-  const p = art?.posters ?? [];
-  const an = art?.anime ?? [];
-  return (
-    <>
-      <div className="rounded-lg border border-edge-soft/60 bg-canvas/30 p-2.5">
-        <div className="mb-1.5 text-[9px] font-bold uppercase tracking-[0.14em] text-ink-subtle">
-          {t("Home · Continue Watching")}
-        </div>
-        <div className="flex items-center gap-2">
-          <MiniPoster img={p[0]} />
-          <MiniPoster img={p[1]} />
-          <div className="relative">
-            <MiniPoster img={an[0]} faded dashed />
-            <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-ink-subtle">
-              {t("anime")}
-            </span>
-          </div>
-          <span className="inline-block text-ink-subtle rtl:rotate-180">&rarr;</span>
-          <span className="rounded-md bg-accent/15 px-2 py-1 text-[10px] font-semibold text-accent ring-1 ring-accent/25">
-            {t("Anime tab")}
-          </span>
-        </div>
-      </div>
-      <Caption>{t("Anime leaves Home Continue Watching and stays in the Anime tab's own row.")}</Caption>
     </>
   );
 }

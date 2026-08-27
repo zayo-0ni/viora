@@ -8,7 +8,6 @@ import { useFocusableControl } from "@/lib/tv-focus";
 export const SHOWS_HERO = "SHOWS_HERO";
 import { useEffect, useRef, useState } from "react";
 import { ImdbIcon } from "@/components/icons/imdb-icon";
-import { MetaAwardsCorner } from "@/components/meta-awards-corner";
 import { meta as fetchMeta, narrowMediaType, type Meta } from "@/lib/cinemeta";
 import { useT } from "@/lib/i18n";
 import { tmdbLogo, useTmdbImdbId } from "@/lib/providers/tmdb";
@@ -162,6 +161,11 @@ export function PeekHero({ slides }: { slides: Meta[] }) {
       }}
       tabIndex={-1}
       data-hero-stage=""
+      // As on the other two heroes: while there is an earlier slide, this hero
+      // owns the press back and the rail stands aside. On the first slide the
+      // attribute goes and the rail opens, exactly as it does from the first
+      // card of a row.
+      data-hero-can-step-back={active > 0 ? "" : undefined}
       {...heroFocus.focusProps}
       className="flex flex-col gap-5"
       onMouseEnter={() => setPaused(true)}
@@ -298,7 +302,6 @@ function PeekSlide({
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent" />
-      {active && <MetaAwardsCorner meta={meta} imdbId={resolvedImdb} />}
       <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3.5 px-9 pb-9">
         <div className="flex min-h-[68px] items-end">
           {logo ? (
@@ -344,5 +347,7 @@ function PeekSlide({
 
 function upsizeTmdb(url?: string): string | undefined {
   if (!url) return url;
-  return url.replace("/t/p/w780/", "/t/p/w1280/");
+  // Same as the cinema hero: this was upgrading a perfectly adequate backdrop
+  // to one nobody can tell apart behind a scrim.
+  return url;
 }

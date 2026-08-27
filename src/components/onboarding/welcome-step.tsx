@@ -1,4 +1,4 @@
-import { HarborMark } from "@/components/icons/harbor-mark";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { VioraSignature } from "@/components/icons/viora-wordmark";
 import { APP_NAME } from "@/lib/brand";
 import { useT } from "@/lib/i18n";
@@ -9,7 +9,7 @@ export function WelcomeStep() {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2.5 text-ink">
-          <HarborMark className="h-12 w-12 shrink-0" />
+          <VioraMark className="h-12 w-12 shrink-0" />
           <span className="flex flex-col leading-none">
             <span
               className="font-display text-[44px] font-medium leading-none tracking-tight"

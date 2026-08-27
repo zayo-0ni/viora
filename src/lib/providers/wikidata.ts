@@ -297,12 +297,35 @@ export function subscribeAwards(fn: () => void): () => void {
   };
 }
 
+/**
+ * How long to leave the awards alone after a title is opened.
+ *
+ * These are two SPARQL queries against Wikidata and they are slow — measured on
+ * the television at 870 ms and 1124 ms, the two slowest requests the details
+ * screen makes. They were being sent the instant a title opened, competing for
+ * the connection with the artwork and the metadata the viewer is actually
+ * waiting to see, on behalf of a section at the bottom of the page and a small
+ * badge over the hero.
+ *
+ * Nothing about them is urgent. Held back for a moment, they arrive after the
+ * page has drawn, which is the order the viewer would choose. An award already
+ * looked up is unaffected: the cache answers straight away and the wait only
+ * ever applies to the first request for a title.
+ */
+const AWARDS_DELAY_MS = 1200;
+
 export function useAwards(imdbId?: string): AwardEntry[] | null {
   const [v, setV] = useState<AwardEntry[] | null>(() => awardsCached(imdbId));
   useEffect(() => {
-    setV(awardsCached(imdbId));
-    if (imdbId) fetchAwards(imdbId);
-    return subscribeAwards(() => setV(awardsCached(imdbId)));
+    const cached = awardsCached(imdbId);
+    setV(cached);
+    const unsubscribe = subscribeAwards(() => setV(awardsCached(imdbId)));
+    if (!imdbId || cached) return unsubscribe;
+    const handle = window.setTimeout(() => fetchAwards(imdbId), AWARDS_DELAY_MS);
+    return () => {
+      window.clearTimeout(handle);
+      unsubscribe();
+    };
   }, [imdbId]);
   return v;
 }

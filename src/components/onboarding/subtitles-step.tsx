@@ -12,17 +12,17 @@ export function SubtitlesStep() {
       </span>
       <div className="flex flex-col gap-3">
         <h1 className="font-display text-[36px] font-medium leading-[1.08] tracking-tight text-ink">
-          {t("Pick your subtitle languages")}
+          {t("Pick your language")}
         </h1>
         <p className="text-[15px] leading-relaxed text-ink-muted">
           {t(
-            "When playback starts, Harbor finds and loads a subtitle in one of these languages automatically. The first available match wins, so put your main language first.",
+            "Titles, descriptions, artwork, subtitles, audio and which sources come first — all of it follows this. Put your main language at the top, or leave it empty and choose each time.",
           )}
         </p>
       </div>
       <LanguagesPicker
-        value={settings.preferredSubLangs}
-        onChange={(langs) => update({ preferredSubLangs: langs })}
+        value={settings.contentLanguages}
+        onChange={(langs) => update({ contentLanguages: langs })}
       />
     </div>
   );

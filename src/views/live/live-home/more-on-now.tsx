@@ -66,7 +66,7 @@ function Pick({
           onError={poster.onError}
           seed={channel.id}
           ratio="portrait"
-          className="harbor-card-ring rounded-lg shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)]"
+          className="viora-card-ring rounded-lg shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)]"
         />
         <div className="absolute inset-0 flex items-center justify-center bg-canvas/0 opacity-0 transition-all duration-200 group-hover/p:bg-canvas/35 group-hover/p:opacity-100">
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-canvas shadow-[0_4px_14px_rgba(0,0,0,0.4)]">

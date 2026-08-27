@@ -1,6 +1,6 @@
-import { FocusButton } from "@/lib/tv-focus";
+import { FocusButton, useFocusableControl } from "@/lib/tv-focus";
 import { Bookmark, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { Poster, usePosterChain } from "@/components/poster";
 import { narrowMediaType, type Meta } from "@/lib/cinemeta";
 import { useSettings } from "@/lib/settings";
@@ -67,23 +67,31 @@ export function WatchlistCard({ meta, onRemove }: { meta: Meta; onRemove?: () =>
     display.poster,
     display.type === "series" ? "series" : "movie",
   );
+  const { ref: cardFocusRef, focusProps: cardFocusProps } = useFocusableControl({
+    onSelect: open,
+  });
+
   return (
     <div
       ref={cardRef}
       className="group relative flex flex-col gap-2 text-start"
       onMouseLeave={() => setConfirm(false)}
     >
+      {/* Registered with the engine, still a div.
+
+           This carried role="button" and a hand-written tabIndex with its own
+           Enter handler — a mouse-era control the spatial engine had never been
+           told about, so a grid of these could be entered but never crossed:
+           measured on the emulator, pressing right in the watchlist moved
+           nothing at all. It stays a div because the remove button lives inside
+           it, and a button inside a button is not valid HTML. */}
       <div
+        ref={cardFocusRef as RefObject<HTMLDivElement>}
         role="button"
         tabIndex={0}
         onClick={open}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            open();
-          }
-        }}
-        className="relative aspect-[2/3] cursor-pointer overflow-hidden rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)] outline-none ring-offset-2 ring-offset-canvas transition-transform duration-200 focus-visible:ring-2 focus-visible:ring-ink group-hover:scale-[1.02]"
+        {...cardFocusProps}
+        className="relative aspect-[2/3] cursor-pointer rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)] transition-transform duration-200 group-hover:scale-[1.02]"
       >
         <Poster
           src={poster.src}
@@ -123,14 +131,23 @@ export function WatchlistCard({ meta, onRemove }: { meta: Meta; onRemove?: () =>
           </FocusButton>
         )}
       </div>
-      <FocusButton type="button" onClick={open} className="text-start">
+      {/* The name is not a second stop.
+
+           Each card carried two: the poster, and the title underneath it as a
+           button of its own. On a remote that is not two ways to reach one
+           title, it is a grid with twice as many stops as it has cards, and
+           pressing right walked the captions instead of the artwork — measured
+           on the emulator, one press went from the first card straight past
+           three others onto the fifth one's caption. Clicking the name still
+           opens it; the remote has the card. */}
+      <div onClick={open} className="text-start">
         <p className="truncate text-[13px] font-medium text-ink transition-colors hover:text-accent">
           {display.name || meta.id}
         </p>
         {display.releaseInfo && (
           <p className="-mt-1.5 truncate text-[11.5px] text-ink-subtle">{display.releaseInfo}</p>
         )}
-      </FocusButton>
+      </div>
     </div>
   );
 }

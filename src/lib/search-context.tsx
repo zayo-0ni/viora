@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { MOVIE_GENRES } from "@/lib/feed/tags";
 import { useParental } from "@/lib/parental";
-import { searchAll, searchAnime, searchCinemeta, searchLiveTvChannels, type SearchResults } from "@/lib/search";
+import { searchAll, searchCinemeta, searchLiveTvChannels, type SearchResults } from "@/lib/search";
 import { dedupeByTitle, rankMetas } from "@/lib/search-rank";
 import { searchAddonCatalogs, searchAddonGroups, mergeMetas } from "@/lib/search-addons";
 import type { Meta } from "@/lib/cinemeta";
@@ -96,14 +96,12 @@ export function SearchProvider({ children }: { children: ReactNode }) {
       return;
     }
     setStatus("typing");
-    const animeAllowed = !hiddenTabs.anime;
     const liveTvAllowed = !hiddenTabs.liveTv && settings.iptvPlaylists.length > 0;
     debounceRef.current = window.setTimeout(() => {
       const id = ++reqIdRef.current;
       setStatus("loading");
       const liveTv = liveTvAllowed ? searchLiveTvChannels(trimmed, settings.iptvPlaylists) : [];
       const tmdbPromise = searchAll(settings.tmdbKey, trimmed, { excludeGenres });
-      const animePromise = animeAllowed ? searchAnime(trimmed) : Promise.resolve([]);
       const addonsP = ensureAddons();
       const addonPromise = addonsP
         .then((a) => searchAddonCatalogs(a, trimmed))
@@ -114,7 +112,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
       const cinemetaPromise = searchCinemeta(trimmed).catch(() => ({ movies: [], series: [] }));
       let tmdbResult: Awaited<typeof tmdbPromise> | null = null;
       const acc = {
-        anime: [] as Awaited<typeof animePromise>,
         addon: { movies: [], series: [] } as Awaited<typeof addonPromise>,
         cine: { movies: [], series: [] } as Awaited<typeof cinemetaPromise>,
         groups: [] as Awaited<typeof addonGroupsPromise>,
@@ -139,7 +136,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
           movies: mergedMovies,
           series: mergedSeries,
           liveTv,
-          anime: acc.anime,
           addonGroups: dedupedGroups,
           addons: searchAddonIndex(trimmed),
         });
@@ -153,10 +149,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
         .catch(() => {
           if (id === reqIdRef.current) setStatus("done");
         });
-      void animePromise.then((a) => {
-        acc.anime = a;
-        publish();
-      });
       void addonPromise.then((a) => {
         acc.addon = a;
         publish();

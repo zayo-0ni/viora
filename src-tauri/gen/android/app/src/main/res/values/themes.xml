@@ -1,6 +1,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!--
+        The window background is the whole point of this file.
+
+        Android draws a starting window from the theme the instant the icon is
+        pressed, before the process exists and long before any Kotlin or any
+        JavaScript runs. The parent theme is DayNight, and its day variant
+        paints that window white — so on a television, in a dark room, the app
+        opened with a full-screen white flash.
+
+        It was fixed twice in the wrong place first: the activity window, then
+        the WebView. Both of those are painted after the flash is already on
+        the screen. This is the only surface early enough to matter.
+
+        The value matches #harbor-boot in index.html, so the starting window,
+        the activity, the WebView and the boot screen are one continuous colour
+        from the first frame to the app.
+    -->
     <style name="Theme.viora" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/viora_boot</item>
     </style>
 </resources>

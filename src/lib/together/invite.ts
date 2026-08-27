@@ -1,8 +1,8 @@
 import { WEB_APP_BASE } from "@/lib/brand";
 import { normalizeRoomCode } from "./protocol";
 
-const RELAY_PARAM = "harbor-relay";
-const ROOM_PARAM = "harbor-room";
+const RELAY_PARAM = "viora-relay";
+const ROOM_PARAM = "viora-room";
 
 export type ParsedInvite = {
   relayUrl: string;

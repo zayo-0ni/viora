@@ -48,7 +48,9 @@ export async function tmdbWatchProviders(
     out.push({
       id: p.provider_id,
       name: p.provider_name,
-      logo: `${IMG}/original${p.logo_path}`,
+      // These are service badges a few dozen pixels wide. The full size asset
+      // was being decoded for every one of them.
+      logo: `${IMG}/w154${p.logo_path}`,
       link,
     });
     if (out.length >= 8) break;

@@ -3,21 +3,10 @@ import { Search as SearchIcon, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Meta } from "@/lib/cinemeta";
 import { useT } from "@/lib/i18n";
-import { searchAll, type AnimeHit, type SearchResults } from "@/lib/search";
+import { searchAll, type SearchResults } from "@/lib/search";
 import { tmdbTrending } from "@/lib/providers/tmdb/tmdb-catalogs";
 import { PeopleRail, PosterRail, RailSection, RailSkeleton, type Person } from "./rails";
 
-function animeToMeta(a: AnimeHit): Meta {
-  return {
-    id: a.kitsuId ? `kitsu:${a.kitsuId}` : `mal:${a.malId}`,
-    type: "series",
-    name: a.name,
-    poster: a.poster ?? undefined,
-    background: a.background ?? undefined,
-    releaseInfo: a.year ?? undefined,
-    imdbRating: a.score > 0 ? a.score.toFixed(1) : undefined,
-  };
-}
 
 export function SearchPanel({
   tmdbKey,
@@ -81,14 +70,13 @@ export function SearchPanel({
 
   const movies = results?.movies ?? [];
   const series = results?.series ?? [];
-  const animeMetas = (results?.anime ?? []).map(animeToMeta);
   const people: Person[] = (results?.people ?? []).map((p) => ({
     id: p.id,
     name: p.name,
     role: p.knownFor,
     profilePath: p.profile,
   }));
-  const hasResults = movies.length + series.length + animeMetas.length + people.length > 0;
+  const hasResults = movies.length + series.length + people.length > 0;
 
   return (
     <div className="flex flex-col gap-6 px-6 pb-8 pt-1 sm:px-8">
@@ -155,11 +143,6 @@ export function SearchPanel({
           {series.length > 0 && (
             <RailSection label={t("Shows")}>
               <PosterRail items={series} onOpen={onOpenTitle} />
-            </RailSection>
-          )}
-          {animeMetas.length > 0 && (
-            <RailSection label={t("Anime")}>
-              <PosterRail items={animeMetas} onOpen={onOpenTitle} />
             </RailSection>
           )}
           {people.length > 0 && (

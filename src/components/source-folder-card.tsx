@@ -219,7 +219,7 @@ export function SourceFolderCard({
               {t("This section depends on the addon")} <strong className="text-ink" dir="ltr">{errorAddon}</strong>.
             </p>
             <p className="mb-6 text-[15px] leading-relaxed">
-              {t("You must install this addon in your Stremio account first so Harbor can fetch its works.")}
+              {t("You must install this addon in your Stremio account first so Viora can fetch its works.")}
             </p>
             <FocusButton
               onClick={() => setErrorAddon(null)}

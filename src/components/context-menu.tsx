@@ -1,6 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { Bookmark, BookmarkCheck, CheckCheck, ClipboardPaste, Copy, Download, EyeOff, Info, ListChecks, ListPlus, Maximize, Navigation, RotateCcw, Star, UserPlus, Wallpaper, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { cloneElement, useEffect, useRef, useState, type ReactElement } from "react";
 import { useActiveAddon } from "@/lib/active-addon";
 import { useContextMenu, type ViewSummonable } from "@/lib/context-menu";
 import { useT } from "@/lib/i18n";
@@ -16,6 +16,8 @@ import { useIsFavorite, useMediaFavorites } from "@/lib/media-favorites";
 import { useInLocalWatchlist, useLocalWatchlist } from "@/lib/local-watchlist";
 import { clearTitleBackdrop, getTitleBackdrop, setTitleBackdrop } from "@/lib/title-backdrop";
 
+/** Long enough for the release's own click to have been and gone. */
+const ARM_AFTER_RELEASE_MS = 150;
 const MENU_WIDTH = 220;
 const MENU_HEIGHT = 120;
 
@@ -30,7 +32,6 @@ function isEditableTarget(el: EventTarget | null): el is HTMLElement {
 const VIEW_LABELS: Record<ViewSummonable, string> = {
   home: "Home",
   discover: "Discover",
-  anime: "Anime",
   queue: "My Library",
   addons: "Addons",
 };
@@ -130,6 +131,44 @@ export function ContextMenu() {
     return () => document.removeEventListener("contextmenu", handler);
   }, [open, currentMeta, menuMeta, topKind, activeAddon]);
 
+  /*
+    Whether the key that opened this is still down.
+
+    A hold opens the menu at half a second and the finger stays on the button;
+    letting go then delivers a click, and it lands on whichever entry has just
+    taken the highlight. Measured on the emulator: holding OK on a card opened
+    the menu and ran its first entry in the same gesture. Timing it was the
+    wrong instrument — the window has to last exactly as long as the finger
+    does, so what is watched is the key itself. A right-click opens the menu
+    with no key down, and nothing is swallowed.
+  */
+  const enterDown = useRef(false);
+  /** True once the gesture that opened the menu has ended. */
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") enterDown.current = true;
+    };
+    const up = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      enterDown.current = false;
+      // The browser turns this release into a click within the same beat, and
+      // that click would land on whichever entry had just taken the highlight —
+      // which is how a hold opened the menu and ran its first entry in one
+      // gesture. Letting the release pass first is what separates them.
+      window.setTimeout(() => setArmed(true), ARM_AFTER_RELEASE_MS);
+    };
+    window.addEventListener("keydown", down, true);
+    window.addEventListener("keyup", up, true);
+    return () => {
+      window.removeEventListener("keydown", down, true);
+      window.removeEventListener("keyup", up, true);
+    };
+  }, []);
+  useEffect(() => {
+    if (state) setArmed(!enterDown.current);
+  }, [state]);
+
   useEffect(() => {
     if (!state) return;
     const onDown = (e: MouseEvent) => {
@@ -138,11 +177,20 @@ export function ContextMenu() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
     };
+    // Back belongs to whatever is on top, and while this is open that is this.
+    // Without it the press went to the screen underneath and left the menu
+    // hanging over a page that had just changed beneath it.
+    const onLocalBack = (e: Event) => {
+      e.preventDefault();
+      close();
+    };
     document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
+    window.addEventListener("harbor:local-back", onLocalBack);
     return () => {
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
+      window.removeEventListener("harbor:local-back", onLocalBack);
     };
   }, [state, close]);
 
@@ -360,21 +408,37 @@ export function ContextMenu() {
       );
     }
   } else if (state.target.kind === "continue") {
-    // One entry, and it is the one the row is for. The ✕ in the corner of the
-    // card only appears under a mouse pointer, so a remote had no way to take
-    // anything out of Continue Watching at all.
-    const { remove } = state.target;
-    items.push(
-      <Item
-        key="remove-from-continue"
-        icon={<X size={14} strokeWidth={2} />}
-        label={t("Remove from Continue Watching")}
-        onClick={() => {
-          remove();
-          close();
-        }}
-      />,
-    );
+    // The ✕ in the corner of the card only appears under a mouse pointer, so a
+    // remote had no way to take anything out of Continue Watching at all — and
+    // now that a press resumes playback, this is also the way back to the title
+    // page, where a different source is picked.
+    const { remove, openTitle } = state.target;
+    if (openTitle) {
+      items.push(
+        <Item
+          key="open-title-from-continue"
+          icon={<Info size={14} strokeWidth={2} />}
+          label={t("Open title page")}
+          onClick={() => {
+            openTitle();
+            close();
+          }}
+        />,
+      );
+    }
+    if (remove) {
+      items.push(
+        <Item
+          key="remove-from-continue"
+          icon={<X size={14} strokeWidth={2} />}
+          label={t("Remove from Continue Watching")}
+          onClick={() => {
+            remove();
+            close();
+          }}
+        />,
+      );
+    }
   } else if (state.target.kind === "subtitle") {
     const { download } = state.target;
     items.push(
@@ -444,16 +508,32 @@ export function ContextMenu() {
     <div
       ref={ref}
       role="menu"
+      /* The release of the hold that opened this is not a choice.
+
+         Taking the highlight is what makes the menu usable from a remote, but
+         the key that opened it is still down: letting go delivers a click, and
+         it lands on whichever entry just claimed focus. Measured on the
+         emulator, holding OK on a card opened the menu and ran its first entry
+         in the same gesture. A press has to arrive after the gesture that
+         opened this, not as part of it. */
       style={{ left, top, width: MENU_WIDTH }}
       className="fixed z-[145] flex flex-col rounded-xl border border-edge bg-elevated p-1 shadow-[0_18px_50px_-15px_rgba(0,0,0,0.7)] animate-popover-in"
     >
-      {items}
+      {/* The highlight moves in with the menu.
+          Opened by a hold on a card, this had no way of being used at all: the
+          remote stayed on the screen behind, so the entries could be read and
+          not pressed. */}
+      {items.map((el, i) =>
+        i === 0 && armed
+          ? cloneElement(el as ReactElement<{ autoFocus?: boolean }>, { autoFocus: true })
+          : el,
+      )}
     </div>
   );
 }
 
 function topKindToView(topKind: string): ViewSummonable | null {
-  if (topKind === "home" || topKind === "discover" || topKind === "anime" || topKind === "queue") {
+  if (topKind === "home" || topKind === "discover" || topKind === "queue") {
     return topKind;
   }
   if (topKind === "addons" || topKind === "addon-detail") return "addons";
@@ -475,8 +555,6 @@ function navigateToLocation(loc: ParticipantLocation, nav: LocationNavigators) {
   switch (loc.kind) {
     case "home":
     case "discover":
-    case "anime":
-    case "addons":
       nav.setView(loc.kind);
       return;
     case "queue":
@@ -510,18 +588,21 @@ function Item({
   onClick,
   accent,
   disabled = false,
+  autoFocus = false,
 }: {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;
   accent?: boolean;
   disabled?: boolean;
+  autoFocus?: boolean;
 }) {
   return (
     <FocusButton
       role="menuitem"
       onClick={onClick}
       disabled={disabled}
+      autoFocus={autoFocus}
       className={`flex h-9 items-center gap-2.5 rounded-lg px-3 text-start text-[13px] transition-colors ${
         disabled
           ? "cursor-not-allowed text-ink-subtle/55"

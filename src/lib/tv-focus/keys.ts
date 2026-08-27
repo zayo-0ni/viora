@@ -561,7 +561,7 @@ function resolveUsable(key: string, depth = 0): string | null {
 function activeScope(): HTMLElement | null {
   const modal = topModalScope();
   if (modal) return modal;
-  const player = document.querySelector<HTMLElement>("[data-harbor-player]");
+  const player = document.querySelector<HTMLElement>("[data-viora-player]");
   if (player) return player;
   return document.querySelector<HTMLElement>('[data-focus-layer="top"]');
 }

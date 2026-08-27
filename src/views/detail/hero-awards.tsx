@@ -1,4 +1,3 @@
-import { FocusButton } from "@/lib/tv-focus";
 import { useLayoutEffect, useRef, useState } from "react";
 import { AwardLogo, laurelColorFor } from "@/components/icons/award-logo";
 import { Laurel } from "@/components/icons/laurel";
@@ -9,16 +8,14 @@ type HeroTier = "full" | "compact" | "hidden";
 export function HeroAwardsCorner({
   summary,
   inline,
-  interactive = true,
   className,
 }: {
   summary: { type: string; wins: number; nominations: number }[];
   inline?: boolean;
-  interactive?: boolean;
   className?: string;
 }) {
   const t = useT();
-  const ref = useRef<HTMLButtonElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [tier, setTier] = useState<HeroTier>("full");
   useLayoutEffect(() => {
     if (inline) {
@@ -101,27 +98,14 @@ export function HeroAwardsCorner({
     </>
   );
 
-  if (!interactive) {
-    return (
-      <div className={`group flex items-center gap-3 rounded-2xl px-3 py-2 text-end ${positionCls}`}>
-        {content}
-      </div>
-    );
-  }
-
   return (
-    <FocusButton
+    <div
       ref={ref}
-      type="button"
       data-hero-awards
-      onClick={(e) => {
-        e.stopPropagation();
-        document.getElementById("awards-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }}
-      className={`group flex items-center gap-3 rounded-2xl px-3 py-2 text-end transition-all duration-200 hover:-translate-y-0.5 hover:bg-canvas/45 ${positionCls}`}
+      className={`group flex items-center gap-3 rounded-2xl px-3 py-2 text-end ${positionCls}`}
     >
       {content}
-    </FocusButton>
+    </div>
   );
 }
 

@@ -258,7 +258,7 @@ function ExportLogButton() {
     try {
       await invoke<string>("mpv_export_log");
       setState("done");
-      setDetail(t("Saved to Downloads as harbor-mpv-log.txt"));
+      setDetail(t("Saved to Downloads as viora-mpv-log.txt"));
     } catch (e) {
       setState("error");
       setDetail(e instanceof Error ? e.message : String(e));

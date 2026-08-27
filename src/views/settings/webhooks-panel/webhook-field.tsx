@@ -97,13 +97,13 @@ export function DiscordTutorial() {
   return (
     <div className="flex flex-col gap-2.5">
       <p className="text-[12px] text-ink-muted">
-        {t("Discord posts a message to a channel whenever Harbor pings it. Takes about a minute to set up.")}
+        {t("Discord posts a message to a channel whenever Viora pings it. Takes about a minute to set up.")}
       </p>
       <ol className="ms-4 list-decimal space-y-1.5 text-[12px] text-ink-muted marker:text-ink-subtle">
         <li>{t("Open the Discord server where you want notifications to land.")}</li>
         <li>{t("Right-click a text channel, pick")} <span className="text-ink">{t("Edit Channel")}</span>.</li>
         <li>{t("Click")} <span className="text-ink">{t("Integrations")}</span> {t("on the left, then")} <span className="text-ink">{t("Webhooks")}</span>.</li>
-        <li>{t("Click")} <span className="text-ink">{t("New Webhook")}</span>, {t("name it Harbor, hit")} <span className="text-ink">{t("Copy Webhook URL")}</span>.</li>
+        <li>{t("Click")} <span className="text-ink">{t("New Webhook")}</span>, {t("name it Viora, hit")} <span className="text-ink">{t("Copy Webhook URL")}</span>.</li>
         <li>{t("Paste the URL into the box above and send a test.")}</li>
       </ol>
       <p className="text-[11.5px] text-ink-subtle">
@@ -122,7 +122,7 @@ export function TelegramTutorial() {
   return (
     <div className="flex flex-col gap-2.5">
       <p className="text-[12px] text-ink-muted">
-        {t("Telegram sends through a bot you create. You need two things: a")} <span className="text-ink">{t("bot token")}</span> {t("and your")} <span className="text-ink">{t("chat ID")}</span>. {t("Both go in the boxes above. Harbor builds the URL for you.")}
+        {t("Telegram sends through a bot you create. You need two things: a")} <span className="text-ink">{t("bot token")}</span> {t("and your")} <span className="text-ink">{t("chat ID")}</span>. {t("Both go in the boxes above. Viora builds the URL for you.")}
       </p>
       <ol className="ms-4 list-decimal space-y-1.5 text-[12px] text-ink-muted marker:text-ink-subtle">
         <li>{t("Tap")} <span className="text-ink">{t("Open BotFather")}</span> {t("below. In Telegram, send him")} <span className="font-mono text-ink">/newbot</span>. {t("Pick any name. Pick a username ending in")} <span className="font-mono text-ink">bot</span>.</li>

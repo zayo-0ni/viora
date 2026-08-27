@@ -30,6 +30,30 @@ class MainActivity : TauriActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
+    // The white frame before the mark appears.
+    //
+    // A WebView paints its own background before the page has produced
+    // anything, and that background is white. On a television, in a dark room,
+    // that is a full-screen flash between the launcher and the boot screen —
+    // the app's first impression, and the thing the owner reported first.
+    //
+    // The window is painted the same colour the boot screen uses, so the first
+    // frame the panel shows is already the right one and there is nothing to
+    // flash from.
+    window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(0xFF0A0A0A.toInt()))
+    // TEMPORARY — remove before shipping.
+    //
+    // Opens the WebView's DevTools socket so the main thread can be profiled on
+    // the television itself. wry enables this only for debug builds, and a debug
+    // build carries the debug signing key, which Android will not accept over a
+    // release install: measuring would mean uninstalling first and taking the
+    // viewer's add-ons and library with it. This is a static method, so calling
+    // it here turns the socket on for a release-signed build and the install
+    // stays in place.
+    //
+    // It must not ship. With this on, anything on the same network can attach to
+    // the page and read whatever the app can.
+    WebView.setWebContentsDebuggingEnabled(true)
     super.onCreate(savedInstanceState)
   }
 
@@ -142,6 +166,31 @@ class MainActivity : TauriActivity() {
 
   override fun onWebViewCreate(webView: WebView) {
     contentWebView = webView
+    // The white flash, second attempt.
+    //
+    // Painting the activity window was not enough, and the owner saw the flash
+    // again: a WebView draws its own background over the window, and that
+    // background is white until the page's own paints cover it. Both surfaces
+    // have to start at the boot screen's colour, not just the one behind.
+    webView.setBackgroundColor(0xFF0A0A0A.toInt())
+    // The page is allowed to choose its own width.
+    //
+    // `index.html` picks a layout width for the panel it finds itself on — 1280
+    // on a 16:9 set — and states it in the viewport meta. Android only reads
+    // that tag when `useWideViewPort` is on, and nothing here was turning it on:
+    // the app was living off whatever the WebView happened to default to, which
+    // is not the same in every build. Measured on the emulator with it off:
+    // `clientWidth` stayed at 960 while the tag said 1280, so every `lg:` class
+    // in the app — 154 of them across 41 files — sat dead behind a 1024px
+    // breakpoint the layout could never reach. The side rail could not expand
+    // and every card drew a third too large. Rewriting the tag at runtime
+    // changed nothing, which is what proved it was the setting and not the tag.
+    //
+    // `loadWithOverviewMode` is its other half: it makes the initial scale fit
+    // that chosen width to the screen, so a 1280px layout lands on a 960px panel
+    // instead of hanging off the right edge.
+    webView.settings.useWideViewPort = true
+    webView.settings.loadWithOverviewMode = true
     takeKeyboardFocus(webView)
     webView.addJavascriptInterface(ClipboardBridge(), "VioraClipboard")
     webView.addJavascriptInterface(nativePlayer, "VioraPlayer")

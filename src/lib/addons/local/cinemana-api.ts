@@ -216,7 +216,29 @@ export function descriptionOf(item: CinemanaItem, arabic: boolean): string {
   return (arabic ? ar || en : en || ar) ?? "";
 }
 
+/**
+ * The poster for a card in a row or a grid.
+ *
+ * The medium thumbnail first, not the full image. Measured on a 1080p
+ * television: a poster occupies 151 CSS px, which at that panel's 2x density is
+ * 302 device pixels, and Cinemana's `imgObjUrl` is 2000px wide — around forty
+ * times the pixels the slot can show. Ninety-six such images were live on the
+ * home screen at once, 75 megapixels of decoding for a screen that holds two,
+ * and it landed in raster rather than script: style, layout and JavaScript
+ * together came to 3.5% of the frame budget while the main thread was busy 20%.
+ *
+ * `imgObjUrl` stays as the last resort, because an item without a thumbnail
+ * should still show something.
+ */
 export function posterOf(item: CinemanaItem): string | undefined {
+  return item.imgMediumThumbObjUrl || item.imgThumbObjUrl || item.imgObjUrl || undefined;
+}
+
+/**
+ * The full-width art behind a hero or a detail page, where the same file is the
+ * right size rather than forty times it.
+ */
+export function backdropOf(item: CinemanaItem): string | undefined {
   return item.imgObjUrl || item.imgMediumThumbObjUrl || item.imgThumbObjUrl || undefined;
 }
 

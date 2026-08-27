@@ -2,8 +2,7 @@ import { FocusButton } from "@/lib/tv-focus";
 import { ArrowLeft, LogOut, Pencil, Search, Settings as SettingsIcon, Users } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CatAvatar } from "@/components/icons/cat-avatar";
-import { HarborMark } from "@/components/icons/harbor-mark";
-import { RecordingPill } from "@/chrome/recording-pill";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { TogetherButton } from "@/chrome/topbar";
 import { useAuth } from "@/lib/auth";
 import { useT } from "@/lib/i18n";
@@ -12,10 +11,7 @@ import { useSearch } from "@/lib/search-context";
 import { useSettings } from "@/lib/settings";
 import { getThemeById } from "@/lib/theme";
 import { useView } from "@/lib/view";
-import { close, minimize, toggleMaximize } from "@/lib/window";
-import { can } from "@/lib/capabilities";
 
-const HAS_WINDOW_CHROME = can("customTitlebar");
 
 export function FloatingTop() {
   const { view, setView, chromeHidden, canGoBack, goBack, topKind, exitPlayback } = useView();
@@ -39,13 +35,13 @@ export function FloatingTop() {
       <FocusButton
         type="button"
         onClick={() => setView("home")}
-        className="harbor-minui-mark flex shrink-0 items-center gap-2 rounded-full px-1.5 py-1 text-ink transition-colors"
+        className="viora-minui-mark flex shrink-0 items-center gap-2 rounded-full px-1.5 py-1 text-ink transition-colors"
         aria-label={t("chrome.harborHome")}
       >
         {customMark ? (
           <img src={customMark} alt="" draggable={false} className="h-8 w-8 object-contain" />
         ) : (
-          <HarborMark className="h-8 w-8" />
+          <VioraMark className="h-8 w-8" />
         )}
       </FocusButton>
       {showBack && (
@@ -61,26 +57,12 @@ export function FloatingTop() {
       )}
       <div className="flex flex-1" data-tauri-drag-region />
       <div className="pointer-events-auto flex shrink-0 items-center gap-1.5">
-        <RecordingPill />
         {!liveActive && <TogetherButton variant="ghost" popoverPlacement="below-right" />}
         <PillBtn label={t("common.search")} onClick={() => setSearchOpen(true)}>
           <Search size={16} strokeWidth={2.2} />
           <span className="hidden sm:inline">{t("common.search")}</span>
         </PillBtn>
         <ProfilePill onOpenSettings={() => setView("settings")} settingsActive={view === "settings"} />
-        {HAS_WINDOW_CHROME && !settings.useNativeTitleBar && (
-          <div className="ms-1 flex items-center gap-1">
-            <WinBtn onClick={minimize} label={t("chrome.minimize")}>
-              <path d="M3 6.5h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </WinBtn>
-            <WinBtn onClick={toggleMaximize} label={t("chrome.maximize")}>
-              <rect x="3" y="3" width="7" height="7" stroke="currentColor" strokeWidth="1.5" rx="1.5" />
-            </WinBtn>
-            <WinBtn onClick={close} label={t("common.close")} danger>
-              <path d="M3.5 3.5l6 6M9.5 3.5l-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </WinBtn>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -108,31 +90,6 @@ function PillBtn({
   );
 }
 
-function WinBtn({
-  onClick,
-  label,
-  danger,
-  children,
-}: {
-  onClick: () => void;
-  label: string;
-  danger?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <FocusButton
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-      className={`flex h-9 w-9 items-center justify-center rounded-full border border-edge-soft bg-surface text-ink-muted shadow-[0_2px_6px_-4px_rgba(15,15,18,0.18)] transition-all hover:-translate-y-px ${danger ? "hover:border-danger/40 hover:text-danger" : "hover:border-edge hover:text-ink"}`}
-    >
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
-        {children}
-      </svg>
-    </FocusButton>
-  );
-}
 
 function ProfilePill({
   onOpenSettings,

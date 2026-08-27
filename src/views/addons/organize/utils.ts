@@ -69,7 +69,7 @@ export function noticeFor(result: Exclude<SaveResult, { ok: true }>): Notice {
       return result.current == null
         ? {
             tone: "danger",
-            text: t("Saved, but Harbor couldn't confirm the new order. Retry to re-check."),
+            text: t("Saved, but Viora couldn't confirm the new order. Retry to re-check."),
             retry: true,
           }
         : {

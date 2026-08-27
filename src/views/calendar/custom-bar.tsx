@@ -46,7 +46,7 @@ export function CustomCalendarBar({
   const toggleSource = (k: "includeTraktWatchlist" | "includeTraktAnticipated") => {
     onChange({ ...value, [k]: !value[k] });
   };
-  const toggleMediaType = (kind: "movie" | "tv" | "anime") => {
+  const toggleMediaType = (kind: "movie" | "tv") => {
     onChange({ ...value, mediaTypes: { ...value.mediaTypes, [kind]: !value.mediaTypes[kind] } });
   };
   const toggleGenre = (genre: { id: number; name: string; mediaType: "movie" | "tv" }) => {

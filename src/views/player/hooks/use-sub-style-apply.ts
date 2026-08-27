@@ -1,8 +1,6 @@
 import type { PlayerEngine } from "@/lib/player/bridge";
 import { useEffect } from "react";
-import { isLinuxDesktop, isMacDesktop } from "@/lib/platform";
 import { applyMotionInterp } from "@/lib/player/motion-interp";
-import { applyRtxHdr } from "@/lib/player/rtx-hdr";
 import { applySubStyle } from "@/lib/player/sub-style";
 import type { useSettings } from "@/lib/settings";
 
@@ -48,18 +46,15 @@ export function useSubStyleApply(params: {
 
   useEffect(() => {
     if (engine !== "mpv") return;
-    if ((isMacDesktop() || isLinuxDesktop()) && settings.playerMpvEmbed) return;
     if (!bridgeReady) return;
     const svpActive = settings.playerSvp && !!settings.svpVpyPath;
     void applyMotionInterp(settings.playerMotionInterp && !svpActive);
-    void applyRtxHdr(settings.playerRtxHdr, svpActive);
   }, [
     engine,
     bridgeReady,
     bridgeKey,
     settings.playerMpvEmbed,
     settings.playerMotionInterp,
-    settings.playerRtxHdr,
     settings.playerSvp,
     settings.svpVpyPath,
   ]);

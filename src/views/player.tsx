@@ -24,7 +24,6 @@ import { useChromeConfig } from "./player/hooks/use-chrome-config";
 import { useEverPlayed } from "./player/hooks/use-ever-played";
 import { useDrawMode } from "./player/hooks/use-draw-mode";
 import { useChromeVisibility } from "./player/hooks/use-chrome-visibility";
-import { useTouchGestures } from "./player/hooks/use-touch-gestures";
 import { useAutoRetry } from "./player/hooks/use-auto-retry";
 import { useWakeReconnect } from "./player/hooks/use-wake-reconnect";
 import { useEngineStats } from "./player/hooks/use-engine-stats";
@@ -40,11 +39,9 @@ import { useLobbyGate } from "./player/hooks/use-lobby-gate";
 import { hostSourceMatchesMedia } from "@/lib/together/room-derive";
 import { useLiveChannelOverlay } from "./player/hooks/use-live-channel-overlay";
 import { useStreamSwitcher } from "./player/hooks/use-stream-switcher";
-import { useMpvEmbed } from "./player/hooks/use-mpv-embed";
 import { usePlayerBridge } from "./player/hooks/use-player-bridge";
 import { useTvPlayerKeys } from "./player/hooks/use-tv-player-keys";
 import { useTextSync } from "./player/hooks/use-text-sync";
-import { useT } from "@/lib/i18n";
 import { useEpisodeNavigation } from "./player/hooks/use-episode-navigation";
 import { useAbLoop } from "./player/hooks/use-ab-loop";
 import { useAutoNextEpisode } from "./player/hooks/use-auto-next-episode";
@@ -60,12 +57,10 @@ import { usePlayerExit } from "./player/hooks/use-player-exit";
 import { usePendingSeekApply } from "./player/hooks/use-pending-seek-apply";
 import { usePlayerHotkeys } from "./player/hooks/use-player-hotkeys";
 import { usePlayerMedia } from "./player/hooks/use-player-media";
-import { useTrickplay } from "./player/hooks/use-trickplay";
 import { useStubDetection } from "./player/hooks/use-stub-detection";
 import { useBridgeLoad } from "./player/hooks/use-bridge-load";
 import { useVideoFill } from "./player/hooks/use-video-fill";
 import { useLivePictureEq } from "./player/hooks/use-live-picture-eq";
-import { useAnime4k } from "./player/hooks/use-anime4k";
 import { useSdrBoostGate } from "./player/hooks/use-sdr-boost-gate";
 import { PlayerOverlayLayers, type PlayerOverlayLayersProps } from "./player/player-overlay-layers";
 import { LeaveConfirmModal } from "@/components/player/leave-confirm-modal";
@@ -73,13 +68,11 @@ import { PlaybackFailedPanel } from "./player/playback-failed-panel";
 import { setSkipSegmentsView } from "@/lib/skip-intro/segment-store";
 import { markStreamDead, STUB_TTL_MS } from "@/lib/dead-streams";
 import type { VolumeIndicatorState } from "@/components/player/volume-indicator";
-import type { ToastInfo } from "@/views/addons/addons-types";
 
 export function PlayerView({ src }: { src: PlayerSrc }) {
   const { setChromeHidden, topPath, openPicker, exitPlayback, replacePlayerSrc, exitPlayer } = useView();
   const { settings } = useSettings();
   const isKid = useActiveKid() != null;
-  const t = useT();
   const chromeTheme = resolveChromeTheme(settings.theme, settings.playerChromeTheme);
   useEffect(() => {
     const root = document.documentElement;
@@ -134,7 +127,7 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
   // Carries a position across a reload the player asked for itself, so swapping
   // engines resumes where the viewer was instead of starting over.
   const resumeOverrideRef = useRef<number | null>(null);
-  const { snap, engine, bridgeReady, bridgeKey, embedActive, alternateEngine, switchEngine } =
+  const { snap, engine, bridgeReady, bridgeKey, alternateEngine, switchEngine } =
     usePlayerBridge({
       bridgeRef,
       videoMountRef,
@@ -234,7 +227,7 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     sendDraw,
   });
 
-  const { chromeVisible, wakeChrome, hideChrome, toggleChrome, hideForResume, anyMenuOpen, setAnyMenuOpen, cursorStyle } = useChromeVisibility({
+  const { chromeVisible, wakeChrome, hideChrome, hideForResume, anyMenuOpen, setAnyMenuOpen, cursorStyle } = useChromeVisibility({
     playing,
     drawMode,
     pipMode,
@@ -444,7 +437,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     });
   }, [snap.status, src, hasStarted, inRoom, exitPlayback, openPicker]);
 
-  const [dvrOpen, setDvrOpen] = useState(false);
   const pickAnotherOrGuide = useCallback(() => {
     if (liveOverlay.isLive) {
       liveOverlay.setOpen(true);
@@ -516,23 +508,9 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     sendCommand,
   });
 
-  const touchGestures = useTouchGestures({
-    onToggleChrome: toggleChrome,
-    onPlayPause: playPauseToggle,
-    onSeekBy: seekStep,
-    enabled: !drawMode && !pipMode,
-  });
-
   const textSync = useTextSync(bridgeRef.current, src.meta.id);
-  const [syncToast, setSyncToast] = useState<ToastInfo | null>(null);
-  const syncToastTimerRef = useRef<number | null>(null);
-  const showSyncToast = useCallback((kind: "ok" | "error", text: string) => {
-    if (syncToastTimerRef.current != null) window.clearTimeout(syncToastTimerRef.current);
-    setSyncToast({ kind, text });
-    syncToastTimerRef.current = window.setTimeout(() => setSyncToast(null), kind === "error" ? 5000 : 3000);
-  }, []);
   const handleEnterSync = useCallback(() => {
-    void textSync.enter(src.url, src.headers);
+    void textSync.enter();
   }, [textSync.enter, src.url, src.headers]);
 
   const volumeIndicatorTimerRef = useRef<number | null>(null);
@@ -566,7 +544,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
 
   const videoFill = useVideoFill(bridgeRef, src.url, playing);
   useLivePictureEq(bridgeRef, src.url);
-  const anime4k = useAnime4k(bridgeRef, src.url, src, snap.videoWidth);
   const { holdSpeedActive, showStats } = usePlayerHotkeys({
     bridgeRef,
     snap,
@@ -587,27 +564,9 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     toggleSwitcher: () => setSwitcherOpen((v) => !v),
     toggleEpisodePanel: () => setEpisodePanelOpen((v) => !v),
     liveOverlay,
-    toggleDvr: () => setDvrOpen((v) => !v),
     sleep,
     quickToolsEnabled,
     frameGrab,
-    onToggleAnime4k: () => {
-      if (!anime4k.available) {
-        showSyncToast("error", t("Anime4K isn't set up yet. Turn it on in Settings under Anime."));
-        return;
-      }
-      anime4k.setMode(anime4k.mode === "off" ? "auto" : "off");
-    },
-    onAnime4kOn: () => {
-      if (!anime4k.available) {
-        showSyncToast("error", t("Anime4K isn't set up yet. Turn it on in Settings under Anime."));
-        return;
-      }
-      anime4k.setMode("auto");
-    },
-    onAnime4kOff: () => {
-      anime4k.setMode("off");
-    },
     gif,
     clip,
     videoFill,
@@ -685,11 +644,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
   const isLocalSrc = isLocalUrl(src.url);
   const playStreamRef = liveStreamRef ?? src.streamRef;
   const playUrl = liveUrl ?? src.url;
-  useTrickplay({
-    url: playUrl,
-    enabled: settings.seekPreviewEnabled,
-    isLive: src.meta.id?.startsWith("iptv:") ?? false,
-  });
   const adSegments = useAdSegments(
     src.meta.id,
     src.imdbId ?? null,
@@ -710,8 +664,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
   }, [skipSegments]);
   const hasNextEpisodeNow = canChangeEpisode && !!adjacent.next;
 
-  useMpvEmbed({ engine, settings });
-
   useSdrBoostGate({
     engine,
     hdrGamma: snap.hdrGamma,
@@ -722,12 +674,7 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
   // while the page kept only the controls. There is no second window here.
   const hdrStageActive = false;
 
-  const { mpvEmbedWindowsActive, stageBg } = embedFlags(
-    engine,
-    embedActive,
-    snap.videoWidth,
-    snap.videoHeight,
-  );
+  const { stageBg } = embedFlags(engine);
   const { loaderActive: everPlayedLoader } = useEverPlayed({
     url: src.url,
     status: snap.status,
@@ -777,9 +724,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     videoFillPill: videoFill.pill,
     cropMode: videoFill.mode,
     onCropMode: videoFill.setMode,
-    anime4kMode: anime4k.mode,
-    onAnime4kMode: anime4k.setMode,
-    anime4kAvailable: anime4k.available,
     subDropToast: svpToast ?? subDropToast,
     pipMode,
     drawMode,
@@ -862,8 +806,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     tmdbKey: settings.tmdbKey ?? null,
     download: isLocalSrc ? undefined : download,
     liveOverlay,
-    setDvrOpen,
-    openDvr: liveOverlay.isLive ? () => setDvrOpen(true) : undefined,
     sleep,
     adjacentPrev: adjacent.prev,
     adjacentNext: adjacent.next,
@@ -896,9 +838,7 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     switcherOpen,
     foreignNotice,
     onDismissForeign: () => setForeignNotice(null),
-    mpvEmbedWindowsActive,
     setStreamCheckOpen,
-    dvrOpen,
     setSwitcherOpen,
     onSwitchStream,
     debridSlugs: debrids.map((d) => d.slug),
@@ -917,7 +857,6 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
     onEnterSync: handleEnterSync,
     syncMode: textSync.syncMode,
     syncApi: textSync,
-    syncToast,
     onSyncPlayPause: playPauseToggle,
   };
   return (
@@ -929,7 +868,7 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
       isFocusBoundary
       focusKey={focusKeys.player}
       ref={stageRef}
-      data-harbor-player
+      data-viora-player
       dir="ltr"
       className={`fixed inset-0 z-[100] overflow-hidden ${stageBg}`}
       style={cursorStyle}
@@ -939,13 +878,9 @@ export function PlayerView({ src }: { src: PlayerSrc }) {
       <div
         ref={videoMountRef}
         className="absolute inset-0"
-        {...touchGestures}
         onClick={(e) => {
           if (e.target !== e.currentTarget) return;
           if (drawMode || pipMode) return;
-          // Touch routes through the gesture handler instead: a bare tap there
-          // reveals the controls rather than pausing.
-          if (touchGestures.onPointerUp) return;
           const resuming = snap.status !== "playing";
           playPauseToggle();
           if (resuming) hideForResume();

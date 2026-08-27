@@ -11,7 +11,6 @@ type TrackedPerson = Settings["customCalendar"]["trackedPeople"][number];
 const EVENT_LABELS: Record<WebhookTrigger["event"], string> = {
   newMovie: "A new movie comes out",
   newSeries: "A new series comes out",
-  newAnime: "A new anime comes out",
   fromTrackedPerson: "Someone I track has a new release",
   fromGenre: "A specific genre releases",
   fromProvider: "A streamer releases something",
@@ -24,7 +23,6 @@ const EVENT_LABELS: Record<WebhookTrigger["event"], string> = {
 const EVENT_ORDER: WebhookTrigger["event"][] = [
   "newMovie",
   "newSeries",
-  "newAnime",
   "fromTrackedPerson",
   "fromGenre",
   "fromProvider",
@@ -78,7 +76,6 @@ function describeTrigger(t: WebhookTrigger, trackedPeople: TrackedPerson[]): str
   switch (t.event) {
     case "newMovie": return "Any new movie";
     case "newSeries": return "Any new series";
-    case "newAnime": return "Any new anime";
     case "fromTrackedPerson": {
       const ids = t.personIds ?? [];
       if (ids.length === 0) return `Any of your ${trackedPeople.length} tracked people`;
@@ -420,7 +417,7 @@ function RuleEditor({
               </select>
             </label>
             <p className="text-[11.5px] text-ink-subtle">
-              Harbor scans your IPTV playlists' EPG every 30 min for programs about to start.
+              Viora scans your IPTV playlists' EPG every 30 min for programs about to start.
             </p>
           </TriggerSubFields>
         )}

@@ -4,7 +4,7 @@ export const RECIPES: Recipe[] = [
   {
     title: "Tint the cinema badge",
     lang: "css",
-    code: `.harbor-cinema-badge {
+    code: `.viora-cinema-badge {
   color: #ff6b35;
   border-color: rgba(255, 107, 53, 0.4);
 }`,
@@ -13,7 +13,7 @@ export const RECIPES: Recipe[] = [
   {
     title: "Solid black search backdrop",
     lang: "css",
-    code: `.harbor-search-backdrop {
+    code: `.viora-search-backdrop {
   background: #000 !important;
   backdrop-filter: blur(28px);
 }`,
@@ -36,7 +36,7 @@ export const RECIPES: Recipe[] = [
               width:220px; display:flex; flex-direction:column; gap:18px;
               padding:26px 16px; background:var(--color-surface);
               border-right:1px solid var(--color-edge); z-index:60;">
-  <div style="font:600 26px var(--font-display); color:var(--color-ink);">Harbor</div>
+  <div style="font:600 26px var(--font-display); color:var(--color-ink);">Viora</div>
   <button onclick="window.harbor.navigate('home')">Home</button>
   <button onclick="window.harbor.navigate('movies')">Movies</button>
   <button onclick="window.harbor.navigate('shows')">Shows</button>
@@ -55,7 +55,7 @@ export const RECIPES: Recipe[] = [
   {
     title: "Highlight the active nav item",
     lang: "css",
-    code: `[data-harbor-nav][data-active] {
+    code: `[data-viora-nav][data-active] {
   background: var(--color-raised);
   color: var(--color-ink);
 }`,
@@ -77,7 +77,7 @@ export const RECIPES: Recipe[] = [
     code: `window.addEventListener('harbor:scroll-top', (e) => {
   console.info('now viewing', e.detail.view);
 });`,
-    why: "Harbor dispatches lifecycle events on window. Listen from your theme JS.",
+    why: "Viora dispatches lifecycle events on window. Listen from your theme JS.",
   },
 ];
 
@@ -85,9 +85,9 @@ export type FullExample = { title: string; desc: string; code: string };
 
 export const FULL_EXAMPLES: FullExample[] = [
   {
-    title: "Neon Noir (drop-in .harborstyle)",
-    desc: "A complete dark theme with a purple accent. Save it as neon-noir.harborstyle and import it.",
-    code: `# Harbor Style
+    title: "Neon Noir (drop-in .viorastyle)",
+    desc: "A complete dark theme with a purple accent. Save it as neon-noir.viorastyle and import it.",
+    code: `# Viora Style
 name: Neon Noir
 blurb: Purple neon on near-black.
 layout: sidebar
@@ -117,7 +117,7 @@ swatch: #0a0a0f, #15151f, #a06bff
   {
     title: "Custom chrome theme (full sidebar)",
     desc: "A theme that hides built-in chrome and ships its own sidebar.",
-    code: `# Harbor Style
+    code: `# Viora Style
 name: My Rail
 blurb: My own navigation.
 layout: custom
@@ -148,7 +148,7 @@ html[data-theme-layout="custom"]:not([data-chrome-hidden]) main { padding-left: 
 
 @html
 <aside class="rail">
-  <div style="font:600 26px var(--font-display); color:var(--color-ink); padding:2px 10px;">Harbor</div>
+  <div style="font:600 26px var(--font-display); color:var(--color-ink); padding:2px 10px;">Viora</div>
   <button onclick="window.harbor.navigate('home')">Home</button>
   <button onclick="window.harbor.navigate('movies')">Movies</button>
   <button onclick="window.harbor.navigate('shows')">Shows</button>

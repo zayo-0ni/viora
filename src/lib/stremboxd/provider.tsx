@@ -125,7 +125,7 @@ export function LetterboxdProvider({ children }: { children: ReactNode }) {
 
   // Sync preferences whenever the selected catalogs or lists change while
   // connected in full mode. This keeps the server-side manifest in sync with
-  // the user's Harbor settings.
+  // the user's Viora settings.
   useEffect(() => {
     if (!session || lb.mode !== "full") return;
     const prefs = buildServerPreferences(lb.selectedCatalogs, lb.listRefs);

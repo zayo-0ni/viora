@@ -8,7 +8,7 @@ export function customHoverPosterProps(
   config: CustomHoverConfig,
   preview?: boolean,
 ): { className: string; style: CSSProperties } {
-  const cls = [preview ? "harbor-custom-hover-preview" : "harbor-custom-hover"];
+  const cls = [preview ? "viora-custom-hover-preview" : "viora-custom-hover"];
   if (config.scale > 100 || config.blur > 0 || config.dim > 0) cls.push("overflow-hidden");
   if (config.glow) cls.push("ch-glow");
   const style = {

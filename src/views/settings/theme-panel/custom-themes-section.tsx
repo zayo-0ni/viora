@@ -17,7 +17,7 @@ import {
 } from "@/lib/custom-themes";
 import { downloadText } from "@/lib/download-text";
 import { importForeignTheme } from "@/lib/theme-import";
-import { isHarborStyleName, parseHarborStyle, serializeHarborStyle } from "@/lib/harborstyle";
+import { isVioraStyleName, parseVioraStyle, serializeVioraStyle } from "@/lib/viorastyle";
 import { useSettings } from "@/lib/settings";
 import {
   FEATURED_CUSTOM_THEMES,
@@ -60,9 +60,9 @@ export function CustomThemesSection() {
         return;
       }
       const text = await file.text();
-      let result = isHarborStyleName(file.name) ? parseHarborStyle(text) : parseThemeJson(text);
-      if (!result.ok && !isHarborStyleName(file.name) && /(^|\n)\s*@tokens\b/.test(text)) {
-        result = parseHarborStyle(text);
+      let result = isVioraStyleName(file.name) ? parseVioraStyle(text) : parseThemeJson(text);
+      if (!result.ok && !isVioraStyleName(file.name) && /(^|\n)\s*@tokens\b/.test(text)) {
+        result = parseVioraStyle(text);
       }
       if (!result.ok) {
         const foreign = importForeignTheme(text, file.name);
@@ -92,7 +92,7 @@ export function CustomThemesSection() {
     const input = document.createElement("input");
     input.type = "file";
     input.accept =
-      ".harborstyle,.json,.txt,.harbortheme.json,.yaml,.yml,.ini,.xml,application/json,text/plain";
+      ".viorastyle,.json,.txt,.harbortheme.json,.yaml,.yml,.ini,.xml,application/json,text/plain";
     input.onchange = () => {
       const f = input.files?.[0];
       if (f) importFile(f);
@@ -113,15 +113,15 @@ export function CustomThemesSection() {
   const showExport = (id: string) => {
     const preset = getThemeById(id);
     if (!preset) return;
-    setExportText(serializeHarborStyle(preset));
+    setExportText(serializeVioraStyle(preset));
   };
 
   const downloadThemeFile = async (id: string) => {
     const preset = getThemeById(id);
     if (!preset) return;
-    const text = serializeHarborStyle(preset);
+    const text = serializeVioraStyle(preset);
     const safeName = preset.name.replace(/[^a-z0-9-_]+/gi, "-").toLowerCase() || "theme";
-    await downloadText(`${safeName}.harborstyle`, text, ["harborstyle"]);
+    await downloadText(`${safeName}.viorastyle`, text, ["viorastyle"]);
   };
 
   if (studioOpen) {

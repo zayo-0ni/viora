@@ -2,10 +2,10 @@ import { FocusButton } from "@/lib/tv-focus";
 import { APP_NAME } from "@/lib/brand";
 import { useCallback, useEffect, useRef, useState } from "react";
 import snip404 from "@/assets/snip404.svg";
-import { HarborMark } from "@/components/icons/harbor-mark";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { submitErrorReport } from "@/lib/bug-report";
 
-export type HarborError = {
+export type VioraError = {
   code: string;
   title: string;
   message: string;
@@ -13,7 +13,7 @@ export type HarborError = {
   fatal?: boolean;
 };
 
-export function showHarborError(error: HarborError): void {
+export function showVioraError(error: VioraError): void {
   window.dispatchEvent(new CustomEvent("harbor:error", { detail: error }));
 }
 
@@ -42,18 +42,18 @@ type ReportState =
   | { kind: "error"; message: string };
 
 export function ErrorView() {
-  const [error, setError] = useState<HarborError | null>(null);
+  const [error, setError] = useState<VioraError | null>(null);
   const [report, setReport] = useState<ReportState>({ kind: "idle" });
 
   useEffect(() => {
     const onError = (e: Event) => {
-      const ce = e as CustomEvent<HarborError>;
+      const ce = e as CustomEvent<VioraError>;
       setError(ce.detail);
     };
     const onWindowError = (e: ErrorEvent) => {
       if (isNoisyError(e.error, e.message)) return;
       const err = e.error as Error | undefined;
-      showHarborError({
+      showVioraError({
         code: err?.name || "RuntimeError",
         title: "RuntimeError",
         message: e.message || err?.message || "An unexpected runtime error occurred.",
@@ -72,7 +72,7 @@ export function ErrorView() {
           : reason?.message ?? "Unhandled promise rejection.";
       const name = typeof reason === "object" ? reason?.name ?? "Rejection" : "Rejection";
       if (isNoisyError(reason, message)) return;
-      showHarborError({
+      showVioraError({
         code: name,
         title: "Promise rejection",
         message,
@@ -141,13 +141,13 @@ export function ErrorView() {
   return (
     <div
       className="fixed inset-0 z-[200] flex flex-col items-stretch overflow-y-auto bg-canvas lg:flex-row lg:items-center lg:overflow-hidden"
-      style={{ animation: "harbor-fade-in 280ms cubic-bezier(0.32, 0.72, 0.24, 1) both" }}
+      style={{ animation: "viora-fade-in 280ms cubic-bezier(0.32, 0.72, 0.24, 1) both" }}
     >
       <div
         data-tauri-drag-region
         className="pointer-events-none absolute start-5 top-4 z-10 flex select-none items-center gap-1 text-ink sm:start-7 sm:top-5"
       >
-        <HarborMark className="h-6 w-6 shrink-0 sm:h-7 sm:w-7" />
+        <VioraMark className="h-6 w-6 shrink-0 sm:h-7 sm:w-7" />
         <span
           className="font-display text-[24px] font-medium leading-none tracking-tight sm:text-[28px]"
           style={{ transform: "translateY(1px)" }}
@@ -228,7 +228,7 @@ export function ErrorView() {
           ) : report.kind === "error" ? (
             <span className="text-danger/80">Could not send: {report.message}</span>
           ) : (
-            <>Sends the context above straight to the Harbor team. No keys or library data.</>
+            <>Sends the context above straight to the Viora team. No keys or library data.</>
           )}
         </p>
       </div>
@@ -236,7 +236,7 @@ export function ErrorView() {
   );
 }
 
-function buildReportBody(error: HarborError): string {
+function buildReportBody(error: VioraError): string {
   return [
     `Code: ${error.code}`,
     `Title: ${error.title}`,

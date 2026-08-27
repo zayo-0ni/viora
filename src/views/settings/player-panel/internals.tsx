@@ -47,7 +47,7 @@ export function SubField({
 export function previewFamily(id: string): string {
   if (id.startsWith("custom:")) {
     const slug = id.slice("custom:".length);
-    return `"harbor-font-${slug}", "Inter", system-ui, sans-serif`;
+    return `"viora-font-${slug}", "Inter", system-ui, sans-serif`;
   }
   switch (id) {
     case "system":

@@ -19,7 +19,7 @@ export function IdentityRow({
           label="Name"
           value={name}
           onChange={(v) => onChange({ name: v })}
-          placeholder="My Harbor"
+          placeholder="My Viora"
           required
         />
         <FieldInput

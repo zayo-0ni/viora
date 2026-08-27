@@ -29,7 +29,7 @@ export function AddonStarBadge({
           className={`${palette.bg} ${palette.fg} ${palette.ring} ${dims.pill} inline-flex shrink-0 items-center gap-1 rounded-full font-bold`}
           title={t("{count} community ratings on stremio-addons.net", { count: community.stars.toLocaleString() })}
         >
-          <Star size={dims.icon} strokeWidth={2.6} fill="currentColor" className="harbor-rating-star" />
+          <Star size={dims.icon} strokeWidth={2.6} fill="currentColor" className="viora-rating-star" />
           {community.stars.toLocaleString()}
         </span>
       )}

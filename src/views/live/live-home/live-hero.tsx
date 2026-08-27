@@ -98,7 +98,7 @@ export function LiveHero({
       <div
         key={channel.id}
         className="absolute inset-x-0 bottom-0 flex flex-col gap-2.5 p-8 pb-7"
-        style={{ animation: "harbor-fade-in 420ms cubic-bezier(0.32,0.72,0.24,1) both" }}
+        style={{ animation: "viora-fade-in 420ms cubic-bezier(0.32,0.72,0.24,1) both" }}
       >
         <div className="flex items-center gap-3 text-[13px] font-semibold">
           <span className="flex h-[24px] items-center rounded-md bg-danger px-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white">

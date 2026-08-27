@@ -1,42 +1,28 @@
-import { formFactor, isIOS, isMobileOS, platformOS } from "@/lib/platform";
+import { isWeb } from "@/lib/platform";
 
 /**
- * Every host-dependent feature Harbor gates on. Adding a platform means filling
- * this table in once instead of sprinkling `isAndroid()` across the views.
+ * Every host-dependent feature the app gates on.
+ *
+ * This table used to carry a column per platform. With desktop and handheld
+ * gone, most of the rows had the same answer on every remaining host and were
+ * deleted along with the code that asked about them — a capability that is
+ * always false is a branch nobody takes, not a switch worth keeping. What is
+ * left is the set that still genuinely differs, and the only thing it differs
+ * on is whether the Tauri bridge is there.
+ *
+ * Removed with the desktop build: the mpv engine and everything it drove (HDR
+ * passthrough, shader upscaling, motion interpolation, the equaliser), the
+ * ffmpeg and yt-dlp sidecars (transcoding, thumbnail scrubbing, trailer and
+ * subtitle extraction, DVR, clip and screenshot capture), every windowing
+ * feature (multi-window, multiview, PiP, the custom titlebar, the tray, window
+ * state), Discord presence, the updater and AirPlay.
  */
 export type Capability =
   // playback
-  | "mpvEngine"
   | "exoEngine"
-  | "hdrPassthrough"
-  | "shaderUpscale"
-  | "motionInterpolation"
-  | "audioEqualizer"
-  // ffmpeg / yt-dlp sidecars
-  | "transcode"
-  | "thumbnailScrub"
-  | "trailerExtract"
-  | "subtitleExtract"
-  | "dvrRecording"
-  | "clipCapture"
-  | "screenshotCapture"
-  // windowing
-  | "multiWindow"
-  | "multiview"
-  | "windowPip"
-  | "documentPip"
-  | "nativePip"
-  | "customTitlebar"
-  | "systemTray"
-  | "windowState"
   // system integration
-  | "discordPresence"
-  | "autoUpdater"
   | "deepLinks"
-  | "deepLinkRegistration"
   | "powerInhibit"
-  | "processMemoryStats"
-  | "externalBrowserWindow"
   | "localFolderScan"
   | "fileAssociations"
   // network
@@ -44,144 +30,57 @@ export type Capability =
   | "castChromecast"
   | "castDlna"
   | "castRoku"
-  | "castAirplay"
   | "localWebServer";
 
 type Table = Record<Capability, boolean>;
 
-function desktopTable(): Table {
-  const os = platformOS();
-  return {
-    mpvEngine: true,
-    exoEngine: false,
-    hdrPassthrough: os === "windows",
-    shaderUpscale: true,
-    motionInterpolation: os === "windows",
-    audioEqualizer: true,
+/**
+ * Android TV. ExoPlayer drives the device's hardware decoders, which is the
+ * whole reason a television plays HEVC and 4K that a WebView `<video>` turns
+ * down. Deep-link schemes are declared in AndroidManifest.xml at build time, so
+ * there is no runtime registration call to expose.
+ */
+const NATIVE: Table = {
+  exoEngine: true,
 
-    transcode: true,
-    thumbnailScrub: true,
-    trailerExtract: true,
-    subtitleExtract: true,
-    dvrRecording: true,
-    clipCapture: true,
-    screenshotCapture: true,
+  deepLinks: true,
+  powerInhibit: true,
+  // Android reads shared storage through SAF.
+  localFolderScan: true,
+  fileAssociations: true,
 
-    multiWindow: true,
-    multiview: true,
-    windowPip: true,
-    documentPip: true,
-    nativePip: true,
-    customTitlebar: true,
-    systemTray: true,
-    windowState: true,
+  torrentEngine: true,
+  castChromecast: true,
+  castDlna: true,
+  castRoku: true,
+  localWebServer: true,
+};
 
-    discordPresence: true,
-    autoUpdater: true,
-    deepLinks: true,
-    deepLinkRegistration: true,
-    powerInhibit: true,
-    processMemoryStats: true,
-    externalBrowserWindow: true,
-    localFolderScan: true,
-    fileAssociations: true,
+/**
+ * The browser development rig. No bridge, so nothing native is reachable —
+ * but the catalogs, the layout and the whole D-pad surface still are, which is
+ * what makes `pnpm dev` a usable way to work on this.
+ */
+const WEB: Table = {
+  exoEngine: false,
 
-    torrentEngine: true,
-    castChromecast: true,
-    castDlna: true,
-    castRoku: true,
-    castAirplay: os === "macos",
-    localWebServer: true,
-  };
-}
+  deepLinks: false,
+  powerInhibit: true,
+  localFolderScan: false,
+  fileAssociations: false,
 
-function mobileTable(): Table {
-  const ios = isIOS();
-  const tv = formFactor() === "tv";
-  return {
-    // No libmpv on either mobile OS: building it for the NDK is a separate
-    // project, and nothing here ships the .so.
-    mpvEngine: false,
-    // Android has its own answer to the same problem. ExoPlayer drives the
-    // device's hardware decoders, which is the whole reason a television plays
-    // HEVC and 4K that a webview <video> turns down. iOS has no equivalent the
-    // app can reach from a WKWebView host.
-    exoEngine: !ios,
-    hdrPassthrough: false,
-    shaderUpscale: false,
-    motionInterpolation: false,
-    audioEqualizer: false,
-
-    // iOS forbids spawning processes outright; Android blocks execution from
-    // the app data dir since API 29. Both kill the ffmpeg/yt-dlp sidecars.
-    transcode: false,
-    thumbnailScrub: false,
-    trailerExtract: false,
-    subtitleExtract: false,
-    dvrRecording: false,
-    clipCapture: false,
-    screenshotCapture: false,
-
-    multiWindow: false,
-    multiview: false,
-    windowPip: false,
-    documentPip: false,
-    // Android and iOS both have an OS-level PiP for video; TV boxes do not.
-    nativePip: !tv,
-    customTitlebar: false,
-    systemTray: false,
-    windowState: false,
-
-    discordPresence: false,
-    autoUpdater: false,
-    deepLinks: true,
-    // Schemes are declared in AndroidManifest.xml at build time; there is no
-    // runtime register/unregister call the way there is on desktop.
-    deepLinkRegistration: false,
-    powerInhibit: true,
-    processMemoryStats: false,
-    externalBrowserWindow: false,
-    // Android reads shared storage through SAF; the iOS sandbox has no
-    // equivalent browsable media tree.
-    localFolderScan: !ios,
-    fileAssociations: !ios,
-
-    torrentEngine: true,
-    castChromecast: true,
-    castDlna: true,
-    castRoku: true,
-    castAirplay: ios,
-    localWebServer: true,
-  };
-}
-
-function webTable(): Table {
-  const base = mobileTable();
-  return {
-    ...base,
-    exoEngine: false,
-    nativePip: true,
-    documentPip: true,
-    deepLinks: false,
-    deepLinkRegistration: false,
-    powerInhibit: true,
-    torrentEngine: false,
-    castChromecast: false,
-    castDlna: false,
-    castRoku: false,
-    castAirplay: false,
-    localWebServer: false,
-    localFolderScan: false,
-    fileAssociations: false,
-  };
-}
+  torrentEngine: false,
+  castChromecast: false,
+  castDlna: false,
+  castRoku: false,
+  localWebServer: false,
+};
 
 let cached: Table | null = null;
 
 export function capabilities(): Table {
   if (cached) return cached;
-  const os = platformOS();
-  cached = os === "web" ? webTable() : isMobileOS() ? mobileTable() : desktopTable();
+  cached = isWeb() ? WEB : NATIVE;
   return cached;
 }
 

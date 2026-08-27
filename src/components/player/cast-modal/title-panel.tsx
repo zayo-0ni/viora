@@ -19,9 +19,6 @@ import { PeopleRail, PosterRail, RailSection, RailSkeleton, type Person } from "
 import { useModalRatings } from "./use-modal-ratings";
 import { useTitleDetail } from "./use-title-detail";
 
-function isAnimeId(id: string): boolean {
-  return id.startsWith("kitsu:") || id.startsWith("mal:") || id.startsWith("anilist:");
-}
 
 function posterUrl(poster: string | undefined, fallback: string | undefined): string | undefined {
   if (!poster) return fallback;
@@ -65,16 +62,15 @@ export function TitlePanel({
     : genres.map((name) => ({ id: 0, name }));
   const isSeries = meta.type === "series" || meta.id.startsWith("tmdb:tv:");
   const upcoming = !loading && !isSeries && isTitleUpcoming(detail, meta);
-  const anime = isAnimeId(meta.id);
   const titleWatched = useMetaWatched(meta.id, meta.type);
   const queued = useIsQueued(meta);
   const imdbId = detail?.imdbId ?? (meta.id.startsWith("tt") ? meta.id : null);
   const mediaType: "movie" | "show" = isSeries ? "show" : "movie";
   const { scores, mdblist, harborImdb } = useModalRatings(imdbId, mediaType);
   const imdbRating = harborImdb ?? scores?.imdbRating ?? null;
-  const primaryRating = anime ? rating : (imdbRating ?? rating);
+  const primaryRating = imdbRating ?? rating;
   const ratingSource: "imdb" | "tmdb" = imdbRating ? "imdb" : "tmdb";
-  const tmdbRating = !anime && detail?.rating ? detail.rating : null;
+  const tmdbRating = detail?.rating ?? null;
 
   const liveAwards = useAwards(imdbId ?? undefined);
   const awards = useMemo(
@@ -112,7 +108,7 @@ export function TitlePanel({
       <div className="relative flex gap-5">
         {awardSummaryItems.length > 0 && (
           <div className="pointer-events-none absolute bottom-1 right-0 z-10 hidden max-w-[42%] justify-end md:flex">
-            <HeroAwardsCorner summary={awardSummaryItems} inline interactive={false} />
+            <HeroAwardsCorner summary={awardSummaryItems} inline />
           </div>
         )}
         {poster && (
@@ -139,7 +135,6 @@ export function TitlePanel({
             bare
             rating={primaryRating}
             tmdbRating={tmdbRating}
-            isAnime={anime}
             scores={scores}
             mdblist={mdblist}
             imdbId={imdbId}

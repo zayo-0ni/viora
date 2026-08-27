@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { meta, topMovies, topSeries } from "@/lib/cinemeta";
-import { fetchAnilistTrendingAnime } from "@/lib/anilist/browse";
 
 export type PreviewArt = {
   posters: string[];
-  anime: string[];
   stills: string[];
 };
 
@@ -24,15 +22,13 @@ async function pickStills(): Promise<string[]> {
 }
 
 async function load(): Promise<PreviewArt> {
-  const [movies, anime, stills] = await Promise.all([
+  const [movies, stills] = await Promise.all([
     topMovies().catch(() => []),
-    fetchAnilistTrendingAnime(12).catch(() => []),
     pickStills().catch(() => []),
   ]);
   const posterOf = (m: { poster?: string }) => m.poster;
   return {
     posters: movies.map(posterOf).filter((x): x is string => !!x).slice(0, 8),
-    anime: anime.map(posterOf).filter((x): x is string => !!x).slice(0, 6),
     stills,
   };
 }

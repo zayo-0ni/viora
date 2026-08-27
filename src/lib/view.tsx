@@ -5,7 +5,7 @@ import type { StreamingService } from "./settings";
 import { useTogether } from "./together/provider";
 import type { SportsGame } from "./sports/espn";
 import { runNavGuard } from "./nav-guard";
-export type View = "home" | "settings" | "anime" | "discover" | "addons" | "calendar" | "movies" | "shows" | "kids" | "library" | "live" | "vod" | "downloads";
+export type View = "home" | "settings" | "discover" | "addons" | "calendar" | "movies" | "shows" | "kids" | "library" | "live" | "vod" | "downloads";
 
 export type PlayEpisode = {
   season: number;
@@ -78,7 +78,6 @@ export type MetaFilter =
 export type Frame =
   | { kind: "home" }
   | { kind: "settings" }
-  | { kind: "anime" }
   | { kind: "discover" }
   | { kind: "addons" }
   | { kind: "addon-detail"; id: string }
@@ -100,7 +99,6 @@ export type Frame =
   | { kind: "filter"; filter: MetaFilter }
   | { kind: "grid"; grid: GridSpec }
   | { kind: "award"; awardType: import("./providers/wikidata").AwardType }
-  | { kind: "anime-award"; sourceId: import("./anime-awards").AwardSourceId }
   | { kind: "picker"; meta: Meta; episode?: PlayEpisode; autoPlay?: boolean; attempt?: number; intent?: "play" | "download" | "download-season"; resume?: boolean }
   | { kind: "player"; src: PlayerSrc }
   | { kind: "match-detail"; game: SportsGame };
@@ -155,8 +153,6 @@ type ViewValue = {
   stackKinds: Frame["kind"][];
   awardType: import("./providers/wikidata").AwardType | null;
   openAward: (t: import("./providers/wikidata").AwardType) => void;
-  animeAwardSource: import("./anime-awards").AwardSourceId | null;
-  openAnimeAward: (s: import("./anime-awards").AwardSourceId) => void;
   homeResetTick: number;
   picker: { meta: Meta; episode?: PlayEpisode; autoPlay?: boolean; attempt?: number; intent?: "play" | "download" | "download-season"; resume?: boolean } | null;
   openPicker: (
@@ -205,8 +201,6 @@ function frameKey(f: Frame): string {
       return "home";
     case "settings":
       return "settings";
-    case "anime":
-      return "anime";
     case "discover":
       return "discover";
     case "addons":
@@ -249,8 +243,6 @@ function frameKey(f: Frame): string {
       return `grid:${f.grid.title}`;
     case "award":
       return `award:${f.awardType}`;
-    case "anime-award":
-      return `anime-award:${f.sourceId}`;
     case "picker": {
       const a = typeof f.attempt === "number" ? `:a${f.attempt}` : "";
       return f.episode
@@ -332,7 +324,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
     for (let i = stack.length - 1; i >= 0; i--) {
       const f = stack[i];
       if (f.kind === "settings") return "settings";
-      if (f.kind === "anime") return "anime";
       if (f.kind === "addons" || f.kind === "addon-detail") return "addons";
       if (f.kind === "discover" || f.kind === "queue") return "discover";
       if (f.kind === "calendar") return "calendar";
@@ -347,7 +338,17 @@ export function ViewProvider({ children }: { children: ReactNode }) {
     }
     return "home";
   })();
-  const service = top.kind === "service" ? top.service : null;
+  // Read from the stack, not from the top, like every other pushed screen.
+  //
+  // This was the one frame answered only while it was the topmost, so opening a
+  // title from a provider's page made `service` null the instant the title went
+  // up — and App's keep-alive reads that as "no longer wanted" and unmounts on
+  // the spot, taking every card with it. The focus layer remembers where the
+  // viewer stood by focus key; the key dies with the card, so Back came home to
+  // the screen's entry point instead of the poster it was opened from.
+  // Measured: the marked card was gone from the document after Back.
+  const serviceFrame = lastOfKind(stack, "service");
+  const service = serviceFrame ? serviceFrame.service : null;
   const metaFrame = stack.slice().reverse().find((f) => f.kind === "meta");
   const meta = metaFrame && metaFrame.kind === "meta" ? metaFrame.meta : null;
   const metaLiveContext =
@@ -483,11 +484,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
         rowScrollMem.current.clear();
         return [{ kind: "home" }];
       }
-      if (v === "anime") {
-        scrollMem.current.clear();
-        rowScrollMem.current.clear();
-        return [{ kind: "anime" }];
-      }
       if (v === "discover") {
         scrollMem.current.clear();
         rowScrollMem.current.clear();
@@ -585,7 +581,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
       const m = top.meta;
       let root: Frame;
       if (m.type === "series" || m.type === "tv") root = { kind: "shows" };
-      else if (m.type === "anime") root = { kind: "anime" };
       else root = { kind: "movies" };
       return [root, { kind: "meta", meta: m }];
     });
@@ -671,14 +666,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
       const top = cur[cur.length - 1];
       if (top.kind === "award" && top.awardType === t) return cur;
       return pushFrame(cur, { kind: "award", awardType: t });
-    });
-  }, [setNavStack]);
-
-  const openAnimeAward = useCallback((s: import("./anime-awards").AwardSourceId) => {
-    setNavStack((cur) => {
-      const top = cur[cur.length - 1];
-      if (top.kind === "anime-award" && top.sourceId === s) return cur;
-      return pushFrame(cur, { kind: "anime-award", sourceId: s });
     });
   }, [setNavStack]);
 
@@ -819,8 +806,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
       stackKinds,
       awardType,
       openAward,
-      animeAwardSource: top.kind === "anime-award" ? top.sourceId : null,
-      openAnimeAward,
       homeResetTick,
       picker,
       openPicker,
@@ -883,7 +868,6 @@ export function ViewProvider({ children }: { children: ReactNode }) {
       openGrid,
       openCollections,
       openAward,
-      openAnimeAward,
       openPicker,
       openPlayer,
       replacePlayerSrc,

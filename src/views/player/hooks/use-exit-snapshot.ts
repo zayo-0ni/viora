@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, type RefObject } from "react";
 import { captureMpvFrame, saveSnapshot } from "@/lib/snapshots";
 import { useSettings } from "@/lib/settings";
-import { trickplayGet } from "@/lib/trickplay";
 import { getPlaybackPosition } from "@/lib/player/playback-clock";
 import type { PlayerEngine, PlayerStatus } from "@/lib/player/bridge";
 import type { PlayerSrc } from "@/lib/view";
@@ -49,12 +48,11 @@ export function useExitSnapshot(params: {
   const capturedKeyRef = useRef<string | null>(null);
 
   const grabFrame = useCallback(
-    async (allowTrick: boolean): Promise<string | null> => {
-      const { seekPreviewEnabled: seek, fullQuality: full } = latest.current;
-      const mpvImg = await captureMpvFrame(full);
-      if (mpvImg) return mpvImg;
-      if (allowTrick && seek) return trickplayGet(getPlaybackPosition());
-      return null;
+    async (): Promise<string | null> => {
+      const { fullQuality: full } = latest.current;
+      // The ffmpeg trickplay generator was the fallback when mpv had no frame
+      // to hand over. It cannot run on Android, so mpv is the only source.
+      return captureMpvFrame(full);
     },
     [videoMountRef],
   );
@@ -82,7 +80,7 @@ export function useExitSnapshot(params: {
     }
     const budget = lastGoodRef.current ? EXIT_GRAB_MS : GRAB_FULL_MS;
     const fresh = await Promise.race([
-      grabFrame(true),
+      grabFrame(),
       new Promise<null>((r) => setTimeout(() => r(null), budget)),
     ]);
     if (fresh && latest.current.src.meta.id === s.meta.id) {
@@ -99,7 +97,7 @@ export function useExitSnapshot(params: {
       if (!id) return;
       const cur = getPlaybackPosition();
       if (!Number.isFinite(cur) || cur <= 0 || nearEnd(cur, dur, false)) return;
-      const img = await grabFrame(true);
+      const img = await grabFrame();
       if (!img) return;
       if (latest.current.src.meta.id !== s.meta.id) return;
       const cached = { img, id };

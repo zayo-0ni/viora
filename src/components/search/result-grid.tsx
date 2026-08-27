@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { FocusButton } from "@/lib/tv-focus";
+import { FocusButton, FocusSection } from "@/lib/tv-focus";
 import type { Meta } from "@/lib/cinemeta";
-import { animeHitMeta, type SearchResults } from "@/lib/search";
+import { type SearchResults } from "@/lib/search";
 import { dedupeByTitle, rankMetas } from "@/lib/search-rank";
 import { useView } from "@/lib/view";
 import { ResultPoster } from "./result-poster";
@@ -40,7 +40,7 @@ export function ResultGrid({
   const { openMeta } = useView();
 
   const items = useMemo(() => {
-    const all: Meta[] = [...results.movies, ...results.series, ...results.anime.map(animeHitMeta)];
+    const all: Meta[] = [...results.movies, ...results.series];
     const seen = new Set<string>(excludeId ? [excludeId] : []);
     const unique = all.filter((m) => {
       if (!m.id || seen.has(m.id)) return false;
@@ -51,15 +51,32 @@ export function ResultGrid({
     // lists from separate sources, so the same title can reach the grid under
     // two different identifiers.
     return dedupeByTitle(rankMetas(unique, query));
-  }, [results.movies, results.series, results.anime, query, excludeId]);
+  }, [results.movies, results.series, query, excludeId]);
 
   if (items.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-x-4 gap-y-6 pb-12">
+    /* The results are one region, so a press inside them resolves among them.
+
+       Measured on the emulator: pressing right on the first card jumped up to
+       the Top match panel instead of moving to the second card. The panel is
+       866px wide and 326 tall, and while the column scrolls it shares vertical
+       ground with the row beneath it — so to an engine comparing boxes it was a
+       neighbour to the right of a 161px card. Naming the grid keeps the
+       comparison between cards. */
+    <FocusSection className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-x-4 gap-y-6 px-3 pt-5 pb-12">
       {items.map((meta) => (
         <FocusButton
           key={meta.id}
+          /* Bring the card fully inside before the ring is drawn on it.
+
+             The last row settled 20px below the bottom of the scrolling column,
+             so the frame around it was cut in half — and pressing down did not
+             move, because there was nowhere further to go. Measured on the
+             emulator: the column sat at 130 of a possible 182, and asking for
+             the nearest reveal took it to 182 and left 32px of clearance. So
+             the scroller was willing; it was simply never asked. */
+          onFocus={(e) => e.currentTarget.scrollIntoView({ block: "nearest" })}
           onClick={() => {
             // Closing first: opening the title behind an overlay that is still
             // up leaves the viewer looking at the search screen with no way to
@@ -75,6 +92,6 @@ export function ResultGrid({
           </span>
         </FocusButton>
       ))}
-    </div>
+    </FocusSection>
   );
 }

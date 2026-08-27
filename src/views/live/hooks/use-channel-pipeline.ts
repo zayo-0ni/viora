@@ -16,7 +16,7 @@ import { useGroupPrefs } from "@/lib/iptv/group-order";
 import { isLiveChannel } from "@/lib/iptv/vod-classify";
 
 type Favorites = ReturnType<typeof useFavorites>;
-type ViewMode = "home" | "grid" | "guide" | "multiview";
+type ViewMode = "home" | "grid" | "guide";
 
 export function useChannelPipeline(params: {
   playlist: IptvPlaylist | null | undefined;

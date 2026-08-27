@@ -65,7 +65,7 @@ function isCustomTheme(t: unknown): t is CustomTheme {
   return true;
 }
 
-const LAYOUTS = new Set<ThemeLayout>(["sidebar", "topdock", "rail", "stremio", "minui", "dracula", "nord", "forest", "royal", "custom"]);
+const LAYOUTS = new Set<ThemeLayout>(["sidebar", "custom"]);
 const CARDS = new Set<ThemeCardStyle>(["flat", "glass", "stremio", "minui", "crunch", "noir", "custom"]);
 const BUTTONS = new Set<ThemeButtonStyle>(["flat", "glossy", "minui", "crunch", "noir", "custom"]);
 const asLayout = (v: unknown): ThemeLayout | undefined =>
@@ -159,7 +159,7 @@ export function parseThemeJson(text: string): { ok: true; theme: CustomTheme } |
     return { ok: false, error: "This file isn't a readable theme." };
   }
   if (!raw || typeof raw !== "object") {
-    return { ok: false, error: "This file isn't a Harbor theme." };
+    return { ok: false, error: "This file isn't a Viora theme." };
   }
   const o = raw as Partial<CustomTheme>;
   const name = typeof o.name === "string" ? o.name.trim() : "";
@@ -321,7 +321,7 @@ export function getStarterTemplate(): string {
         wordmark: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMjQiPjx0ZXh0IHg9IjAiIHk9IjE4IiBmb250LWZhbWlseT0iJ0ZyYXVuY2VzJyxzZXJpZiIgZm9udC1zaXplPSIyMiIgZmlsbD0iI2U4ZWJmMiI+TXkgVGhlbWU8L3RleHQ+PC9zdmc+",
         mark: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIGZpbGw9IiM3YjVjZmYiLz48L3N2Zz4=",
       },
-      css: "/* Optional: extra CSS layered on top. Targets work like a regular stylesheet. */\n.harbor-cinema-badge { color: #7b5cff; border-color: rgba(123,92,255,0.35); }",
+      css: "/* Optional: extra CSS layered on top. Targets work like a regular stylesheet. */\n.viora-cinema-badge { color: #7b5cff; border-color: rgba(123,92,255,0.35); }",
       js: "/* Optional: runs once when this theme is applied. Wrap async with an IIFE. */\nconsole.info('[my-theme] hello from custom JS');",
       html: "<!-- Optional: HTML injected into a fixed overlay. Useful for watermark widgets. -->\n<!-- <div style='position:fixed;bottom:8px;right:8px;font-size:11px;opacity:.4;color:#fff'>built with my theme</div> -->",
     },

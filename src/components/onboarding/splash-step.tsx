@@ -1,6 +1,6 @@
 import { APP_NAME } from "@/lib/brand";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { HarborMark } from "@/components/icons/harbor-mark";
+import { VioraMark } from "@/components/icons/viora-mark";
 import { Poster } from "@/components/poster";
 import { topMovies, topSeries, type Meta } from "@/lib/cinemeta";
 import { useT } from "@/lib/i18n";
@@ -61,7 +61,7 @@ export function SplashStep({ onAdvance }: { onAdvance: () => void }) {
       />
       <div className="relative flex h-full flex-col items-center justify-center gap-3 text-center">
         <h1 className="animate-splash-title flex items-center gap-3 font-display text-[88px] font-medium leading-none tracking-tight text-ink">
-          <HarborMark className="h-[1em] w-[1em] shrink-0" />
+          <VioraMark className="h-[1em] w-[1em] shrink-0" />
           <span style={{ transform: "translateY(0.04em)" }}>{APP_NAME}</span>
         </h1>
         <p

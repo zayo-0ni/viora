@@ -1,4 +1,3 @@
-import { anidbToMal, anilistToMal, kitsuToMal } from "@/lib/providers/anime-mapping";
 import type { SimklIds, SimklTarget } from "./types";
 
 export type IdResolution =
@@ -11,12 +10,9 @@ export function simklTargetIds(target: SimklTarget): SimklIds {
   return target.ids;
 }
 
-async function animeIdToMal(harborId: string): Promise<number | null> {
-  const n = Number(harborId.split(":")[1]);
-  if (!Number.isFinite(n)) return null;
-  if (harborId.startsWith("kitsu:")) return kitsuToMal(n).catch(() => null);
-  if (harborId.startsWith("anilist:")) return anilistToMal(n).catch(() => null);
-  if (harborId.startsWith("anidb:")) return anidbToMal(n).catch(() => null);
+async function animeIdToMal(_harborId: string): Promise<number | null> {
+  // The Kitsu/AniList/AniDB → MAL mapping is gone with the anime providers, so
+  // an anime id no longer resolves to anything Simkl can be asked about.
   return null;
 }
 

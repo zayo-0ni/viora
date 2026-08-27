@@ -53,7 +53,7 @@ export function EditLayoutCard({
 export function ThemeTabs({ value, onChange }: { value: ThemeId; onChange: (v: ThemeId) => void }) {
   const t = useT();
   const tabs: Array<{ id: ThemeId; label: string; sub: string }> = [
-    { id: "default", label: t("Default"), sub: t("Harbor's native player chrome.") },
+    { id: "default", label: t("Default"), sub: t("Viora's native player chrome.") },
     { id: "stremio", label: t("Stremio"), sub: t("Familiar Stremio button order.") },
   ];
   return (

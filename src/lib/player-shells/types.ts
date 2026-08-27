@@ -26,9 +26,6 @@ export type PlayerShellProps = {
   onRate: (r: number) => void;
   cropMode?: string;
   onCropMode?: (id: string) => void;
-  anime4kMode?: string;
-  onAnime4kMode?: (id: string) => void;
-  anime4kAvailable?: boolean;
   onPiP: () => void;
   onFullscreen: () => void;
   onCast: () => void;

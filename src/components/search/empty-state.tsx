@@ -2,7 +2,6 @@ import { FocusButton } from "@/lib/tv-focus";
 import { ArrowLeft, Clock, Compass, ListTree, Loader2, Shuffle, Sparkles, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AddonsIcon } from "@/components/icons/addons-icon";
-import { AnimeIcon } from "@/components/icons/anime-icon";
 import { CalendarIcon } from "@/components/icons/calendar-icon";
 import { DiscoverIcon } from "@/components/icons/discover-icon";
 import { HomeIcon } from "@/components/icons/home-icon";
@@ -51,7 +50,6 @@ const JUMP_TARGETS: Jump[] = [
   { view: "discover", label: "Discover", parentalKey: "discover", icon: <DiscoverIcon /> },
   { view: "movies", label: "Movies", parentalKey: "movies", icon: <MoviesIcon /> },
   { view: "shows", label: "Shows", parentalKey: "shows", icon: <TvIcon /> },
-  { view: "anime", label: "Anime", parentalKey: "anime", icon: <AnimeIcon /> },
   { view: "live", label: "Live TV", parentalKey: "liveTv", icon: <LiveTvIcon /> },
   { view: "calendar", label: "Calendar", parentalKey: "calendar", icon: <CalendarIcon /> },
   { view: "library", label: "My Library", parentalKey: "library", icon: <LibraryIcon /> },

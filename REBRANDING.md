@@ -94,5 +94,6 @@ Third-party components carry their own terms, separate from the app's licence:
 
 - `src-tauri/fonts/LICENSE-OFL-NotoSansJP.txt` — SIL Open Font Licence
 - `src-tauri/vendor/rust_cast/` — MIT, retains its own notice
-- libmpv, ffmpeg and yt-dlp — desktop only, each with its own licence; none of
-  the three ship in the Android build
+
+libmpv, ffmpeg and yt-dlp used to be listed here. They belonged to the desktop
+build and went with it; nothing bundles them now.

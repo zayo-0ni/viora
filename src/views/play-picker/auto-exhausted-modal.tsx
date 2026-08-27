@@ -25,7 +25,7 @@ export function AutoExhaustedModal({
     `Title: ${title}${epSuffix}\n` +
     `IMDb: ${meta.id ?? ""}\n` +
     `Streams tried: ${triedCount}\n` +
-    `\nWhat happened: Harbor could not find a working stream automatically.\n` +
+    `\nWhat happened: Viora could not find a working stream automatically.\n` +
     `\n(Add any extra detail here)`;
   const mailto = SUPPORT_EMAIL
     ? `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
@@ -40,7 +40,7 @@ export function AutoExhaustedModal({
           We could not find a working stream
         </h2>
         <p className="mt-3 text-start text-[14px] leading-relaxed text-ink-muted" dir="auto">
-          Harbor checked every available source for {title}{epSuffix} and none of them played.
+          Viora checked every available source for {title}{epSuffix} and none of them played.
           The most common reasons:
         </p>
         <ul className="mt-3 space-y-1.5 text-start text-[13.5px] leading-relaxed text-ink-muted" dir="auto">

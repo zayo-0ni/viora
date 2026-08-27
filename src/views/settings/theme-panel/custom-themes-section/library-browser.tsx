@@ -93,7 +93,7 @@ export function LibraryBrowser({
         <TabBtn active={tab === "library"} onClick={() => setTab("library")}>
           My library
           {unseen > 0 && (
-            <span className="harbor-pop ms-1.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-accent px-1.5 text-[11px] font-bold text-canvas">
+            <span className="viora-pop ms-1.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-accent px-1.5 text-[11px] font-bold text-canvas">
               {unseen}
             </span>
           )}
@@ -110,7 +110,7 @@ export function LibraryBrowser({
           ) : (
           <>
           {featured.length > 0 && (
-            <BrowserSection title="Featured" subtitle="Hand-picked reskins from the Harbor crew.">
+            <BrowserSection title="Featured" subtitle="Hand-picked reskins from the Viora crew.">
               <BrowserGrid
                 entries={featured}
                 activeId={activeId}
@@ -131,7 +131,7 @@ export function LibraryBrowser({
           )}
 
           {builtIn.length > 0 && (
-            <BrowserSection title="Built-in" subtitle="Ships with Harbor. Always available.">
+            <BrowserSection title="Built-in" subtitle="Ships with Viora. Always available.">
               <BrowserGrid
                 entries={builtIn}
                 activeId={activeId}

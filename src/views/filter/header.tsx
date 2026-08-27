@@ -81,8 +81,13 @@ function GenreSwitcher({
   const names = Object.keys(MOVIE_GENRES);
   return (
     <div ref={wrapRef} className="relative mt-3 inline-flex">
-      <FocusButton
-        type="button"
+      {/* A heading, not a control.
+          The owner asked for the highlight off this outright, knowing what it
+          costs: the genre cannot be changed from this screen with a remote any
+          more, because this button was the only way in. It still opens under a
+          pointer, so the desktop preview keeps the menu. */}
+      <div
+        role="presentation"
         onClick={() => setOpen((v) => !v)}
         className="group inline-flex items-center gap-3 text-start transition-colors"
       >
@@ -96,7 +101,7 @@ function GenreSwitcher({
         >
           <ChevronDown size={18} strokeWidth={2.2} />
         </span>
-      </FocusButton>
+      </div>
       {open && (
         <div className="absolute start-0 top-[calc(100%+12px)] z-30 grid max-h-[420px] w-[440px] grid-cols-2 gap-1 overflow-y-auto rounded-2xl border border-edge bg-surface/98 p-1.5 shadow-[0_24px_60px_-15px_rgba(0,0,0,0.55)] backdrop-blur-xl">
           {names.map((name) => {

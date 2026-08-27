@@ -49,6 +49,16 @@ export default defineConfig({
     alias: { "@": "/src" },
   },
   build: {
+    // Source maps are on so a CPU profile taken on the device names real
+    // functions. Without them the profiler reports minified identifiers and a
+    // line number into the bundle, and those line numbers land inside the large
+    // theme template literals in theme.ts — which is how one profile was nearly
+    // read as blaming a MutationObserver that was not even running.
+    //
+    // They are emitted as separate .map files, so the APK carries them but no
+    // shipped JavaScript grows. Worth turning off again once the hot paths here
+    // are known.
+    sourcemap: true,
     rollupOptions: {
       output: {
         // A single 3 MB entry chunk has to be parsed before anything renders,

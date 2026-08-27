@@ -1,4 +1,4 @@
-import { FocusButton } from "@/lib/tv-focus";
+import { FocusButton, useFocusableControl } from "@/lib/tv-focus";
 import {
   AlertTriangle,
   CheckSquare,
@@ -10,7 +10,7 @@ import {
   Trash2,
   Wand2,
 } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useState, type RefObject } from "react";
 import { Poster } from "@/components/poster";
 import { removeLocalEntry, type LocalEntry } from "@/lib/local-library";
 import { useView } from "@/lib/view";
@@ -41,22 +41,30 @@ export function OwnedCard({
     else openPlayer(localPlayerSrc(entry));
   }, [selectMode, entry, openPlayer, onToggleSelect]);
 
+  const { ref: cardFocusRef, focusProps: cardFocusProps } = useFocusableControl({
+    onSelect: onActivate,
+  });
+
   return (
     <div
       className="group relative flex flex-col gap-2 text-start"
       onMouseLeave={() => setConfirm(false)}
     >
+      {/* Registered with the engine, still a div.
+
+           This carried role="button" and a hand-written tabIndex with its own
+           Enter handler — a mouse-era control the spatial engine had never been
+           told about, so a grid of these could be entered but never crossed:
+           measured on the emulator, pressing right in the watchlist moved
+           nothing at all. It stays a div because the remove button lives inside
+           it, and a button inside a button is not valid HTML. */}
       <div
+        ref={cardFocusRef as RefObject<HTMLDivElement>}
         role="button"
         tabIndex={0}
         onClick={onActivate}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onActivate();
-          }
-        }}
-        className={`relative aspect-[2/3] cursor-pointer overflow-hidden rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)] outline-none ring-offset-2 ring-offset-canvas focus-visible:ring-2 focus-visible:ring-ink ${
+        {...cardFocusProps}
+        className={`relative aspect-[2/3] cursor-pointer rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4)] ${
           isSelected ? "ring-2 ring-accent" : ""
         }`}
       >
@@ -128,7 +136,16 @@ export function OwnedCard({
           </>
         )}
       </div>
-      <FocusButton type="button" onClick={onActivate} className="text-start">
+      {/* The name is not a second stop.
+
+           Each card carried two: the poster, and the title underneath it as a
+           button of its own. On a remote that is not two ways to reach one
+           title, it is a grid with twice as many stops as it has cards, and
+           pressing right walked the captions instead of the artwork — measured
+           on the emulator, one press went from the first card straight past
+           three others onto the fifth one's caption. Clicking the name still
+           opens it; the remote has the card. */}
+      <div onClick={onActivate} className="text-start">
         <p className="truncate text-[13px] font-medium text-ink transition-colors hover:text-accent" title={entry.filename}>
           {entry.title}
         </p>
@@ -143,7 +160,7 @@ export function OwnedCard({
             {entry.type === "show" && t(" · Series")}
           </p>
         ) : null}
-      </FocusButton>
+      </div>
     </div>
   );
 }

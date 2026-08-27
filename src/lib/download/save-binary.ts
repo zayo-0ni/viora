@@ -1,6 +1,4 @@
-import { convertFileSrc } from "@tauri-apps/api/core";
 import { fetch as tauriHttpFetch } from "@tauri-apps/plugin-http";
-import { fetchTrailer, type Quality } from "@/lib/trailer";
 
 const IS_TAURI = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 
@@ -32,7 +30,7 @@ async function writeBytes(bytes: Uint8Array, filename: string, ext: string, mime
   if (IS_TAURI) {
     const { save } = await import("@tauri-apps/plugin-dialog");
     const { writeFile } = await import("@tauri-apps/plugin-fs");
-    const path = await save({ defaultPath: filename, filters: [{ name: "Harbor", extensions: [ext] }] });
+    const path = await save({ defaultPath: filename, filters: [{ name: "Viora", extensions: [ext] }] });
     if (!path) return { saved: false, path: null };
     await writeFile(path, bytes);
     return { saved: true, path };
@@ -48,11 +46,3 @@ export async function saveImageToDisk(url: string, baseName: string): Promise<Sa
   return writeBytes(bytes, `${baseName}.${ext}`, ext, mime);
 }
 
-export async function saveTrailerToDisk(ytId: string, quality: Quality, baseName: string): Promise<SaveOutcome> {
-  if (!IS_TAURI) return { saved: false, path: null };
-  const info = await fetchTrailer(ytId, quality);
-  if (!info) return { saved: false, path: null };
-  const res = await fetch(convertFileSrc(info.file_path));
-  const bytes = new Uint8Array(await res.arrayBuffer());
-  return writeBytes(bytes, `${baseName}.mp4`, "mp4", "video/mp4");
-}

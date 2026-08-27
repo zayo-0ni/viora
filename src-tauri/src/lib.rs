@@ -17,23 +17,20 @@ mod cast_subs;
 mod cf_relay;
 mod dlna;
 mod download;
-mod dvr;
 mod fonts;
 mod http_fetch;
 mod local_lib;
 mod roku;
 mod power;
+mod platform_info;
 mod airplay;
 mod settings_store;
 mod song_id;
 mod stream_proxy;
 mod streams;
 mod stremio_auth;
-mod sub_extract;
 mod subsync;
-mod thumbs;
 mod torrent_engine;
-mod trailer;
 mod transcode;
 mod web_server;
 
@@ -123,14 +120,11 @@ pub fn run() {
         }
     }
     let _ = rustls::crypto::ring::default_provider().install_default();
-    trailer::sweep_cache();
     let proxy_state = tauri::async_runtime::block_on(stream_proxy::ProxyState::start())
         .unwrap_or_else(|e| {
             eprintln!("[stream-proxy] failed to start: {}", e);
             stream_proxy::ProxyState::placeholder()
         });
-    let thumbs_state = thumbs::ThumbsState::new();
-    let dvr_state = dvr::DvrState::new();
 
     // Single-instance, the updater and window-state were the desktop half of
     // this list: Android runs one process per task, ships updates through the
@@ -144,8 +138,6 @@ pub fn run() {
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_process::init())
         .manage(proxy_state)
-        .manage(thumbs_state)
-        .manage(dvr_state)
         .manage(download::DownloadState::new());
 
     app_builder
@@ -195,6 +187,7 @@ pub fn run() {
 fn invoke_handler() -> impl Fn(tauri::ipc::Invoke) -> bool + Send + Sync + 'static {
     tauri::generate_handler![
         harbor_flush_done,
+        platform_info::platform_info,
         power::power_inhibit,
         harbor_set_webview_memory_low,
         harbor_set_webview_visible,
@@ -202,8 +195,6 @@ fn invoke_handler() -> impl Fn(tauri::ipc::Invoke) -> bool + Send + Sync + 'stat
         harbor_resume_webview,
         save_text_file,
         subsync::moviehash::compute_moviehash,
-        subsync::sync_subtitle,
-        sub_extract::subtitle_extract,
         cast_server::stop_stremio_sidecar,
         cast_server::cast_server_stop,
         web_server::web_serve_start,
@@ -211,7 +202,6 @@ fn invoke_handler() -> impl Fn(tauri::ipc::Invoke) -> bool + Send + Sync + 'stat
         web_server::web_serve_status,
         settings_store::settings_read,
         settings_store::settings_write,
-        trailer::fetch_trailer,
         download::download_start,
         download::download_cancel,
         stream_proxy::proxy_register,
@@ -221,15 +211,6 @@ fn invoke_handler() -> impl Fn(tauri::ipc::Invoke) -> bool + Send + Sync + 'stat
         cf_relay::cf_deploy_relay,
         cf_relay::cf_delete_relay,
         cf_relay::cf_relay_status,
-        thumbs::thumbs_set_url,
-        thumbs::thumbs_spawn_eager,
-        thumbs::thumbs_get,
-        thumbs::thumbs_stop,
-        dvr::dvr_start,
-        dvr::dvr_stop,
-        dvr::dvr_list,
-        dvr::dvr_default_dir,
-        dvr::dvr_reveal,
         http_fetch::harbor_fetch,
         cast::cast_discover,
         dlna::lan_ip,

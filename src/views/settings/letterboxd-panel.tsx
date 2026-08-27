@@ -142,7 +142,7 @@ export function LetterboxdPanel() {
     <>
       <Section
         title={t("Letterboxd")}
-        subtitle={t("Bring your Letterboxd watchlist, diary, liked films and lists into Harbor via the Stremboxd bridge.")}
+        subtitle={t("Bring your Letterboxd watchlist, diary, liked films and lists into Viora via the Stremboxd bridge.")}
       >
         <ToggleRow
           label={t("Enable Letterboxd integration")}
@@ -168,7 +168,7 @@ export function LetterboxdPanel() {
               <p className="text-[12.5px] leading-relaxed text-ink-subtle">
                 {lb.mode === "public"
                   ? t("Public mode uses just your username: watchlist, liked films, popular and Top 250. No password needed.")
-                  : t("Full mode signs in with your Letterboxd password to also unlock your diary, friends activity and your personal ratings. Your password is sent only to Stremboxd to obtain a token — Harbor never stores it.")}
+                  : t("Full mode signs in with your Letterboxd password to also unlock your diary, friends activity and your personal ratings. Your password is sent only to Stremboxd to obtain a token — Viora never stores it.")}
               </p>
             </div>
 

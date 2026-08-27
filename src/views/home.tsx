@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { announceFirstContent } from "@/lib/first-content";
 import { BackToTop } from "@/components/back-to-top";
 import { HeroCarousel, type Slide } from "@/components/hero-carousel";
 import { publishHomeRowCatalog } from "@/lib/home-row-catalog";
@@ -22,7 +23,6 @@ import {
 import { StreamingRail } from "@/components/streaming-rail";
 import { TopRankCard } from "@/components/top-rank-card";
 import { loadAddonRows, type AddonRow } from "@/lib/addons";
-import { isAnimeRow } from "@/views/anime";
 import { buildArabicHomeRows } from "@/lib/arabic/home-rows";
 import { useAuth } from "@/lib/auth";
 import { type Meta } from "@/lib/cinemeta";
@@ -38,7 +38,6 @@ import { repairLibraryNames } from "@/lib/stremio-repair";
 import {
   cwSortKey,
   episodeFromVideoId,
-  isAnimeCwItem,
   isCwMember,
   library,
   type LibraryItem,
@@ -47,13 +46,10 @@ import { useTrakt } from "@/lib/trakt/provider";
 import { buildTraktHomeRows } from "@/lib/trakt/home-rails";
 import { fetchWatchedKeySet } from "@/lib/trakt/history";
 import { recentlyPlayed, subscribePlayback, type WatchedSet } from "@/lib/playback-history";
-import { detectAnimeForCw, useDetectedAnimeVersion } from "@/lib/anime-detect";
 import { buildSimklHomeRows } from "@/lib/simkl/home-rails";
 import { loadSimklWatchedMap, loadSimklStatusMap, type WatchlistStatus } from "@/lib/simkl/list-status";
 import { fetchSimklPlaybackItems } from "@/lib/simkl/playback";
 import { useSimkl } from "@/lib/simkl/provider";
-import { useAnilist } from "@/lib/anilist/provider";
-import { loadAnilistWatchedMap } from "@/lib/anilist/watched-map";
 import { useLetterboxd } from "@/lib/stremboxd/provider";
 import { buildLetterboxdHomeRows } from "@/lib/stremboxd/home-rails";
 import { useMediaFavorites, type MediaEntry } from "@/lib/media-favorites";
@@ -64,7 +60,6 @@ import { CWSection } from "./home/cw-section";
 import { useCwAdvance } from "./home/hooks/use-cw-advance";
 import { usePinnedRows } from "./home/hooks/use-pinned-rows";
 import {
-  buildAnimeHomeRows,
   buildCinemetaRows,
   buildTmdbRows,
   isStreamingServiceRow,
@@ -75,13 +70,14 @@ import type { HomeRow } from "./home/home-types";
 import { RowSkeleton } from "./home/row-skeleton";
 import type { SourceRow } from "@/lib/custom-sources";
 
+const EMPTY_WATCHED_MAP: Map<string, Set<string>> = new Map();
+
 export function Home({ active = true }: { active?: boolean }) {
   const { authKey, user } = useAuth();
   const { settings, update } = useSettings();
   const t = useT();
   const uiLang = useUiLanguage();
   const [rows, setRows] = useState<HomeRow[]>([]);
-  const [animeRows, setAnimeRows] = useState<HomeRow[]>([]);
   const [arabicRows, setArabicRows] = useState<HomeRow[]>([]);
   const [traktRows, setTraktRows] = useState<HomeRow[]>([]);
   const [simklRows, setSimklRows] = useState<HomeRow[]>([]);
@@ -90,16 +86,30 @@ export function Home({ active = true }: { active?: boolean }) {
   const [traktWatched, setTraktWatched] = useState<Set<string>>(() => new Set());
   const [simklWatchedMap, setSimklWatchedMap] = useState<Map<string, Set<string>>>(() => new Map());
   const [simklStatusMap, setSimklStatusMap] = useState<Map<string, WatchlistStatus>>(() => new Map());
-  const [anilistWatchedMap, setAnilistWatchedMap] = useState<Map<string, Set<string>>>(() => new Map());
+  // AniList used to say which anime episodes were already watched, so the
+  // Continue Watching row could skip past them. The tracker is gone; Trakt and
+  // the app's own history still answer this for everything else.
+  const anilistWatchedMap = EMPTY_WATCHED_MAP;
   const [localWatched, setLocalWatched] = useState<WatchedSet>(() => recentlyPlayed());
   useEffect(() => subscribePlayback(() => setLocalWatched(recentlyPlayed())), []);
+
+  // The boot screen is held until this fires, so the viewer is not shown an
+  // empty library filling itself in. Any one of these carrying a row means
+  // there is something on the screen; which of them it is does not matter.
+  const hasContent =
+    rows.length > 0 ||
+    traktRows.length > 0 ||
+    simklRows.length > 0 ||
+    arabicRows.length > 0;
+  useEffect(() => {
+    if (hasContent) announceFirstContent();
+  }, [hasContent]);
   const [heroPool, setHeroPool] = useState<Meta[]>([]);
   const [items, setItems] = useState<LibraryItem[]>([]);
   const cwVersion = useCwDismissVersion();
   const [addonsTick, setAddonsTick] = useState(0);
   const { isConnected: traktConnected } = useTrakt();
   const { isConnected: simklConnected } = useSimkl();
-  const { isConnected: anilistConnected } = useAnilist();
   const letterboxd = useLetterboxd();
   const rowsRef = useRef<HomeRow[]>([]);
   const loadingRef = useRef<Set<string>>(new Set());
@@ -170,7 +180,7 @@ export function Home({ active = true }: { active?: boolean }) {
       if (cancelled) return;
       const filtered = isClassic
         ? addons
-        : addons.filter((a) => !isAnimeRow(a) && !isStreamingServiceRow(a.name));
+        : addons.filter((a) => !isStreamingServiceRow(a.name));
       setRows(mergeRows(built.rows, filtered, { dedup: dedupRows }));
     })().catch(console.error);
     return () => {
@@ -178,21 +188,6 @@ export function Home({ active = true }: { active?: boolean }) {
     };
   }, [authKey, settings.tmdbKey, settings.tmdbLanguage, settings.region, settings.homeMode, settings.homeShowAllAddonRows, addonsTick]);
 
-  useEffect(() => {
-    if (settings.hideContent.anime || settings.homeMode === "classic") {
-      setAnimeRows([]);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const built = await buildAnimeHomeRows();
-      if (cancelled) return;
-      setAnimeRows(built);
-    })().catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [settings.hideContent.anime, settings.homeMode]);
 
   useEffect(() => {
     if (uiLang !== "ar" || settings.homeMode === "classic" || !settings.tmdbKey) {
@@ -416,7 +411,6 @@ export function Home({ active = true }: { active?: boolean }) {
 
   const localCwVer = useSyncExternalStore(subscribeLocalCw, localCwVersion);
   const manualWatchedVer = useSyncExternalStore(subscribeManualWatched, manualWatchedVersion);
-  const animeDetectVer = useDetectedAnimeVersion();
   const stremioWatchedIds = useMemo(() => {
     const s = new Set<string>();
     for (const i of items) if ((i.state?.flaggedWatched ?? 0) > 0) s.add(i._id);
@@ -452,8 +446,7 @@ export function Home({ active = true }: { active?: boolean }) {
           (i.type as string) !== "other" &&
           !i._id.startsWith("iptv:") &&
           !isCwDismissed(i) &&
-          isCwMember(i) &&
-          !(settings.animeOnlyInAnimeRoom && isAnimeCwItem(i)),
+          isCwMember(i),
       )
       .map((i) => ({ i, k: cwSortKey(i) }))
       .sort((a, b) => b.k - a.k)
@@ -473,7 +466,7 @@ export function Home({ active = true }: { active?: boolean }) {
       if (out.length >= 100) break;
     }
     return out;
-  }, [items, simklCw, localCwVer, cwVersion, settings.animeOnlyInAnimeRoom, animeDetectVer]);
+  }, [items, simklCw, localCwVer, cwVersion]);
   const resurfaceLibrary = useMemo(() => {
     const manual = manualWatchedLibraryItems();
     if (manual.length === 0) return items;
@@ -483,40 +476,18 @@ export function Home({ active = true }: { active?: boolean }) {
     const overrideIds = new Set(usable.map((i) => i._id));
     return [...items.filter((i) => !overrideIds.has(i._id)), ...usable];
   }, [items, manualWatchedVer]);
-  useEffect(() => {
-    if (!anilistConnected) {
-      setAnilistWatchedMap((prev) => (prev.size ? new Map() : prev));
-      return;
-    }
-    let cancelled = false;
-    const ids = continueWatching.filter((i) => /^(kitsu|mal|anilist):/.test(i._id)).map((i) => i._id);
-    loadAnilistWatchedMap(ids)
-      .then((m) => {
-        if (!cancelled) setAnilistWatchedMap(m);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [anilistConnected, continueWatching]);
-
   const cwItems = useCwAdvance(
     continueWatching,
     settings.tmdbKey,
     settings.cwAdvanceNext,
     resurfaceLibrary,
-    settings.animeOnlyInAnimeRoom ? "exclude" : "all",
     manualWatchedVer,
     traktWatched,
     simklWatchedMap,
     anilistWatchedMap,
     simklStatusMap,
-    animeDetectVer,
   );
 
-  useEffect(() => {
-    void detectAnimeForCw(items);
-  }, [items]);
 
   useEffect(() => {
     publishResumeStates(cwItems);
@@ -540,10 +511,10 @@ export function Home({ active = true }: { active?: boolean }) {
         .map((e) => ({ id: e.id, type: e.type, name: e.name, poster: e.poster }));
     const out: HomeRow[] = [];
     if (favItems.size > 0) {
-      out.push({ key: "harbor-favorites", type: "movie", name: "Favorites", metas: toMetas(favItems), page: 1, hasMore: false, noDedup: true });
+      out.push({ key: "viora-favorites", type: "movie", name: "Favorites", metas: toMetas(favItems), page: 1, hasMore: false, noDedup: true });
     }
     if (localItems.size > 0) {
-      out.push({ key: "harbor-watchlist", type: "movie", name: "My Watchlist", metas: toMetas(localItems), page: 1, hasMore: false, noDedup: true });
+      out.push({ key: "viora-watchlist", type: "movie", name: "My Watchlist", metas: toMetas(localItems), page: 1, hasMore: false, noDedup: true });
     }
     return out;
   }, [favItems, localItems]);
@@ -551,10 +522,10 @@ export function Home({ active = true }: { active?: boolean }) {
   const heroSourceRow = useMemo<HomeRow | null>(() => {
     const key = settings.homeRows.heroSource;
     if (!key) return null;
-    const all = [...personalRows, ...traktRows, ...simklRows, ...letterboxdRows, ...rows, ...animeRows];
+    const all = [...personalRows, ...traktRows, ...simklRows, ...letterboxdRows, ...rows];
     const hit = all.find((r) => r.key === key);
     return hit && hit.metas.some((m) => m.background || m.poster) ? hit : null;
-  }, [settings.homeRows.heroSource, personalRows, traktRows, simklRows, letterboxdRows, rows, animeRows]);
+  }, [settings.homeRows.heroSource, personalRows, traktRows, simklRows, letterboxdRows, rows]);
 
   const heroSlides = useMemo<Slide[]>(() => {
     const pool = (
@@ -637,8 +608,8 @@ export function Home({ active = true }: { active?: boolean }) {
 
   const pinnedRows = usePinnedRows();
   const allCustomizableRows = useMemo(
-    () => [...sourceRows, ...pinnedRows, ...arabicRows, ...personalRows, ...traktRows, ...simklRows, ...letterboxdRows, ...restRows, ...animeRows],
-    [sourceRows, pinnedRows, arabicRows, personalRows, traktRows, simklRows, letterboxdRows, restRows, animeRows],
+    () => [...sourceRows, ...pinnedRows, ...arabicRows, ...personalRows, ...traktRows, ...simklRows, ...letterboxdRows, ...restRows],
+    [sourceRows, pinnedRows, arabicRows, personalRows, traktRows, simklRows, letterboxdRows, restRows],
   );
   const visibleRows = useMemo(
     () => applyHomeRowCustomization(allCustomizableRows, homeRowsCustom, false),
@@ -712,7 +683,7 @@ export function Home({ active = true }: { active?: boolean }) {
           {settings.homeMode !== "classic" && !homeRowsCustom.hidden.includes("hero") && (
             <div
               data-scroll-anchor="hero"
-              className={`relative -mt-24 lg:-mt-28 ${settings.heroFull ? "-mb-12 harbor-hero-full" : ""}`}
+              className={`relative -mt-24 lg:-mt-28 ${settings.heroFull ? "-mb-12 viora-hero-full" : ""}`}
             >
               <HeroCarousel
                 slides={heroSlides}
@@ -753,7 +724,7 @@ export function Home({ active = true }: { active?: boolean }) {
               <CollectionsRow />
             </div>
           )}
-          {rows.length === 0 && traktRows.length === 0 && simklRows.length === 0 && animeRows.length === 0 && arabicRows.length === 0 ? (
+          {rows.length === 0 && traktRows.length === 0 && simklRows.length === 0 && arabicRows.length === 0 ? (
             Array.from({ length: 7 }).map((_, i) => <RowSkeleton key={`skel-${i}`} />)
           ) : (
             <CustomizableRows

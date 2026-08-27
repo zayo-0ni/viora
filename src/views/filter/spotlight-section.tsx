@@ -1,5 +1,5 @@
 import { FocusButton } from "@/lib/tv-focus";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState, type CSSProperties } from "react";
 import { PickCard } from "@/components/pick-card";
 import { Row } from "@/components/row";
 import type { Meta } from "@/lib/cinemeta";
@@ -197,7 +197,20 @@ export function SpotlightSection({
         type="button"
         onClick={() => personId != null && openPerson(personId)}
         disabled={personId == null}
-        style={{ gridColumn: "span 2" }}
+        /* This block is the picture, so the frame belongs to it.
+           Focus settles on the row cell above this button, and that cell is
+           374px wide against a 280px portrait — measured on the emulator — so
+           the ring was drawn 77px wider than the thing it was framing, and the
+           tile lift inflated the pair to 374x235. Marking the artwork is what
+           moves the frame onto it and takes the cell out of the lift, the same
+           way every poster card is handled.
+
+           The radius is declared with it: the ring rule sets the block's own
+           corners to `--poster-radius + 4`, and this card is rounded further
+           than a poster, so without saying 16 here its corners would tighten
+           to 16px the moment it took focus. */
+        data-preview-anchor
+        style={{ gridColumn: "span 2", "--poster-radius": "16px" } as CSSProperties}
         className="group relative h-[216px] w-[280px] shrink-0 overflow-hidden rounded-xl border border-edge-soft text-start transition-transform duration-300 hover:-translate-y-0.5"
       >
         {profileUrl ? (

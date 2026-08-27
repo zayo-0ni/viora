@@ -1,8 +1,7 @@
 import { lruSet } from "@/lib/cache";
 import { meta as fetchCinemeta, narrowMediaType, type Meta } from "@/lib/cinemeta";
 import { registerEvictable } from "@/lib/maintenance";
-import { animeKitsuMeta } from "@/lib/providers/anime-kitsu-addon";
-import { tmdbAnimeLogo, tmdbIdFromImdb, tmdbImdbId, tmdbLogo } from "@/lib/providers/tmdb";
+import { tmdbIdFromImdb, tmdbImdbId, tmdbLogo } from "@/lib/providers/tmdb";
 import { shouldLocalizePosters } from "@/lib/providers/tmdb/tmdb-image-lang";
 
 const CACHE_MAX = 1200;
@@ -68,22 +67,6 @@ async function doResolve(tmdbKey: string, m: Meta): Promise<string | undefined> 
         const full = await fetchCinemeta(narrowMediaType(m.type),tt);
         if (full?.logo) return full.logo;
       }
-    }
-    return undefined;
-  }
-  if (
-    m.id.startsWith("kitsu:") ||
-    m.id.startsWith("mal:") ||
-    m.id.startsWith("anilist:") ||
-    m.id.startsWith("anidb:")
-  ) {
-    const akm = await animeKitsuMeta(m.id);
-    if (akm?.logo) return akm.logo;
-    if (tmdbKey && m.name) {
-      const kind = m.type === "movie" ? "movie" : "tv";
-      const year = akm?.releaseInfo ?? m.releaseInfo;
-      const hit = await tmdbAnimeLogo(tmdbKey, akm?.name ?? m.name, year, kind);
-      if (hit?.logo) return hit.logo;
     }
     return undefined;
   }

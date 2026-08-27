@@ -42,16 +42,6 @@ export type LiveTvHit = {
   playlistName: string;
 };
 
-export type AnimeHit = {
-  malId: number;
-  kitsuId?: number;
-  name: string;
-  year: string | null;
-  poster: string | null;
-  background: string | null;
-  overview: string;
-  score: number;
-};
 
 export type SearchResults = {
   query: string;
@@ -60,7 +50,6 @@ export type SearchResults = {
   movies: Meta[];
   series: Meta[];
   liveTv: LiveTvHit[];
-  anime: AnimeHit[];
   addonGroups: AddonResultGroup[];
   addons: AddonHit[];
   intent: SearchIntent;
@@ -103,64 +92,7 @@ export function searchLiveTvChannels(
   return hits;
 }
 
-type JikanAnime = {
-  mal_id: number;
-  title?: string;
-  title_english?: string;
-  year?: number | null;
-  aired?: { from?: string };
-  images?: { jpg?: { large_image_url?: string; image_url?: string } };
-  trailer?: { images?: { maximum_image_url?: string } };
-  synopsis?: string;
-  score?: number;
-};
 
-/**
- * An anime hit as the rest of the app already understands a title.
- *
- * Jikan is the one source that does not speak in `Meta`, so everything that
- * wants to show an anime next to a film — a results grid, a detail view — has to
- * translate it. Doing that in one place keeps the id scheme (`mal:`) in one
- * place too, which is what the poster and rating providers key off.
- */
-export function animeHitMeta(hit: AnimeHit): Meta {
-  return {
-    id: `mal:${hit.malId}`,
-    type: "anime",
-    name: hit.name,
-    poster: hit.poster ?? undefined,
-    background: hit.background ?? hit.poster ?? undefined,
-    description: hit.overview,
-    releaseInfo: hit.year ?? undefined,
-    imdbRating: hit.score > 0 ? hit.score.toFixed(1) : undefined,
-  };
-}
-
-export async function searchAnime(query: string, limit = 8): Promise<AnimeHit[]> {
-  const q = query.trim();
-  if (q.length < 2) return [];
-  try {
-    const url = `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&order_by=popularity&sort=asc&limit=${limit}&sfw=true`;
-    const res = await safeFetch(url);
-    if (!res.ok) return [];
-    const data = (await res.json()) as { data?: JikanAnime[] };
-    return (data.data ?? []).map((a) => {
-      const year = a.year ?? (a.aired?.from ? Number(a.aired.from.slice(0, 4)) : null);
-      const name = a.title_english?.trim() || a.title?.trim() || "Untitled";
-      return {
-        malId: a.mal_id,
-        name,
-        year: year ? String(year) : null,
-        poster: a.images?.jpg?.large_image_url ?? a.images?.jpg?.image_url ?? null,
-        background: a.trailer?.images?.maximum_image_url ?? null,
-        overview: a.synopsis ?? "",
-        score: a.score ?? 0,
-      };
-    });
-  } catch {
-    return [];
-  }
-}
 
 export async function searchCinemeta(query: string): Promise<{ movies: Meta[]; series: Meta[] }> {
   const q = query.trim();
@@ -183,10 +115,10 @@ export async function searchAll(
 ): Promise<SearchResults> {
   const trimmed = query.trim();
   if (!trimmed) {
-    return { query: "", topMatch: null, people: [], movies: [], series: [], liveTv: [], anime: [], addonGroups: [], addons: [], intent: null };
+    return { query: "", topMatch: null, people: [], movies: [], series: [], liveTv: [], addonGroups: [], addons: [], intent: null };
   }
   if (!key) {
-    return { query: trimmed, topMatch: null, people: [], movies: [], series: [], liveTv: [], anime: [], addonGroups: [], addons: [], intent: detectIntent(trimmed) };
+    return { query: trimmed, topMatch: null, people: [], movies: [], series: [], liveTv: [], addonGroups: [], addons: [], intent: detectIntent(trimmed) };
   }
 
   const data = await get<Page<MultiItem>>(key, "search/multi", {
@@ -287,7 +219,6 @@ export async function searchAll(
     movies: rankMetas(movies, trimmed).slice(0, 12),
     series: rankMetas(series, trimmed).slice(0, 12),
     liveTv: [],
-    anime: [],
     addonGroups: [],
     addons: [],
     intent: detectIntent(trimmed),

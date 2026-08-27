@@ -13,10 +13,10 @@ const catalogs: Record<UiLanguage, Record<string, string>> = { en, ar, pt };
 // locale files. Rewriting every key would churn the translations and break the
 // English fallback lookup, so the substitution happens once on the way out —
 // every language is covered, and the keys stay stable.
-const UPSTREAM_NAME = /\bHarbor\b/g;
+const UPSTREAM_NAME = /\bViora\b/g;
 
 function applyBrand(text: string): string {
-  if (APP_NAME === "Harbor") return text;
+  if (APP_NAME === "Viora") return text;
   return text.replace(UPSTREAM_NAME, APP_NAME);
 }
 

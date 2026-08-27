@@ -38,7 +38,7 @@ export function DockButton({
         onClick={handleClick}
         aria-label={label}
         aria-current={active ? "page" : undefined}
-        className="harbor-minui-button flex items-center justify-center rounded-2xl border outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="viora-minui-button flex items-center justify-center rounded-2xl border outline-none focus-visible:ring-2 focus-visible:ring-accent"
         style={{
           width: baseSize,
           height: baseSize,

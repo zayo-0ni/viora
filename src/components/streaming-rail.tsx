@@ -29,7 +29,7 @@ function ServiceTile({
   return (
     <FocusButton
       onClick={onOpen}
-      className="harbor-service-tile group flex h-20 w-full items-center justify-center rounded-xl bg-elevated/40 transition-colors duration-200 hover:bg-elevated"
+      className="viora-service-tile group flex h-20 w-full items-center justify-center rounded-xl bg-elevated/40 transition-colors duration-200 hover:bg-elevated"
     >
       <ServiceLogo service={service} height={26} />
     </FocusButton>

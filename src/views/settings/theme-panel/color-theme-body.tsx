@@ -11,8 +11,6 @@ import {
 import { useT } from "@/lib/i18n";
 import { CustomEditor } from "./custom-editor";
 
-const LAYOUT_PRESET_IDS = new Set(["crunch"]);
-
 export function ColorThemeBody({
   activePreset,
   fontPair,
@@ -33,7 +31,7 @@ export function ColorThemeBody({
   useEffect(() => {
     const handler = () => {
       setEditing(true);
-      const el = document.getElementById("harbor-theme-editor-anchor");
+      const el = document.getElementById("viora-theme-editor-anchor");
       el?.scrollIntoView({ behavior: "smooth", block: "start" });
     };
     window.addEventListener("harbor:open-theme-editor", handler);
@@ -42,7 +40,7 @@ export function ColorThemeBody({
 
   if (editing) {
     return (
-      <div id="harbor-theme-editor-anchor">
+      <div id="viora-theme-editor-anchor">
         <CustomEditor
           seed={customColors ?? DEFAULT_CUSTOM_COLORS}
           fontPair={fontPair}
@@ -61,8 +59,8 @@ export function ColorThemeBody({
   }
 
   return (
-    <div id="harbor-theme-editor-anchor" className="animate-fade-in grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
-      {Object.values(THEME_PRESETS).filter((p) => !LAYOUT_PRESET_IDS.has(p.id)).map((p) => {
+    <div id="viora-theme-editor-anchor" className="animate-fade-in grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
+      {Object.values(THEME_PRESETS).map((p) => {
         const active = activePreset === p.id;
         return (
           <FocusButton

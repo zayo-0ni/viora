@@ -26,13 +26,14 @@ export function CastCard({ cast }: { cast: CastEntry }) {
       className={`group flex w-full min-w-0 flex-col gap-2.5 text-start ${isResolved ? "" : "cursor-default"}`}
     >
       <div
+        data-preview-anchor
         className={`relative transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0.24,1)] ${isResolved ? "group-hover:-translate-y-2" : ""}`}
       >
         <Poster
           src={photo}
           seed={String(cast.id)}
           ratio="portrait"
-          className={`rounded-xl shadow-[0_0_0_rgba(0,0,0,0)] transition-shadow duration-300 ${isResolved ? "harbor-card-ring group-hover:shadow-[0_24px_44px_-14px_rgba(0,0,0,0.6)]" : ""}`}
+          className={`rounded-xl shadow-[0_0_0_rgba(0,0,0,0)] transition-shadow duration-300 ${isResolved ? "viora-card-ring group-hover:shadow-[0_24px_44px_-14px_rgba(0,0,0,0.6)]" : ""}`}
         />
         {r && <RankBadge rank={r} dept="Acting" />}
       </div>

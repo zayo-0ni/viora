@@ -19,7 +19,6 @@ import { Still } from "./critics-pick/still";
 import type { LightboxState, PersonRef } from "./critics-pick/types";
 import { excerptReview, upsizeTmdb } from "./critics-pick/utils";
 import { ImdbIcon } from "./icons/imdb-icon";
-import { MetaAwardsCorner } from "./meta-awards-corner";
 import { Poster } from "./poster";
 import { RtBadge } from "./rt-badge";
 
@@ -231,7 +230,6 @@ export function CriticsPick({ meta }: { meta: Meta }) {
           <div className="absolute end-7 top-6 flex h-11 w-11 items-center justify-center rounded-full bg-ink/95 text-canvas opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <Play size={18} fill="currentColor" />
           </div>
-          <MetaAwardsCorner meta={meta} imdbId={resolvedImdb} />
           <div className="absolute inset-x-7 bottom-7 flex flex-col gap-2.5">
             <div className="relative flex min-h-[56px] flex-col justify-end">
               {logo ? (

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { CellArtNearContext, CellIsUpFrontContext } from "@/components/row";
 import { needsImdbForPoster, needsTmdbForPoster, rpdbPoster } from "@/lib/providers/rpdb";
 import {
   tmdbIdFromImdb,
@@ -7,7 +8,6 @@ import {
   useTmdbImdbId,
 } from "@/lib/providers/tmdb/tmdb-imdb-resolve";
 import { useSettings } from "@/lib/settings";
-import { externalToKitsu, kitsuToImdb, kitsuToTvdb } from "@/lib/providers/anime-mapping";
 import { tmdbLocalizedPoster } from "@/lib/providers/tmdb/tmdb-images";
 import { shouldLocalizePosters } from "@/lib/providers/tmdb/tmdb-image-lang";
 
@@ -52,48 +52,6 @@ export function useRpdbAltId(
   return { altId, pending };
 }
 
-function useAnimeRpdbIds(
-  rpdbKey: string,
-  metaId: string,
-): { animeImdb?: string; animeTvdb?: string; animeTmdb?: string } {
-  const { settings } = useSettings();
-  const [animeImdb, setAnimeImdb] = useState<string>();
-  const [animeTvdb, setAnimeTvdb] = useState<string>();
-  const isAnime = /^(kitsu|mal|anilist|anidb):/.test(metaId);
-  useEffect(() => {
-    setAnimeImdb(undefined);
-    setAnimeTvdb(undefined);
-  }, [metaId]);
-  useEffect(() => {
-    if (!isAnime || (!rpdbKey && !settings.posterBaseUrl)) return;
-    const m = metaId.match(/^(kitsu|mal|anilist|anidb):(\d+)/);
-    if (!m) return;
-    const source = m[1];
-    const idNum = Number(m[2]);
-    if (!Number.isFinite(idNum)) return;
-    let cancelled = false;
-    (async () => {
-      let kitsuId: number | null = source === "kitsu" ? idNum : null;
-      if (kitsuId == null) {
-        const armSource = source === "mal" ? "myanimelist" : source;
-        kitsuId = await externalToKitsu(armSource, idNum).catch(() => null);
-      }
-      if (cancelled || kitsuId == null) return;
-      const [tt, tv] = await Promise.all([
-        kitsuToImdb(kitsuId).catch(() => null),
-        kitsuToTvdb(kitsuId).catch(() => null),
-      ]);
-      if (cancelled) return;
-      if (tt) setAnimeImdb(tt);
-      if (tv) setAnimeTvdb(String(tv));
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [metaId, isAnime, rpdbKey, settings.posterBaseUrl]);
-  const animeTmdb = useTmdbIdFromImdb(animeImdb) ?? undefined;
-  return { animeImdb, animeTvdb, animeTmdb };
-}
 
 export function usePosterChain(
   rpdbKey: string,
@@ -102,7 +60,6 @@ export function usePosterChain(
   type?: "movie" | "series",
 ) {
   const { altId, pending } = useRpdbAltId(rpdbKey, metaId, type);
-  const { animeImdb, animeTvdb, animeTmdb } = useAnimeRpdbIds(rpdbKey, metaId);
   const localized = useLocalizedPoster(metaId);
   const candidates = useMemo(() => {
     if (pending) return [];
@@ -110,8 +67,6 @@ export function usePosterChain(
     const out: string[] = [];
     const seen = new Set<string>();
     for (const u of [
-      animeImdb ? rpdbPoster(rpdbKey, animeImdb, base, animeTmdb) : undefined,
-      animeTvdb ? rpdbPoster(rpdbKey, `tvdb:${animeTvdb}`, base) : undefined,
       rpdbPoster(rpdbKey, metaId, base, altId),
       localized,
       metaPoster,
@@ -122,7 +77,7 @@ export function usePosterChain(
       }
     }
     return out;
-  }, [rpdbKey, metaId, altId, metaPoster, animeImdb, animeTvdb, animeTmdb, localized, pending]);
+  }, [rpdbKey, metaId, altId, metaPoster, localized, pending]);
   const sig = candidates.join("|");
   const failedRef = useRef<Set<string>>(new Set());
   const sigRef = useRef(sig);
@@ -149,6 +104,44 @@ export function usePosterChain(
 // grid items, collapsing every poster card to 0px height so artwork never shows.
 // The padding-top hack works identically on every engine.
 // Upstream issue 403: poster aspect-ratio fallback.
+// Ask each service for a picture the size of a card, not the size it happens to
+// offer.
+//
+// Measured on the television, on one details screen: 94 images arriving 780
+// pixels wide to be drawn at 110, and four arriving at 2880 to be drawn at 320.
+// Nothing is gained by any of it — the panel renders at 1080p and a card is a
+// couple of hundred device pixels across — but every one of those pixels is
+// downloaded over the viewer's connection and decoded on a four-core box before
+// the card can appear.
+//
+// This is safe to do here because nothing large is built from this component:
+// the heroes, the backdrop and the gallery all render their own images and pick
+// their own sizes, and each of them upgrades deliberately. A card asking for a
+// card-sized picture cannot make any of those softer.
+//
+// The numbers: a portrait card is drawn about 132 CSS pixels wide, so 264 real
+// ones, and w342 covers that with room to spare. A landscape card is drawn
+// about 110, so 220, and w300 covers it. Both are a step or two below what was
+// being asked for and still above what is actually painted.
+function cardSized(url: string, ratio: Ratio): string {
+  const wanted = ratio === "portrait" ? "w342" : "w300";
+  let out = url.replace(/\/t\/p\/(original|w1280|w780|w500)\//, `/t/p/${wanted}/`);
+  // Metahub publishes the same artwork at two sizes and the smaller one is
+  // already the right size for a card.
+  out = out.replace("/poster/medium/", "/poster/small/");
+  // Backgrounds and logos were never named here, and they are the expensive
+  // ones. Measured on the device: a Continue Watching card drew a Metahub
+  // background at 645x363 device pixels while decoding it at 1920x1080 — nine
+  // times the pixels it shows — and its logo at 800x310 for a strip a third
+  // that size. A card is never a hero, so the hero's own ratio is left out of
+  // this: only a poster or a 16:9 tile gets the smaller artwork.
+  if (ratio !== "wide") {
+    out = out.replace("/background/medium/", "/background/small/");
+    out = out.replace("/logo/medium/", "/logo/small/");
+  }
+  return out;
+}
+
 const ASPECT_PAD: Record<Ratio, string> = {
   portrait: "150%", // 3 / 2
   landscape: "56.25%", // 9 / 16
@@ -162,6 +155,21 @@ export function Poster({
   className = "",
   children,
   onError,
+  // Left off, and it has to stay off until someone works out why.
+  //
+  // Turning it on looked like the obvious win — fifty-five places build a
+  // Poster and none of them asked for it, so every poster in the application is
+  // fetched the moment it enters the page. But the engine's own lazy loading
+  // does not fire for images inside the row track. Measured in the preview at
+  // 1280x720: seven posters sitting plainly on screen, `loading="lazy"`,
+  // `complete` still false sixteen seconds later. The same element with the
+  // same URL switched to `eager` decoded at once, so it is neither the network
+  // nor the host. Something about the track — a nested scroller carrying
+  // `contain: layout style` — keeps those images out of whatever the engine
+  // uses to decide.
+  //
+  // What works in this layout is the observer the rows already run themselves,
+  // which is where the gating belongs.
   lazy = false,
   fallbacks,
 }: {
@@ -176,8 +184,16 @@ export function Poster({
   fallbacks?: Array<string | null | undefined>;
 }) {
   const { settings } = useSettings();
+  const upFront = useContext(CellIsUpFrontContext);
+  // Far from the viewport, the card keeps everything except its picture. The
+  // plate underneath is what it already shows before the artwork arrives, so
+  // there is nothing new to look at — and nothing decoded for a card that is
+  // one and a half screens away.
+  const artNear = useContext(CellArtNearContext);
   const effect = settings.posterEffect;
-  const candidates = [src, ...(fallbacks ?? [])].filter((u): u is string => !!u);
+  const candidates = [src, ...(fallbacks ?? [])]
+    .filter((u): u is string => !!u)
+    .map((u) => cardSized(u, ratio));
   const sig = candidates.join("|");
   const [idx, setIdx] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -259,16 +275,29 @@ export function Poster({
       setDisplayed(current);
     }
   }, [loaded, current, sig]);
-  const showPlate = !displayed && (!current || !loaded);
+  // The plate also stands in while the picture is released, so a card that has
+  // scrolled far away shows the same coloured ground it shows before its
+  // artwork has arrived — never an empty hole.
+  const showPlate = !artNear || (!displayed && (!current || !loaded));
   const hue = hash(seed) % 360;
 
   return (
     <div
-      className={`harbor-poster your-card relative w-full overflow-hidden rounded-[var(--poster-radius,12px)] ${className}`}
+      /* Every card's frame, decided once.
+
+         This block is the artwork — the picture and its badges, with the title
+         a sibling below. Marking it here is what lets the ring belong to the
+         poster rather than to the padded cell around it, and here rather than in
+         each card because the cards that were missed are exactly the ones that
+         went wrong: counted across the app, four card types said where their
+         artwork was and thirty-three did not. A card that wraps this in a block
+         of its own still wins — the outermost mark is the one that rings. */
+      data-preview-anchor
+      className={`viora-poster your-card relative w-full overflow-hidden rounded-[var(--poster-radius,12px)] ${className}`}
       style={showPlate ? { background: gradient(hue) } : undefined}
     >
       <div aria-hidden style={{ paddingTop: ASPECT_PAD[ratio] }} />
-      {displayed && displayed !== current && (
+      {artNear && displayed && displayed !== current && (
         <img
           src={displayed}
           alt=""
@@ -277,13 +306,26 @@ export function Poster({
           className="absolute inset-0 h-full w-full object-cover"
         />
       )}
-      {current && (
+      {artNear && current && (
         <img
           key={current}
           ref={handleImgRef}
           src={current}
           alt=""
           decoding="async"
+          // Raise what the viewer is looking at; never lower anything else.
+          //
+          // "low" was a mistake and the owner caught it: the engine does not
+          // treat it as a mild preference but holds those requests back hard
+          // while the connection is busy, so cards past the first few in a row
+          // sat empty until the highlight reached them — at which point the row
+          // became the front one, the hint flipped, and the artwork appeared at
+          // once. That is a card with no picture until you look at it, which is
+          // worse than no hint at all.
+          //
+          // "auto" leaves the engine's own judgement in place, and it already
+          // knows what is off screen. Only the row being looked at overrides it.
+          fetchPriority={upFront ? "high" : "auto"}
           loading={lazy ? "lazy" : undefined}
           onLoad={() => {
             setLoaded(true);

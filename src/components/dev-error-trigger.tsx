@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { showHarborError } from "./error-view";
+import { showVioraError } from "./error-view";
 
 export function DevErrorTrigger() {
   useEffect(() => {
@@ -7,7 +7,7 @@ export function DevErrorTrigger() {
       const mod = e.ctrlKey || e.metaKey;
       if (mod && e.shiftKey && (e.key ?? "").toLowerCase() === "e") {
         e.preventDefault();
-        showHarborError({
+        showVioraError({
           code: "404",
           title: "404",
           message:

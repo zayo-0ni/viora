@@ -51,7 +51,7 @@ export function CodePopout({
 
   const download = (id: CodeLang) => {
     const f = THEME_FILES.find((x) => x.id === id);
-    if (f) void downloadText(f.name, values[id], [f.id], "Harbor theme");
+    if (f) void downloadText(f.name, values[id], [f.id], "Viora theme");
   };
 
   const copy = () => {
@@ -205,7 +205,7 @@ export function CodePopout({
             {!value && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <span className="text-[14px]" style={{ color: IDE.textFaint }}>
-                  {meta.name} is empty. Start typing to restyle Harbor.
+                  {meta.name} is empty. Start typing to restyle Viora.
                 </span>
               </div>
             )}

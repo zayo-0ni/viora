@@ -44,17 +44,17 @@ export function RelayDocs({ onBack }: { onBack: () => void }) {
           {t("Self-host")}
         </p>
         <h2 className="font-display text-[32px] font-medium leading-tight tracking-tight text-ink">
-          {t("Run your own Harbor Relay")}
+          {t("Run your own Viora Relay")}
         </h2>
         <p className="text-[14px] leading-relaxed text-ink-muted">
-          {t("Two paths: Harbor handles the deploy for you, or you do it yourself with wrangler.")}
+          {t("Two paths: Viora handles the deploy for you, or you do it yourself with wrangler.")}
         </p>
       </header>
 
       <DocsBlock>
         <DocsH2>{t("Overview")}</DocsH2>
         <DocsP>
-          {t("The Harbor relay is a Cloudflare Worker that hosts WebSocket rooms for Watch Together. Each user runs their own. There is no central Harbor server.")}
+          {t("The Viora relay is a Cloudflare Worker that hosts WebSocket rooms for Watch Together. Each user runs their own. There is no central Viora server.")}
         </DocsP>
         <DocsP>
           {t("Source:")} <DocsCode>src-tauri/relay/worker.js</DocsCode>. {t("About 200 lines of JavaScript, no dependencies. Read it before deploying if you want to know what runs.")}
@@ -73,21 +73,21 @@ export function RelayDocs({ onBack }: { onBack: () => void }) {
       </DocsBlock>
 
       <DocsBlock>
-        <DocsH2>{t("Auto-deploy from Harbor")}</DocsH2>
+        <DocsH2>{t("Auto-deploy from Viora")}</DocsH2>
         <DocsP>
-          {t("Easiest path. Harbor uploads the worker, creates the Durable Object namespace, and stores the resulting URL.")}
+          {t("Easiest path. Viora uploads the worker, creates the Durable Object namespace, and stores the resulting URL.")}
         </DocsP>
         <DocsOl>
-          <li>{t("Open Settings, then Harbor Relay.")}</li>
+          <li>{t("Open Settings, then Viora Relay.")}</li>
           <li>
             {t("Click")} <DocsKbd>{t("Deploy a relay")}</DocsKbd>.
           </li>
           <li>
-            {t("Generate a Cloudflare API token with")} <DocsCode>Workers Scripts: Edit</DocsCode> {t("and")} <DocsCode>Account: Read</DocsCode> {t("permissions at")} <DocsCode>dash.cloudflare.com/profile/api-tokens</DocsCode>. {t("Paste it into Harbor.")}
+            {t("Generate a Cloudflare API token with")} <DocsCode>Workers Scripts: Edit</DocsCode> {t("and")} <DocsCode>Account: Read</DocsCode> {t("permissions at")} <DocsCode>dash.cloudflare.com/profile/api-tokens</DocsCode>. {t("Paste it into Viora.")}
           </li>
           <li>{t("Pick the Cloudflare account to deploy under.")}</li>
           <li>
-            {t("Wait for the upload to finish. The relay URL gets written to")} <DocsCode>togetherRelayUrl</DocsCode> {t("in Harbor settings.")}
+            {t("Wait for the upload to finish. The relay URL gets written to")} <DocsCode>togetherRelayUrl</DocsCode> {t("in Viora settings.")}
           </li>
         </DocsOl>
       </DocsBlock>
@@ -103,21 +103,21 @@ export function RelayDocs({ onBack }: { onBack: () => void }) {
             <DocsPre>{`npm install -g wrangler\nwrangler login`}</DocsPre>
           </li>
           <li>
-            {t("Save the worker source. Copy")} <DocsCode>src-tauri/relay/worker.js</DocsCode> {t("from the Harbor repo into a new directory as")} <DocsCode>worker.js</DocsCode>.
+            {t("Save the worker source. Copy")} <DocsCode>src-tauri/relay/worker.js</DocsCode> {t("from the Viora repo into a new directory as")} <DocsCode>worker.js</DocsCode>.
           </li>
           <li>
             {t("Save this")} <DocsCode>wrangler.toml</DocsCode> {t("next to it:")}
-            <DocsPre>{`name = "harbor-together-relay"\nmain = "worker.js"\ncompatibility_date = "2026-05-01"\n\n[[durable_objects.bindings]]\nname = "ROOM"\nclass_name = "Room"\n\n[[migrations]]\ntag = "v1"\nnew_sqlite_classes = ["Room"]`}</DocsPre>
+            <DocsPre>{`name = "viora-together-relay"\nmain = "worker.js"\ncompatibility_date = "2026-05-01"\n\n[[durable_objects.bindings]]\nname = "ROOM"\nclass_name = "Room"\n\n[[migrations]]\ntag = "v1"\nnew_sqlite_classes = ["Room"]`}</DocsPre>
           </li>
           <li>
             {t("Deploy:")}
             <DocsPre>wrangler deploy</DocsPre>
           </li>
           <li>
-            {t("Note the URL Cloudflare returns. It looks like")} <DocsCode>https://harbor-together-relay.&lt;subdomain&gt;.workers.dev</DocsCode>.
+            {t("Note the URL Cloudflare returns. It looks like")} <DocsCode>https://viora-together-relay.&lt;subdomain&gt;.workers.dev</DocsCode>.
           </li>
           <li>
-            {t("In Harbor: Settings, Harbor Relay, then")} <DocsKbd>{t("Use a different URL")}</DocsKbd>. {t("Paste the URL with")} <DocsCode>wss://</DocsCode> {t("as the scheme instead of")} <DocsCode>https://</DocsCode>.
+            {t("In Viora: Settings, Viora Relay, then")} <DocsKbd>{t("Use a different URL")}</DocsKbd>. {t("Paste the URL with")} <DocsCode>wss://</DocsCode> {t("as the scheme instead of")} <DocsCode>https://</DocsCode>.
           </li>
         </DocsOl>
       </DocsBlock>
@@ -125,7 +125,7 @@ export function RelayDocs({ onBack }: { onBack: () => void }) {
       <DocsBlock>
         <DocsH2>{t("Verify it works")}</DocsH2>
         <DocsP>
-          {t("Settings, Harbor Relay, then")} <DocsKbd>{t("Run test")}</DocsKbd>.
+          {t("Settings, Viora Relay, then")} <DocsKbd>{t("Run test")}</DocsKbd>.
         </DocsP>
         <DocsP>
           {t("The test calls")} <DocsCode>/health</DocsCode> {t("and confirms the worker is reachable and running a current version. A passing test means Watch Together rooms will connect.")}
@@ -141,7 +141,7 @@ export function RelayDocs({ onBack }: { onBack: () => void }) {
           {t("A relay URL is shareable. Anyone with the URL can join Watch Together rooms hosted on your relay. The unique")} <DocsCode>workers.dev</DocsCode> {t("subdomain acts as the access token. There is no login.")}
         </DocsP>
         <DocsP>
-          {t("To run a public relay, post the")} <DocsCode>wss://</DocsCode> {t("URL on r/Stremio or wherever your community lives. Other Harbor users paste it into Settings, Harbor Relay,")} <DocsKbd>{t("Use a different URL")}</DocsKbd>.
+          {t("To run a public relay, post the")} <DocsCode>wss://</DocsCode> {t("URL on r/Stremio or wherever your community lives. Other Viora users paste it into Settings, Viora Relay,")} <DocsKbd>{t("Use a different URL")}</DocsKbd>.
         </DocsP>
       </DocsBlock>
 

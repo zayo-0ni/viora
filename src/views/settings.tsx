@@ -10,10 +10,7 @@ import { SettingsNav, isSectionHiddenHere } from "./settings/nav";
 import { PlayerLayoutPanel } from "./settings/player-layout-panel";
 import { QualityPanel } from "./settings/quality-panel";
 import { P2PPanel } from "./settings/p2p-panel";
-import { AnimePanel } from "./settings/anime-panel";
 import { TraktPanel } from "./settings/trakt-panel";
-import { AnilistPanel } from "./settings/anilist-panel";
-import { MalPanel } from "./settings/mal-panel";
 import { SimklPanel } from "./settings/simkl-panel";
 import { LetterboxdPanel } from "./settings/letterboxd-panel";
 import { RelaySection, type RelayMode } from "./settings/relay-section";
@@ -47,31 +44,23 @@ const SECTION_META: Record<SectionId, { label: string; sub: string }> = {
     label: "Trakt",
     sub: "Connect your Trakt account to scrobble playback, sync your watchlist, and pull personalized recommendations.",
   },
-  anilist: {
-    label: "AniList",
-    sub: "Connect your AniList account to show your anime lists as rails on the Anime page.",
-  },
-  mal: {
-    label: "MyAnimeList",
-    sub: "Connect your MyAnimeList account to sync your watch progress and browse your list.",
-  },
   simkl: {
     label: "Simkl",
     sub: "Connect your Simkl account to mark what you finish as watched and sync your plan-to-watch list across apps.",
   },
   letterboxd: {
     label: "Letterboxd",
-    sub: "Bring your Letterboxd watchlist, diary, liked films and lists into Harbor via the Stremboxd bridge.",
+    sub: "Bring your Letterboxd watchlist, diary, liked films and lists into Viora via the Stremboxd bridge.",
   },
   relay: {
-    label: "Harbor Relay",
+    label: "Viora Relay",
     sub: IS_WEB
-      ? "Watch Together rooms are routed through Harbor's hosted relay."
+      ? "Watch Together rooms are routed through Viora's hosted relay."
       : "A Cloudflare Worker on your own account that hosts your Watch Together rooms.",
   },
   streaming: {
     label: "Streaming sources",
-    sub: "How Harbor finds and resolves playable streams. Debrid keys and addon installs live here.",
+    sub: "How Viora finds and resolves playable streams. Debrid keys and addon installs live here.",
   },
   streamFilters: {
     label: "Stream filters",
@@ -79,11 +68,11 @@ const SECTION_META: Record<SectionId, { label: string; sub: string }> = {
   },
   p2p: {
     label: "P2P & servers",
-    sub: "Harbor's built-in peer-to-peer engine, its self-test, and any streaming server you point it at.",
+    sub: "Viora's built-in peer-to-peer engine, its self-test, and any streaming server you point it at.",
   },
   language: {
     label: "Languages",
-    sub: "Which audio and subtitle languages rank first in stream lists.",
+    sub: "Two answers: the language Viora speaks, and the language you want everything else in.",
   },
   player: {
     label: "Player & quality",
@@ -93,21 +82,17 @@ const SECTION_META: Record<SectionId, { label: string; sub: string }> = {
     label: "Video tuning",
     sub: "Match the picture quality to your computer, smooth out weak connections, and fine-tune the mpv engine with plain-language controls.",
   },
-  anime: {
-    label: "Anime tweaks",
-    sub: "Anime4K real-time upscaling, smooth motion, and where SVP fits in. All the anime-specific picture enhancements in one place.",
-  },
   playerLayout: {
     label: "Player layout",
     sub: "Pick a theme, then rearrange every button in the player chrome. Hide what you never use, promote what you do.",
   },
   hotkeys: {
     label: "Hotkeys",
-    sub: "Every shortcut Harbor responds to. Click a binding to rebind it.",
+    sub: "Every shortcut Viora responds to. Click a binding to rebind it.",
   },
   theme: {
     label: "Theme & appearance",
-    sub: "Color presets, custom backgrounds, and the font pair Harbor renders in.",
+    sub: "Color presets, custom backgrounds, and the font pair Viora renders in.",
   },
   webhooks: {
     label: "Webhooks",
@@ -115,7 +100,7 @@ const SECTION_META: Record<SectionId, { label: string; sub: string }> = {
   },
   bug: {
     label: "Report a bug",
-    sub: "Send a bug report straight to the Harbor team. Screenshots and screen recordings welcome.",
+    sub: "Send a bug report straight to the Viora team. Screenshots and screen recordings welcome.",
   },
   advanced: {
     label: "Advanced",
@@ -320,16 +305,13 @@ export function Settings(_: { active?: boolean } = {}) {
           {active === "player" && <QualityPanel />}
 
 
-          {active === "anime" && <AnimePanel />}
 
           {active === "playerLayout" && <PlayerLayoutPanel />}
 
 
           {active === "trakt" && <TraktPanel />}
 
-          {active === "anilist" && <AnilistPanel />}
 
-          {active === "mal" && <MalPanel />}
 
           {active === "simkl" && <SimklPanel />}
 

@@ -7,13 +7,10 @@ import {
   usePlaybackDownloadedGated,
   setSeekHovering,
 } from "@/lib/player/playback-clock";
-import { useTrickplayState } from "@/lib/trickplay";
 import { useSkipSegmentsView } from "@/lib/skip-intro/segment-store";
-import { ThumbPreview } from "@/components/player/thumb-preview";
 import { SeekBarVisual } from "./seek-bar-visual";
 import { PLAY_PAUSE_FOCUS_KEY, fmtTime } from "./transport-utils";
 
-const BUFFER_PAD_SEC = 4;
 const PENDING_MAX_MS = 2500;
 
 export function SeekBar({
@@ -36,7 +33,6 @@ export function SeekBar({
   const pendingAtRef = useRef<number | null>(null);
   const positionRef = useRef(0);
   const { settings } = useSettings();
-  const { active: trickplayActive, bufferedOnly } = useTrickplayState();
   const position = usePlaybackPositionGated(active);
   const buffered = usePlaybackBufferedGated(active);
   const downloaded = usePlaybackDownloadedGated(active);
@@ -192,21 +188,17 @@ export function SeekBar({
           focused={seekFocus.focused}
           segments={segmentSpans}
         />
-        {hover != null &&
-          (trickplayActive ? (
-            <ThumbPreview
-              time={hover}
-              dur={dur}
-              canFetch={!bufferedOnly || hover <= position + Math.max(0, buffered - BUFFER_PAD_SEC)}
-            />
-          ) : (
-            <div
-              className="pointer-events-none absolute -top-9 -translate-x-1/2 rounded-md border border-white/10 bg-black/90 px-2 py-1 font-mono text-[12px] font-semibold tabular-nums text-white shadow-lg backdrop-blur-md"
-              style={{ left: `${(hover / dur) * 100}%` }}
-            >
-              {fmtTime(hover)}
-            </div>
-          ))}
+        {/* A thumbnail of the frame under the scrubber used to appear here. It
+            was decoded by an ffmpeg sidecar, which Android cannot spawn, so the
+            time readout is what the seek bar offers. */}
+        {hover != null && (
+          <div
+            className="pointer-events-none absolute -top-9 -translate-x-1/2 rounded-md border border-white/10 bg-black/90 px-2 py-1 font-mono text-[12px] font-semibold tabular-nums text-white shadow-lg backdrop-blur-md"
+            style={{ left: `${(hover / dur) * 100}%` }}
+          >
+            {fmtTime(hover)}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ function TileButton({
   );
 }
 
-export function VideoTile({ v, onPlay, onDownload }: { v: GalleryVideo; onPlay: () => void; onDownload: () => void }) {
+export function VideoTile({ v, onPlay }: { v: GalleryVideo; onPlay: () => void }) {
   return (
     <div className="group flex w-[300px] shrink-0 flex-col gap-2.5">
       <div className="relative">
@@ -57,9 +57,6 @@ export function VideoTile({ v, onPlay, onDownload }: { v: GalleryVideo; onPlay: 
             </span>
           </span>
         </FocusButton>
-        <span className="absolute end-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
-          <TileButton icon={<Download size={15} strokeWidth={2.2} />} label={t("Download")} onClick={onDownload} />
-        </span>
       </div>
       <div className="flex flex-col gap-0.5 px-0.5">
         <span className="truncate text-[13.5px] font-semibold text-ink">{v.name}</span>

@@ -114,7 +114,7 @@ export function KidsDetailView({
           <KidsEpisodes meta={meta} tvId={detail.id} seasons={detail.seasons} />
         )}
         {detail?.collection && (
-          <CollectionRow collection={detail.collection} currentId={meta.id} />
+          <CollectionRow collection={detail.collection} currentTmdbId={detail.id} />
         )}
         {recs.length > 0 && (
           <Row

@@ -2,11 +2,11 @@
 
 # Viora
 
-**A Stremio client for Android, Android TV and the desktop.**
+**A Stremio client for Android TV.**
 
 <sub>by zayo0ni</sub>
 
-[![Version](https://img.shields.io/badge/version-1.0.0-orange)](https://github.com/zainzainalaa-commits/viora/releases/latest)
+[![Version](https://img.shields.io/badge/version-1.0.2-orange)](https://github.com/zainzainalaa-commits/viora/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Android](https://github.com/zainzainalaa-commits/viora/actions/workflows/android.yml/badge.svg)](https://github.com/zainzainalaa-commits/viora/actions/workflows/android.yml)
 
@@ -15,8 +15,6 @@
 ---
 
 ## Install
-
-### Android TV
 
 Open the **Downloader** app and enter this address. It always resolves to the
 newest build, so it only has to be typed once:
@@ -27,13 +25,7 @@ github.com/zainzainalaa-commits/viora/releases/latest/download/Viora-android.apk
 
 Allow installation from unknown sources when prompted.
 
-### Android phone
-
-Download the same APK from
-[the latest release](https://github.com/zainzainalaa-commits/viora/releases/latest)
-and open it.
-
-Requires Android 7.0 (API 24) or newer on an arm64 device.
+Requires Android 7.0 (API 24) or newer.
 
 ---
 
@@ -46,33 +38,43 @@ through add-ons, and plays them. It hosts no content of its own.
 | --- | --- |
 | **Catalogs** | Home, Discover, Movies, Shows, Anime, Live TV, Calendar, Library |
 | **Add-ons** | Any Stremio add-on, plus **Cinemana** built in as a first-party source |
-| **Playback** | mpv on the desktop, HTML5 on Android — picked automatically |
+| **Playback** | ExoPlayer by default; mpv is compiled in for what the hardware turns down |
 | **Sources** | Torrents via librqbit, direct HTTP, M3U/Xtream playlists with an EPG |
 | **Casting** | Chromecast, DLNA/UPnP, Roku |
 | **Sync** | Stremio account, Trakt, AniList, MyAnimeList |
 
+Every screen is driven by the remote. `src/lib/tv-focus/**` is the focus engine
+that makes that work, and it is locked — see [CLAUDE.md](CLAUDE.md) before
+touching anything that moves the highlight around.
+
 ---
 
-## Platform support
+## One target
 
-All three form factors share one codebase and diverge only where the platform
-forces it. `src/lib/capabilities.ts` is the single table that decides.
+Viora used to build for Windows, macOS, Linux and Android phones as well. It
+does not any more: it targets an Android television and nothing else, and the
+code for the others has been removed rather than gated, because a branch nothing
+compiles is a branch nobody maintains.
 
-| | Desktop | Android TV | Android phone |
-| --- | :---: | :---: | :---: |
-| Browsing, catalogs, add-ons | ✅ | ✅ | ✅ |
-| Torrent streaming | ✅ | ✅ | ✅ |
-| Cinemana | ✅ | ✅ | ✅ |
-| Casting | ✅ | ✅ | ✅ |
-| mpv engine | ✅ | — | — |
-| Transcoding, thumbnails, DVR | ✅ | — | — |
-| Multiview, PiP window, HDR overlay | ✅ | — | — |
-| System tray, Discord presence | ✅ | — | — |
+What went with them, and why it could not have come along:
 
-Android cannot host libmpv inside a WebView, and has blocked executing bundled
-binaries from the app data directory since API 29 — which is what rules out
-ffmpeg and yt-dlp, and everything built on them. The HTML5 engine covers
-playback there instead.
+- **libmpv on the desktop, and everything it drove** — HDR passthrough, shader
+  upscaling, motion interpolation, the equaliser. The mpv that ships here is
+  compiled into the APK and is still a selectable engine; the desktop one linked
+  against a system library that Android has no equivalent for.
+- **The ffmpeg and yt-dlp sidecars** — transcoding, thumbnail scrubbing on the
+  seek bar, trailer extraction, embedded subtitle extraction, DVR recording,
+  clip and screenshot capture, and subtitle sync against the audio track.
+  Android has blocked executing bundled binaries from the app data directory
+  since API 29, so none of these could run.
+- **Everything about windows** — multiview, picture-in-picture, the custom
+  titlebar, the tray, saved window geometry. There is one WebView and it is the
+  screen.
+- **The phone layout** — a bottom tab bar, touch targets and gesture handling.
+
+`src/lib/capabilities.ts` is the one table that still varies, and the only thing
+it varies on is whether the Tauri bridge is there: the Android app, or `pnpm dev`
+in a browser.
 
 ---
 
@@ -95,8 +97,7 @@ pnpm install
 pnpm run build:apk
 ```
 
-See [BUILDING.md](BUILDING.md) for the flags, the desktop build and the signing
-step.
+See [BUILDING.md](BUILDING.md) for the flags and the signing step.
 
 ---
 
@@ -110,5 +111,4 @@ copyright notice the licence requires be kept and which is preserved in
 Harbor, Stremio ltd, or Cinemana.
 
 Third-party components carry their own terms: the bundled Noto font under the
-SIL Open Font Licence, `rust_cast` under MIT, and — on desktop only — libmpv,
-ffmpeg and yt-dlp under theirs.
+SIL Open Font Licence, and `rust_cast` under MIT.

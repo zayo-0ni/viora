@@ -1,19 +1,13 @@
-import { LiveChannelDvr } from "@/components/player/live-channel-dvr";
 import { LiveChannelOverlay } from "@/components/player/live-channel-overlay/overlay";
 import type { useLiveChannelOverlay } from "./hooks/use-live-channel-overlay";
 
+// The DVR recorder used to sit alongside the channel overlay here. It captured
+// the stream with an ffmpeg sidecar, which Android cannot spawn.
+
 export function LiveLayer({
   liveOverlay,
-  dvrOpen,
-  onCloseDvr,
-  srcUrl,
-  channelName,
 }: {
   liveOverlay: ReturnType<typeof useLiveChannelOverlay>;
-  dvrOpen: boolean;
-  onCloseDvr: () => void;
-  srcUrl: string;
-  channelName: string;
 }) {
   return (
     <>
@@ -29,16 +23,6 @@ export function LiveLayer({
           setGroup={liveOverlay.setGroup}
           query={liveOverlay.query}
           setQuery={liveOverlay.setQuery}
-        />
-      )}
-      {liveOverlay.isLive && liveOverlay.activeSource && liveOverlay.currentChannelId && (
-        <LiveChannelDvr
-          open={dvrOpen}
-          onClose={onCloseDvr}
-          source={liveOverlay.activeSource}
-          channelId={liveOverlay.currentChannelId}
-          url={srcUrl}
-          channelName={channelName}
         />
       )}
     </>

@@ -88,7 +88,7 @@ export function AccountStub() {
       */}
       <DesktopOnly>
       <Section
-        title={t("Harbor identity")}
+        title={t("Viora identity")}
         subtitle={t("How you appear in Watch Together, sessions, and chat. Sits on top of your Stremio account.")}
       >
         <div className="flex flex-col gap-4 rounded-2xl border border-edge-soft bg-canvas/40 p-5">
@@ -193,7 +193,7 @@ export function AccountStub() {
 
       <Section
         title={t("Profiles")}
-        subtitle={t("Everyone who uses this Harbor gets their own watch history, avatar, color, and optional PIN. Switch anytime.")}
+        subtitle={t("Everyone who uses this Viora gets their own watch history, avatar, color, and optional PIN. Switch anytime.")}
       >
         <div className="flex flex-col gap-5 rounded-2xl border border-edge-soft bg-canvas/40 p-5">
           <ProfilesStrip />
@@ -275,7 +275,7 @@ export function AccountStub() {
 
       <Section
         title={t("Synced addons")}
-        subtitle={t("Harbor pulls your addon collection from Stremio. Manage individual addons in Streaming sources.")}
+        subtitle={t("Viora pulls your addon collection from Stremio. Manage individual addons in Streaming sources.")}
       >
         <SyncedAddonsCard />
       </Section>

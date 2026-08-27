@@ -22,9 +22,6 @@ export type HotkeyId =
   | "playerStart"
   | "playerEnd"
   | "playerStats"
-  | "playerAnime4kToggle"
-  | "playerAnime4kOn"
-  | "playerAnime4kOff"
   | "playerCrop"
   | "playerPanscanUp"
   | "playerPanscanDown"
@@ -38,7 +35,6 @@ export type HotkeyId =
   | "playerStreamSwitcher"
   | "playerEpisodePanel"
   | "playerTvGuide"
-  | "playerDvr"
   | "playerSleep"
   | "globalUiScaleUp"
   | "globalUiScaleDown"
@@ -56,9 +52,9 @@ export type HotkeyDef = {
 
 export const HOTKEYS: HotkeyDef[] = [
   { id: "globalSearchFocus", scope: "Global", group: "Navigation", label: "Focus search", description: "Jump to the top-bar search from anywhere.", defaultBinding: "/" },
-  { id: "globalUiScaleUp", scope: "Global", group: "Interface", label: "Increase interface scale", description: "Make Harbor's interface larger.", defaultBinding: "ctrl+=" },
-  { id: "globalUiScaleDown", scope: "Global", group: "Interface", label: "Decrease interface scale", description: "Make Harbor's interface smaller.", defaultBinding: "ctrl+-" },
-  { id: "globalUiScaleReset", scope: "Global", group: "Interface", label: "Reset interface scale", description: "Restore Harbor's interface scale to 100%.", defaultBinding: "ctrl+0" },
+  { id: "globalUiScaleUp", scope: "Global", group: "Interface", label: "Increase interface scale", description: "Make Viora's interface larger.", defaultBinding: "ctrl+=" },
+  { id: "globalUiScaleDown", scope: "Global", group: "Interface", label: "Decrease interface scale", description: "Make Viora's interface smaller.", defaultBinding: "ctrl+-" },
+  { id: "globalUiScaleReset", scope: "Global", group: "Interface", label: "Reset interface scale", description: "Restore Viora's interface scale to 100%.", defaultBinding: "ctrl+0" },
 
   { id: "playerClose", scope: "Player", group: "Playback", label: "Close player", description: "Exit playback and return to the previous view.", defaultBinding: "Escape" },
   { id: "playerPlayPause", scope: "Player", group: "Playback", label: "Play / pause", description: "Toggle playback.", defaultBinding: "Space" },
@@ -68,12 +64,9 @@ export const HOTKEYS: HotkeyDef[] = [
   { id: "playerCrop", scope: "Player", group: "Playback", label: "Cycle aspect / crop", description: "Cycle aspect and crop modes: Fit, Fill, Zoom, 16:9, 4:3, Original.", defaultBinding: "v" },
   { id: "playerPanscanDown", scope: "Player", group: "Playback", label: "Zoom out", description: "Step zoom out to restore baked-in black bars (Zoom mode).", defaultBinding: "-" },
   { id: "playerPanscanUp", scope: "Player", group: "Playback", label: "Zoom in", description: "Step zoom in to crop baked-in black bars (Zoom mode).", defaultBinding: "=" },
-  { id: "playerScreenshot", scope: "Player", group: "Playback", label: "Screenshot", description: "Save the current frame (video only, no subtitles) as a PNG to Pictures/Harbor.", defaultBinding: "p" },
-  { id: "playerGifRecord", scope: "Player", group: "Playback", label: "Record GIF", description: "Start or stop recording a GIF of the video (no subtitles). Saves to Pictures/Harbor.", defaultBinding: "o" },
-  { id: "playerClipRecord", scope: "Player", group: "Playback", label: "Save video clip", description: "Save the last 30 seconds as a video clip with audio, choosing subtitles on or off. Saves to Pictures/Harbor.", defaultBinding: "c" },
-  { id: "playerAnime4kToggle", scope: "Player", group: "Playback", label: "Toggle Anime4K", description: "Turn Anime4K upscaling on (auto) or off. Only active when shaders are available.", defaultBinding: "a" },
-  { id: "playerAnime4kOn", scope: "Player", group: "Playback", label: "Anime4K on", description: "Turn Anime4K upscaling on. Only active when shaders are available.", defaultBinding: "ctrl+1" },
-  { id: "playerAnime4kOff", scope: "Player", group: "Playback", label: "Anime4K off", description: "Turn Anime4K upscaling off.", defaultBinding: "ctrl+0" },
+  { id: "playerScreenshot", scope: "Player", group: "Playback", label: "Screenshot", description: "Save the current frame (video only, no subtitles) as a PNG to Pictures/Viora.", defaultBinding: "p" },
+  { id: "playerGifRecord", scope: "Player", group: "Playback", label: "Record GIF", description: "Start or stop recording a GIF of the video (no subtitles). Saves to Pictures/Viora.", defaultBinding: "o" },
+  { id: "playerClipRecord", scope: "Player", group: "Playback", label: "Save video clip", description: "Save the last 30 seconds as a video clip with audio, choosing subtitles on or off. Saves to Pictures/Viora.", defaultBinding: "c" },
 
   { id: "playerSeekBack10", scope: "Player", group: "Seeking", label: "Seek back", description: "Jump back by the Back seek step set under Behavior.", defaultBinding: "ArrowLeft" },
   { id: "playerSeekForward10", scope: "Player", group: "Seeking", label: "Seek forward", description: "Jump forward by the Forward seek step set under Behavior.", defaultBinding: "ArrowRight" },
@@ -103,7 +96,6 @@ export const HOTKEYS: HotkeyDef[] = [
   { id: "playerStreamSwitcher", scope: "Player", group: "Panels", label: "Stream switcher", description: "Open or close the in-player stream switcher.", defaultBinding: "w" },
   { id: "playerEpisodePanel", scope: "Player", group: "Panels", label: "Up next / episodes", description: "Open or close the episode panel.", defaultBinding: "e" },
   { id: "playerTvGuide", scope: "Player", group: "Panels", label: "TV guide", description: "Open or close the live TV guide (live channels only).", defaultBinding: "g" },
-  { id: "playerDvr", scope: "Player", group: "Panels", label: "DVR / record", description: "Open or close the live TV recorder (live channels only).", defaultBinding: "r" },
   { id: "playerSleep", scope: "Player", group: "Panels", label: "Sleep at end of episode", description: "Toggle a sleep timer that pauses when this episode ends.", defaultBinding: "l" },
 ];
 

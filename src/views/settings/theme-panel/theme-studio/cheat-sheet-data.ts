@@ -39,12 +39,12 @@ export const QUICKSTART: QuickStep[] = [
   { step: "Choose a layout", detail: "The Layout tab picks where navigation lives. Custom hides built-in chrome and your own HTML takes over." },
   { step: "Build custom chrome visually", detail: "On Custom, the builder makes a sidebar or top bar with no code. Wire items to window.harbor.navigate()." },
   { step: "Go deeper with code", detail: "Open the code editor for raw CSS, HTML and JS layered over the whole app. Everything below is fair to target." },
-  { step: "Save or export", detail: "Save adds it to Your themes. Export writes a .harborstyle file you can share with anyone." },
+  { step: "Save or export", detail: "Save adds it to Your themes. Export writes a .viorastyle file you can share with anyone." },
 ];
 
-export type HarborApi = { call: string; desc: string };
+export type VioraApi = { call: string; desc: string };
 
-export const WINDOW_HARBOR: HarborApi[] = [
+export const WINDOW_HARBOR: VioraApi[] = [
   { call: "window.harbor.navigate(view)", desc: "Switch the app to a view. Pass a view id below, e.g. window.harbor.navigate('movies')." },
   { call: "window.harbor.back()", desc: "Go back one step, same as the back button." },
 ];
@@ -117,15 +117,15 @@ export type HookSelector = { selector: string; where: string; tip?: string };
 
 export const STABLE_SELECTORS: HookSelector[] = [
   { selector: ".pick-card", where: "Portrait poster cards in every rail." },
-  { selector: ".harbor-cinema-badge", where: "In-cinema chip on hero + detail." },
-  { selector: ".harbor-chat-toast", where: "Together chat bubble. Floating bottom-right." },
-  { selector: ".harbor-together-pill", where: "Together status pill. Top bar / floating dock." },
-  { selector: ".harbor-search-backdrop", where: "Full-screen backdrop behind the search overlay.", tip: "Override to change blur amount or tint." },
-  { selector: ".harbor-minui-shell", where: "The floating dock container (Floating dock layout)." },
+  { selector: ".viora-cinema-badge", where: "In-cinema chip on hero + detail." },
+  { selector: ".viora-chat-toast", where: "Together chat bubble. Floating bottom-right." },
+  { selector: ".viora-together-pill", where: "Together status pill. Top bar / floating dock." },
+  { selector: ".viora-search-backdrop", where: "Full-screen backdrop behind the search overlay.", tip: "Override to change blur amount or tint." },
+  { selector: ".viora-minui-shell", where: "The floating dock container (Floating dock layout)." },
   { selector: ".glass-card", where: "Cards that opt into the glass treatment.", tip: "Active only when data-theme-card is glass." },
   { selector: ".modal-panel", where: "Modal bodies (auth, profile picker, together, etc.)." },
-  { selector: "[data-harbor-player]", where: "The video player root. Player surfaces scope to this." },
-  { selector: "[data-harbor-nav]", where: "Nav buttons in builder-generated custom chrome.", tip: "Gets [data-active] on the current view. Style the active item." },
+  { selector: "[data-viora-player]", where: "The video player root. Player surfaces scope to this." },
+  { selector: "[data-viora-nav]", where: "Nav buttons in builder-generated custom chrome.", tip: "Gets [data-active] on the current view. Style the active item." },
   { selector: "[data-tauri-drag-region]", where: "Window-drag areas. Keep one if you replace the title bar." },
   { selector: "main", where: "The scrolling content area. Add padding for custom chrome." },
 ];

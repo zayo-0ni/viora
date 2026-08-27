@@ -30,11 +30,9 @@ import {
   PANEL_DRAG_CLICK_PX,
   REDUCED_MS,
   STAGGER_STEP_MS,
-  TOPBAR_INSET_PX,
 } from "@/lib/hover-preview/timing";
 import { useSearch } from "@/lib/search-context";
 import { useSettings } from "@/lib/settings";
-import { activeLayout } from "@/lib/theme";
 import { useView } from "@/lib/view";
 import { PreviewBlock } from "./hover-preview/block";
 import { PreviewCrown } from "./hover-preview/crown";
@@ -101,13 +99,12 @@ export function HoverPreview() {
       const payload = snap.payload;
       if (snap.openSeq !== prev.openSeq) {
         const width = panelWidthFor(settingsRef.current.posterScale);
-        const layout = activeLayout(settingsRef.current.theme);
         layerKeyRef.current += 1;
         setScene({
           seq: snap.openSeq,
           width,
           crownH: crownHeightFor(width),
-          topInset: layout === "topdock" || layout === "royal" ? TOPBAR_INSET_PX : GUTTER_PX,
+          topInset: GUTTER_PX,
           pos: null,
           height: 0,
           nextHeight: 0,

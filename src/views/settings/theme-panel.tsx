@@ -1,5 +1,3 @@
-import { FocusButton } from "@/lib/tv-focus";
-import { PanelTop } from "lucide-react";
 import { useSettings } from "@/lib/settings";
 import { type ThemeSettings } from "@/lib/theme";
 import { useT } from "@/lib/i18n";
@@ -11,7 +9,6 @@ import { CustomThemesSection } from "./theme-panel/custom-themes-section";
 import { DisplaySection } from "./theme-panel/display-section";
 import { FontGrid } from "./theme-panel/font-grid";
 
-const isTauri = typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
 
 export function ThemePanel() {
   const t = useT();
@@ -57,7 +54,7 @@ export function ThemePanel() {
 
       <Section
         title={t("Typography")}
-        subtitle={t("Pick a display and body pairing, or upload your own font to use across Harbor.")}
+        subtitle={t("Pick a display and body pairing, or upload your own font to use across Viora.")}
       >
         <FontGrid
           pairValue={theme.fontPair}
@@ -83,52 +80,7 @@ export function ThemePanel() {
         <SeekBarPanel />
       </Section>
 
-      {isTauri && (
-        <Section
-          title={t("Window title bar")}
-          subtitle={t("Use your operating system's native title bar and window buttons instead of Harbor's built-in ones. Handy if the in-app buttons ever feel out of reach, like during playback.")}
-        >
-          <NativeTitleBarRow />
-        </Section>
-      )}
     </>
   );
 }
 
-function NativeTitleBarRow() {
-  const t = useT();
-  const { settings, update } = useSettings();
-  const on = settings.useNativeTitleBar;
-  return (
-    <div className="flex items-start gap-3 rounded-xl border border-edge-soft bg-canvas/40 px-4 py-3.5">
-      <span
-        className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-          on ? "bg-accent/15 text-accent" : "bg-raised text-ink-subtle"
-        }`}
-      >
-        <PanelTop size={15} strokeWidth={2.2} />
-      </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <span className="text-[14px] font-medium text-ink">{t("Use the native window title bar")}</span>
-        <p className="text-[12.5px] leading-relaxed text-ink-subtle">
-          {t("Show your operating system's own title bar with its minimize, maximize, and close buttons. They stay reachable everywhere, including while a video is playing. Turn this off to use Harbor's built-in window buttons.")}
-        </p>
-      </div>
-      <FocusButton
-        type="button"
-        role="switch"
-        aria-checked={on}
-        onClick={() => update({ useNativeTitleBar: !on })}
-        className={`mt-1 flex h-6 w-11 shrink-0 items-center rounded-full px-0.5 transition-colors ${
-          on ? "bg-accent" : "bg-raised"
-        }`}
-      >
-        <span
-          className={`h-5 w-5 rounded-full bg-canvas shadow-sm transition-transform ${
-            on ? "translate-x-5 rtl:-translate-x-5" : "translate-x-0"
-          }`}
-        />
-      </FocusButton>
-    </div>
-  );
-}

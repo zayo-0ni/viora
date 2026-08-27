@@ -98,9 +98,9 @@ dependencies {
     // transport, the menus, the subtitles are all drawn there — and the only
     // native view involved is a bare SurfaceView, so PlayerView and its
     // dependencies would be weight with nothing on the screen to show for it.
-    implementation("androidx.media3:media3-exoplayer:1.4.1")
-    implementation("androidx.media3:media3-exoplayer-hls:1.4.1")
-    implementation("androidx.media3:media3-exoplayer-dash:1.4.1")
+    implementation("androidx.media3:media3-exoplayer:1.8.0")
+    implementation("androidx.media3:media3-exoplayer-hls:1.8.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.8.0")
 
     // The second engine: libmpv, with ffmpeg, libass and libplacebo inside it.
     //

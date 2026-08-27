@@ -1,6 +1,5 @@
 import { FocusButton } from "@/lib/tv-focus";
-import { ChevronLeft, ChevronRight, SlidersHorizontal } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BackToTop } from "@/components/back-to-top";
 import { PickCard } from "@/components/pick-card";
 import { Row } from "@/components/row";
@@ -119,7 +118,7 @@ export function ServiceView({ service }: { service: StreamingService }) {
       <div className="relative px-12 pt-28 pb-12">
         <div
           aria-hidden
-          className="harbor-bleed-stremio pointer-events-none absolute inset-0"
+          className="viora-bleed-stremio pointer-events-none absolute inset-0"
           style={{
             backgroundImage: `radial-gradient(ellipse 90% 100% at 30% 0%, ${meta.tint}38 0%, transparent 65%)`,
           }}
@@ -140,7 +139,6 @@ export function ServiceView({ service }: { service: StreamingService }) {
       </div>
 
       <CategoryPills active={category} onChange={setCategory} />
-      <CategoryFab active={category} onChange={setCategory} />
 
       <div className="px-12 pt-10">
         {loading && (
@@ -234,36 +232,6 @@ function CategoryPills({
 }) {
   const t = useT();
   const trackRef = useRef<HTMLDivElement>(null);
-  const [scrollState, setScrollState] = useState({ canLeft: false, canRight: false });
-
-  const recompute = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) {
-      setScrollState({ canLeft: false, canRight: false });
-      return;
-    }
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    setScrollState({
-      canLeft: el.scrollLeft > 4,
-      canRight: maxScroll > 4 && el.scrollLeft < maxScroll - 4,
-    });
-  }, []);
-
-  useLayoutEffect(() => {
-    recompute();
-  }, [recompute]);
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", recompute, { passive: true });
-    const ro = new ResizeObserver(recompute);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", recompute);
-      ro.disconnect();
-    };
-  }, [recompute]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -274,18 +242,22 @@ function CategoryPills({
     }
   }, [active.id]);
 
-  const page = (dir: -1 | 1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * Math.max(220, el.clientWidth * 0.6), behavior: "smooth" });
-  };
 
   return (
     <div className="px-12 pt-8">
       <div className="group/pills relative">
         <div
           ref={trackRef}
-          className="flex gap-2 overflow-x-auto scroll-smooth pb-1 [scroll-padding:0_24px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          // `p-5 -m-5` is the app's answer to a focus ring inside a scroller.
+          //
+          // `overflow-x: auto` clips on all four sides, not only the one it
+          // scrolls, and the ring stands 9px proud of a control — 3px of line
+          // and a 6px halo. This track had `pb-1`, four pixels, and nothing at
+          // the top or the ends, so every pill lost the top and bottom of its
+          // frame and the first one — All — lost its left edge as well. The
+          // padding gives the ring room inside the clip; the negative margin
+          // takes the same amount back off the layout, so nothing moves.
+          className="flex gap-2 overflow-x-auto scroll-smooth p-5 -m-5 [scroll-padding:0_44px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {CATEGORIES.map((c) => {
             const isActive = c.id === active.id;
@@ -294,6 +266,19 @@ function CategoryPills({
                 key={c.id}
                 data-cat={c.id}
                 onClick={() => onChange(c)}
+                // Bring the pill the remote just landed on fully into view.
+                //
+                // Nothing was doing this. The rows have the focus system's own
+                // reveal; this bar is a plain scroller, so it was left to the
+                // engine's built-in "scroll the focused thing into view", and
+                // that stops short: measured on the device, moving onto Romance
+                // scrolled the track 129px of the 439 it needed and left 311px
+                // of the pill outside the scrollport, cut off mid-word at the
+                // edge. Asking for it explicitly is the whole fix; the track's
+                // `scroll-padding` decides where it comes to rest.
+                onFocus={(e) =>
+                  e.currentTarget.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" })
+                }
                 className={`shrink-0 rounded-full px-4 py-1.5 text-[13.5px] font-medium transition-colors [scroll-snap-align:start] ${
                   isActive
                     ? "bg-ink text-canvas"
@@ -305,113 +290,13 @@ function CategoryPills({
             );
           })}
         </div>
-        <EdgeFade side="left" visible={scrollState.canLeft} />
-        <EdgeFade side="right" visible={scrollState.canRight} />
-        <ScrollArrow side="left" visible={scrollState.canLeft} onClick={() => page(-1)} />
-        <ScrollArrow side="right" visible={scrollState.canRight} onClick={() => page(1)} />
       </div>
     </div>
   );
 }
 
-function ScrollArrow({
-  side,
-  visible,
-  onClick,
-}: {
-  side: "left" | "right";
-  visible: boolean;
-  onClick: () => void;
-}) {
-  const t = useT();
-  return (
-    <FocusButton
-      type="button"
-      aria-label={side === "left" ? t("Scroll filters left") : t("Scroll filters right")}
-      onClick={onClick}
-      className={`absolute top-1/2 -translate-y-1/2 ${side === "left" ? "left-0 -translate-x-1/3" : "right-0 translate-x-1/3"} z-20 flex h-9 w-9 items-center justify-center rounded-full bg-canvas/85 text-ink shadow-[0_8px_24px_-6px_rgba(0,0,0,0.6)] backdrop-blur-md transition-all duration-200 hover:bg-canvas focus:outline-none ${
-        visible
-          ? "opacity-0 group-hover/pills:opacity-100 pointer-events-auto"
-          : "pointer-events-none opacity-0"
-      }`}
-    >
-      {side === "left" ? <ChevronLeft size={16} strokeWidth={2.4} /> : <ChevronRight size={16} strokeWidth={2.4} />}
-    </FocusButton>
-  );
-}
 
-function EdgeFade({ side, visible }: { side: "left" | "right"; visible: boolean }) {
-  return (
-    <div
-      aria-hidden
-      className={`pointer-events-none absolute inset-y-0 z-10 w-12 transition-opacity duration-200 ${
-        side === "left"
-          ? "left-0 bg-gradient-to-r from-canvas to-transparent"
-          : "right-0 bg-gradient-to-l from-canvas to-transparent"
-      } ${visible ? "opacity-100" : "opacity-0"}`}
-    />
-  );
-}
 
-function CategoryFab({
-  active,
-  onChange,
-}: {
-  active: Category;
-  onChange: (c: Category) => void;
-}) {
-  const t = useT();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDown = (e: MouseEvent) => {
-      const t = e.target as HTMLElement;
-      if (!t.closest("[data-filter-fab]")) setOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("mousedown", onDown);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDown);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  return (
-    <div data-filter-fab className="fixed bottom-16 end-5 z-40">
-      {open && (
-        <div className="absolute bottom-full end-0 mb-2 max-h-[60vh] w-44 overflow-y-auto rounded-2xl border border-edge-soft/60 bg-canvas py-1.5 shadow-2xl">
-          {CATEGORIES.map((c) => (
-            <FocusButton
-              key={c.id}
-              onClick={() => {
-                onChange(c);
-                setOpen(false);
-              }}
-              className={`block w-full px-4 py-2 text-start text-[13.5px] transition-colors ${
-                c.id === active.id
-                  ? "bg-ink/10 text-ink"
-                  : "text-ink-muted hover:bg-elevated/60 hover:text-ink"
-              }`}
-            >
-              {t(c.label)}
-            </FocusButton>
-          ))}
-        </div>
-      )}
-      <FocusButton
-        onClick={() => setOpen((v) => !v)}
-        className="flex h-8 items-center gap-1.5 rounded-md border border-edge-soft/40 bg-canvas/90 px-2.5 text-[12px] font-medium text-ink-muted transition-colors hover:bg-canvas hover:text-ink"
-      >
-        <SlidersHorizontal size={12} strokeWidth={2.2} />
-        {t(active.label)}
-      </FocusButton>
-    </div>
-  );
-}
 
 function EmptyState({ hasKey }: { hasKey: boolean }) {
   const t = useT();

@@ -90,7 +90,7 @@ export function SubtitleOverlay({ text, startSec, scale = 1 }: Props) {
 
 function fontFamilyFor(family: string | undefined): string {
   if (family?.startsWith("custom:")) {
-    return `"harbor-font-${family.slice("custom:".length)}", "Inter", system-ui, sans-serif`;
+    return `"viora-font-${family.slice("custom:".length)}", "Inter", system-ui, sans-serif`;
   }
   switch (family) {
     case "system":

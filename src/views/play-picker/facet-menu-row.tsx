@@ -123,9 +123,17 @@ function FacetMenu({
       </FocusButton>
       {open && (
         <>
-          <FocusButton
-            type="button"
-            aria-label="Close menu"
+          {/* Catches a click outside the menu, and nothing else.
+              This was a FocusButton, so it was a focus target the size of the
+              display: spatial navigation measures by rectangle, and a rectangle
+              covering the screen is the nearest thing in every direction. It
+              swallowed the highlight the moment a menu opened, and the arrows
+              never reached 4K or 1080p at all — the owner reported it as focus
+              being lost with nothing selectable.
+              A plain div still takes the pointer; it is simply not a place the
+              D-pad can land. */}
+          <div
+            aria-hidden
             onClick={onClose}
             className="fixed inset-0 z-10 cursor-default"
           />

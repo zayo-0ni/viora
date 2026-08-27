@@ -95,7 +95,7 @@ export function SourcePicker({
       <div ref={wrapRef} className="relative">
         <FocusButton
           onClick={() => setOpen((v) => !v)}
-          className="flex h-11 items-center gap-2.5 rounded-xl border border-edge-soft/55 bg-elevated px-3.5 pe-3 text-[13.5px] font-medium text-ink transition-colors hover:bg-raised"
+          className="flex h-11 items-center gap-2.5 rounded-xl px-3.5 pe-3 text-[13.5px] font-medium text-ink transition-colors hover:bg-raised/70"
         >
           <span className="flex h-2 w-2 shrink-0 rounded-full bg-danger" />
           <span className="max-w-[200px] truncate">{active?.name ?? t("No playlist")}</span>
@@ -208,7 +208,7 @@ export function SourcePicker({
         onClick={onRefresh}
         disabled={loading || !activeId}
         title={ago ? t("Last updated {ago}", { ago }) : t("Refresh playlist")}
-        className="flex h-11 w-11 items-center justify-center rounded-xl border border-edge-soft/55 bg-elevated text-ink-muted transition-colors hover:bg-raised hover:text-ink disabled:opacity-40"
+        className="flex h-11 w-11 items-center justify-center rounded-xl text-ink-muted transition-colors hover:bg-raised/70 hover:text-ink disabled:opacity-40"
       >
         <RefreshCw size={15} strokeWidth={2} className={loading ? "animate-spin" : ""} />
       </FocusButton>
@@ -272,7 +272,12 @@ function SourceRow({
           <span className="truncate">{source.name}</span>
         </FocusButton>
         {onMove && total > 1 && (
-          <div className="flex shrink-0 flex-col opacity-0 transition-opacity group-hover:opacity-100">
+          /* Reachable by the remote, so visible to it.
+             These are FocusButtons — the D-pad could always land on them — but
+             they were drawn at zero opacity until a mouse hovered the row. On a
+             television nothing ever hovers, so the highlight moved onto controls
+             that could not be seen. */
+          <div className="flex shrink-0 flex-col opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
             <FocusButton
               type="button"
               onClick={(e) => {
@@ -309,7 +314,7 @@ function SourceRow({
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-opacity ${
             isMenuOpen
               ? "text-ink"
-              : "text-ink-subtle opacity-0 hover:text-ink group-hover:opacity-100"
+              : "text-ink-subtle opacity-0 hover:text-ink group-hover:opacity-100 group-focus-within:opacity-100"
           }`}
         >
           <MoreHorizontal size={15} strokeWidth={2} />

@@ -85,11 +85,11 @@ export function newCustomHoverId(name: string, count: number): string {
 
 export function scopeHoverCss(css: string, scopeClass: string): string {
   return css
-    .split(".group:hover .harbor-custom-hover")
+    .split(".group:hover .viora-custom-hover")
     .join(`.${scopeClass}`)
-    .split(".group:focus-within .harbor-custom-hover")
+    .split(".group:focus-within .viora-custom-hover")
     .join(`.${scopeClass}`)
-    .split(".harbor-custom-hover")
+    .split(".viora-custom-hover")
     .join(`.${scopeClass}`);
 }
 

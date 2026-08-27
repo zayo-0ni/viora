@@ -1,7 +1,6 @@
 import { useState } from "react";
 import aioStreamsLogo from "@/assets/addon-logos/aiostreams.png";
 import allDebridLogo from "@/assets/addon-logos/alldebrid.webp";
-import animeKitsuLogo from "@/assets/addon-logos/anime-kitsu.png";
 import bitsearchLogo from "@/assets/addon-logos/bitsearch.png";
 import cometLogo from "@/assets/addon-logos/comet.png";
 import debridLinkLogo from "@/assets/addon-logos/debridlink.png";
@@ -41,7 +40,6 @@ const BUNDLED: Array<{ match: (id: string, name: string) => boolean; src: string
   { match: (id, n) => id.includes("mediafusion") || /mediafusion/i.test(n), src: mediafusionLogo },
   { match: (id, n) => id.includes("aiostreams") || /aio.?streams/i.test(n), src: aioStreamsLogo },
   { match: (id, n) => id.includes("opensubtitles") || /opensubtitles/i.test(n), src: opensubtitlesLogo },
-  { match: (id, n) => id.includes("anime-kitsu") || /anime.?kitsu/i.test(n), src: animeKitsuLogo },
   { match: (id, n) => id.includes("streaming-catalogs") || /streaming.catalog/i.test(n), src: streamingCatalogsLogo },
   { match: (id, n) => id.includes("easynews") || /easy.?news/i.test(n), src: easynewsLogo },
   { match: (id, n) => id === "org.stremio.local" || /^local files\b/i.test(n) || /local.?files/i.test(id), src: localFilesLogo },
@@ -52,7 +50,6 @@ export const BOAT_ADDON_LOGOS: string[] = [
   cometLogo,
   mediafusionLogo,
   aioStreamsLogo,
-  animeKitsuLogo,
   opensubtitlesLogo,
   easynewsLogo,
   streamingCatalogsLogo,

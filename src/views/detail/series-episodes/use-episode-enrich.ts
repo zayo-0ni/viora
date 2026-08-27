@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { harborImdbEpisodes } from "@/lib/providers/harbor-imdb";
+import { harborImdbEpisodes } from "@/lib/providers/viora-imdb";
 import { omdbSeasonRatings } from "@/lib/providers/omdb";
 import type { Episode } from "@/lib/providers/tmdb";
 import { tvdbEpisodes, tvdbSeriesByImdb, type TvdbEpisode } from "@/lib/providers/tvdb";
@@ -19,7 +19,7 @@ export function useEpisodeEnrich({
 }): Episode[] {
   const [tvdbBySeason, setTvdbBySeason] = useState<Map<number, Map<number, TvdbEpisode>>>(new Map());
   const [omdbBySeason, setOmdbBySeason] = useState<Map<number, Map<number, number>>>(new Map());
-  const [harborImdb, setHarborImdb] = useState<Map<string, number>>(new Map());
+  const [harborImdb, setVioraImdb] = useState<Map<string, number>>(new Map());
 
   useEffect(() => {
     if (!tvdbKey || !imdbId) return;
@@ -57,7 +57,7 @@ export function useEpisodeEnrich({
     if (!imdbId) return;
     let cancelled = false;
     void harborImdbEpisodes(imdbId).then((map) => {
-      if (!cancelled && map.size > 0) setHarborImdb(map);
+      if (!cancelled && map.size > 0) setVioraImdb(map);
     });
     return () => {
       cancelled = true;

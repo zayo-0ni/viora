@@ -1,5 +1,4 @@
 import type { Meta } from "../cinemeta";
-import { animeKitsuMeta } from "../providers/anime-kitsu-addon";
 import { omdbScoresCached } from "../providers/omdb";
 import { tmdbImdbCached } from "../providers/tmdb";
 import { tmdbLiteMeta } from "../providers/tmdb/tmdb-lite";
@@ -188,18 +187,9 @@ export function assemblePreviewData(meta: Meta): PreviewAssembly {
     });
   };
 
-  const kitsuFetch =
-    isAnime && (!meta.background || !synopsis) ? animeKitsuMeta(meta.id).catch(() => null) : null;
   const ttFetch = isTt && !synopsis ? previewMeta(meta.type, meta.id) : null;
 
-  if (!synopsis && kitsuFetch) {
-    synopsisFinal = false;
-    void kitsuFetch.then((m) => {
-      if (m?.description?.trim()) synopsis = m.description.trim();
-      synopsisFinal = true;
-      settle();
-    });
-  } else if (!synopsis && ttFetch) {
+  if (!synopsis && ttFetch) {
     synopsisFinal = false;
     void ttFetch.then((pm) => {
       if (pm?.description?.trim()) synopsis = pm.description.trim();
@@ -210,9 +200,6 @@ export function assemblePreviewData(meta: Meta): PreviewAssembly {
 
   if (meta.background) {
     tryBackdrop(meta.background);
-  } else if (kitsuFetch) {
-    backdropPending = true;
-    void kitsuFetch.then((m) => tryBackdrop(m?.background ?? null));
   } else if (isTmdb) {
     backdropPending = true;
     void tmdbLiteMeta(previewTmdbKey, meta.id)

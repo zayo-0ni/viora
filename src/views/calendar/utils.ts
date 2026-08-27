@@ -19,7 +19,6 @@ export const FILTERS: Array<{ id: CalendarFilter; label: string }> = [
   { id: "all", label: "All" },
   { id: "movie", label: "Movies" },
   { id: "tv", label: "TV" },
-  { id: "anime", label: "Anime" },
 ];
 
 export function calendarToMeta(item: CalendarItem): Meta {

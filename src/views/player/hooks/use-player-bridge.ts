@@ -3,11 +3,9 @@ import { type PlayerEngine, emptySnapshot, type PlayerBridge, type PlayerSnapsho
 import { probeMpv } from "@/lib/player/mpv";
 import { isMpvAndroidAvailable } from "@/lib/player/mpv-android";
 import { isExoAvailable } from "@/lib/player/exo";
-import { can } from "@/lib/capabilities";
 import type { PlayerSrc } from "@/lib/view";
 import type { Settings } from "@/lib/settings";
 import { getPlaybackPosition, setPlaybackClock } from "@/lib/player/playback-clock";
-import { isWindowsDesktop } from "@/lib/platform";
 import { svpEnsureRunning } from "@/lib/svp";
 import { pickBridge } from "../player-utils";
 
@@ -56,31 +54,18 @@ export function usePlayerBridge(params: {
     setEngineOverride(null);
   }, [src.url]);
 
-  const hdrOpaqueWindow = isWindowsDesktop() && settings.playerHdrOpaqueWindow;
-  const embedActive = settings.playerMpvEmbed && !hdrOpaqueWindow;
-  const isAnimeSrc =
-    !!src.meta.id?.startsWith("kitsu:") ||
-    !!src.meta.id?.startsWith("mal:") ||
-    !!src.meta.id?.startsWith("anilist:") ||
-    !!src.meta.id?.startsWith("anidb:") ||
-    (src.meta.genres ?? []).some((g) => {
-      const l = g.toLowerCase();
-      return l === "anime" || l === "animation";
-    });
-  const anime4kOn = settings.playerAnime4k && (!settings.playerAnime4kAnimeOnly || isAnimeSrc);
-  const svpOn =
-    settings.playerSvp &&
-    !!settings.svpVpyPath &&
-    (settings.svpScope === "all" || (settings.svpScope === "anime" ? isAnimeSrc : !isAnimeSrc));
+  // The opaque HDR window was a Windows arrangement: a second, always-on-top
+  // window carrying the video so the compositor left the colours alone. There
+  // is one WebView here and no window to open.
+  const embedActive = settings.playerMpvEmbed;
+  const svpOn = settings.playerSvp && !!settings.svpVpyPath;
   useEffect(() => {
     if (svpOn) void svpEnsureRunning().catch(() => {});
   }, [svpOn]);
   // Where to escalate when the chosen engine cannot decode what it was handed:
-  // whichever engine on this device plays the most, which is mpv wherever mpv
-  // exists — compiled into the app on Android, installed alongside it on the
-  // desktop. ExoPlayer is the answer only where there is no mpv at all.
-  const fallbackEngine: PlayerEngine =
-    can("mpvEngine") || isMpvAndroidAvailable() ? "mpv" : "exo";
+  // whichever engine on this device plays the most, which is mpv where mpv is
+  // compiled into the app. ExoPlayer is the answer only where there is no mpv.
+  const fallbackEngine: PlayerEngine = isMpvAndroidAvailable() ? "mpv" : "exo";
   // Live channels used to be forced onto the web layer, decoding HLS in
   // JavaScript. Both native engines demux HLS and MPEG-TS themselves, with the
   // television's own decoders, so a channel is now just another stream.
@@ -89,7 +74,7 @@ export function usePlayerBridge(params: {
     : autoFallbackTried
       ? fallbackEngine
       : settings.playerEngine;
-  const bridgeKey = `${chosenEngine}|${anime4kOn}|${settings.playerHdrToSdr}|${embedActive}|${anime4kOn ? settings.playerAnime4kShaders.join(",") : ""}|${svpOn}|${svpOn ? settings.svpVpyPath : ""}`;
+  const bridgeKey = `${chosenEngine}|${settings.playerHdrToSdr}|${embedActive}|${svpOn}|${svpOn ? settings.svpVpyPath : ""}`;
   const [bridgeReady, setBridgeReady] = useState(false);
   useEffect(() => {
     const host = videoMountRef.current;
@@ -130,21 +115,55 @@ export function usePlayerBridge(params: {
     // Already on the most capable engine this device has: there is nowhere
     // left to escalate to, and retrying would only loop.
     if (engine === fallbackEngine) return;
-    // The viewer picked this engine by hand from inside the player. Swapping it
-    // out from under them is precisely what they were overriding.
-    if (engineOverride) return;
-    if (settings.playerEngine !== "auto") return;
+    // A hand-picked engine used to be exempt from this, on the reasoning that
+    // swapping it out is what the viewer was overriding. That holds while the
+    // engine plays. It stops holding the moment it reports that it cannot decode
+    // the file: honouring the choice then means honouring a black screen, and
+    // "try the other engine" is what pressing that button meant in the first
+    // place. Escalating once is the answer to the request, not a betrayal of it.
+    //
+    // Reproduced on the emulator, switching to ExoPlayer mid-film:
+    //   Decoder init failed: [-49999], Format(2, null, video/x-matroska, audio/ac3)
+    // Plain AC-3 — no decoder on that device, nothing for MediaCodec's own
+    // fallback to reach, and mpv playing the same file a second earlier.
+    //
+    // Only one escalation happens: autoFallbackTried above closes the door, and
+    // being already on the fallback engine returns before this.
+    //
+    // The Settings choice used to gate this too — only "auto" was rescued. That
+    // was right on the desktop, where "auto" was an option you could pick. The
+    // Android panel offers exactly two engines, ExoPlayer and mpv, so the moment
+    // anyone touched the recommended one the setting became "exo" and the rescue
+    // below was switched off for good. What that looks like on a television is a
+    // black screen on any file the hardware cannot decode — a TrueHD track is
+    // enough — with a working engine sitting unused behind a menu.
+    //
+    // The setting says what the next film starts on. It does not say to sit on a
+    // dead picture when the other engine would play it.
     if (snap.errorCode !== "decode" && snap.errorCode !== "codec" && !snap.noAudio) return;
+    // Both flags, and the order matters. `chosenEngine` reads `engineOverride`
+    // first, so raising `autoFallbackTried` on its own left the hand-picked
+    // engine still selected and the escalation changed nothing — measured on
+    // the emulator, where ExoPlayer reported the decode failure and then sat on
+    // it. Clearing the override is what lets `fallbackEngine` through.
+    const escalate = () => {
+      // Logged because this is invisible from the outside: the picture simply
+      // reappears, and when it does not, the only way to tell a rescue that
+      // never fired from one that fired and failed is a line in logcat.
+      console.warn(`[viora] engine "${engine}" reported ${snap.errorCode ?? "no audio"} — escalating to ${fallbackEngine}`);
+      setEngineOverride(null);
+      setAutoFallbackTried(true);
+    };
     if (isMpvAndroidAvailable()) {
       // Nothing to probe: the engine is compiled into the app.
-      setAutoFallbackTried(true);
+      escalate();
       return;
     }
     (async () => {
       const probe = await probeMpv();
-      if (probe.available) setAutoFallbackTried(true);
+      if (probe.available) escalate();
     })();
-  }, [engine, fallbackEngine, engineOverride, autoFallbackTried, snap.errorCode, snap.noAudio, settings.playerEngine]);
+  }, [engine, fallbackEngine, autoFallbackTried, snap.errorCode, snap.noAudio]);
 
   /**
    * The other engine this device has, or null when there is no choice to offer.

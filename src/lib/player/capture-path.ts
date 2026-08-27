@@ -1,7 +1,7 @@
 import type { PlayerSrc } from "@/lib/view";
 
 export function safeName(s: string): string {
-  return s.replace(/[<>:"/\\|?*\x00-\x1F]/g, "_").slice(0, 80) || "Harbor";
+  return s.replace(/[<>:"/\\|?*\x00-\x1F]/g, "_").slice(0, 80) || "Viora";
 }
 
 export function formatStamp(d: Date): string {
@@ -40,7 +40,7 @@ export async function captureDir(): Promise<string | null> {
   try {
     const pathMod = await import("@tauri-apps/api/path");
     const pictures = await pathMod.pictureDir();
-    return await pathMod.join(pictures, "Harbor");
+    return await pathMod.join(pictures, "Viora");
   } catch {
     return null;
   }

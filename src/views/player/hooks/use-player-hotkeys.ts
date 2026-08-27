@@ -29,16 +29,12 @@ export function usePlayerHotkeys(params: {
   toggleSwitcher: () => void;
   toggleEpisodePanel: () => void;
   liveOverlay: ReturnType<typeof useLiveChannelOverlay>;
-  toggleDvr: () => void;
   sleep: ReturnType<typeof useSleepTimer>;
   quickToolsEnabled: boolean;
   frameGrab: ReturnType<typeof useFrameGrab>;
   gif: ReturnType<typeof useGifRecorder>;
   clip: ReturnType<typeof useClipRecorder>;
   videoFill: ReturnType<typeof useVideoFill>;
-  onToggleAnime4k?: () => void;
-  onAnime4kOn?: () => void;
-  onAnime4kOff?: () => void;
   onVolumeFeedback?: (volume: number, muted: boolean) => void;
 }) {
   const {
@@ -61,16 +57,12 @@ export function usePlayerHotkeys(params: {
     toggleSwitcher,
     toggleEpisodePanel,
     liveOverlay,
-    toggleDvr,
     sleep,
     quickToolsEnabled,
     frameGrab,
     gif,
     clip,
     videoFill,
-    onToggleAnime4k,
-    onAnime4kOn,
-    onAnime4kOff,
     onVolumeFeedback,
   } = params;
 
@@ -99,9 +91,6 @@ export function usePlayerHotkeys(params: {
     toggleGuide: () => {
       if (liveOverlay.isLive) liveOverlay.setOpen((o) => !o);
     },
-    toggleDvr: () => {
-      if (liveOverlay.isLive) toggleDvr();
-    },
     toggleSleep: () =>
       sleep.mode.kind === "off" ? sleep.set({ kind: "end_episode" }) : sleep.cancel(),
     onScreenshot: quickToolsEnabled ? () => frameGrab.trigger() : undefined,
@@ -111,9 +100,6 @@ export function usePlayerHotkeys(params: {
     onPanscanUp: () => videoFill.step(0.1),
     onPanscanDown: () => videoFill.step(-0.1),
     onPrevChannel: liveOverlay.isLive ? liveOverlay.goPrevChannel : undefined,
-    onToggleAnime4k,
-    onAnime4kOn,
-    onAnime4kOff,
     onFrameStep: (dir) => bridgeRef.current?.frameStep?.(dir),
     onVolumeFeedback,
   });

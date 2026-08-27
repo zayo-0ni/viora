@@ -56,3 +56,9 @@ local_docs/
 keystore.properties
 *.jks
 *.keystore
+
+# Build outputs that land in the repo root. The APK is ~250 MB; one `git add .`
+# would put it in history permanently.
+*.apk
+*.apk.idsig
+*.idsig

@@ -26,7 +26,7 @@ export function ClipChooser({
   }
   if (!open) return null;
   return (
-    <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 animate-[harbor-fade-in_160ms_ease-out]">
+    <div className="pointer-events-none absolute left-1/2 top-1/2 z-40 -translate-x-1/2 -translate-y-1/2 animate-[viora-fade-in_160ms_ease-out]">
       <div className="pointer-events-auto flex flex-col gap-3.5 rounded-2xl border border-white/15 bg-black/85 p-5 text-white backdrop-blur-xl shadow-[0_24px_60px_-20px_rgba(0,0,0,0.8)]">
         <div className="flex items-center gap-2">
           <Scissors size={15} strokeWidth={2.2} className="text-white/80" />

@@ -1,6 +1,6 @@
 import { FocusButton } from "@/lib/tv-focus";
 import { useEffect, useState } from "react";
-import { HarborLoader } from "@/components/harbor-loader";
+import { VioraLoader } from "@/components/viora-loader";
 import type { Meta } from "@/lib/cinemeta";
 import { consumeRecentStubEvent } from "@/lib/dead-streams";
 import { useActiveKid } from "@/lib/profiles";
@@ -104,7 +104,7 @@ export function AutoPlayTransition({
             {episode.name ? ` · ${episode.name}` : ""}
           </p>
         )}
-        <HarborLoader
+        <VioraLoader
           size="md"
           caption={
             download

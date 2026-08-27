@@ -3,13 +3,12 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Check, Play, X } from "lucide-react";
 import simklLogo from "@/assets/simkl.png";
 import { meta as fetchMeta, narrowMediaType, type Meta } from "@/lib/cinemeta";
-import { animeKitsuMeta, type AnimeKitsuVideo } from "@/lib/providers/anime-kitsu-addon";
 import { tmdbLiteMeta } from "@/lib/providers/tmdb/tmdb-lite";
 import { useContextMenu } from "@/lib/context-menu";
 import { useT } from "@/lib/i18n";
 import { isDpadPrimary } from "@/lib/platform";
 import { readSnapshot, useSnapshotVersion } from "@/lib/snapshots";
-import { episodeFromVideoId, isAnimeCwItem, libraryMetaType, type LibraryItem } from "@/lib/stremio";
+import { episodeFromVideoId, libraryMetaType, type LibraryItem } from "@/lib/stremio";
 import { useHasNewEpisode } from "@/lib/new-episodes";
 import { peekCachedLogo, resolveLogo } from "@/lib/logo";
 import { Tooltip } from "@/views/detail/tooltip";
@@ -18,6 +17,7 @@ import { useSettings } from "@/lib/settings";
 import { useView, type PlayEpisode } from "@/lib/view";
 import { getWatchedBy } from "@/lib/watched-by";
 import { playLocalAware } from "@/lib/local-library/playback";
+import { readPlayback } from "@/lib/playback-history";
 import { localPlayerSrc } from "@/lib/local-library/player-src";
 import { fetchSeasonEpisodes } from "@/lib/series-episodes";
 
@@ -47,30 +47,14 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
   const progress = dur > 0 ? Math.min(1, off / dur) : 0;
   const remaining = dur > 0 && !isExternal ? formatRemaining(t, dur - off) : "";
   const upNext = item.upNext === true;
-  const kitsuThreeSeg =
-    /^(kitsu|mal|anilist|anidb):/.test(item._id) &&
-    (item.state?.video_id ?? "").split(":").length === 3;
   const ep =
     item.state?.season && item.state?.episode
       ? { season: item.state.season, episode: item.state.episode }
-      : kitsuThreeSeg
-        ? null
-        : episodeFromVideoId(item.state?.video_id);
-  const animeEp = kitsuThreeSeg
-    ? Number((item.state?.video_id ?? "").split(":")[2])
-    : isAnimeCwItem(item) && ep
-      ? ep.episode
-      : null;
-  const sub =
-    animeEp && Number.isFinite(animeEp) && animeEp > 0
-      ? `Ep ${animeEp}`
-      : ep
-        ? `S${ep.season}E${ep.episode}`
-        : "";
+      : episodeFromVideoId(item.state?.video_id);
+  const sub = ep ? `S${ep.season}E${ep.episode}` : "";
   const [logo, setLogo] = useState<string | undefined>();
   const [metaBg, setMetaBg] = useState<string | undefined>();
   const [hydratedMeta, setHydratedMeta] = useState<Meta | null>(null);
-  const [kitsuVideo, setKitsuVideo] = useState<AnimeKitsuVideo | null>(null);
   const [epTitle, setEpTitle] = useState<string | null>(null);
   const [imgIdx, setImgIdx] = useState(0);
   const cardRef = useRef<HTMLButtonElement>(null);
@@ -95,7 +79,6 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
     setLogo(undefined);
     setMetaBg(undefined);
     setHydratedMeta(null);
-    setKitsuVideo(null);
     setImgIdx(0);
     const el = cardRef.current;
     if (!el) return;
@@ -104,31 +87,6 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
     const start = () => {
       if (started) return;
       started = true;
-      if (/^(kitsu|mal|anilist|anidb):/.test(item._id)) {
-        animeKitsuMeta(item._id)
-          .then((m) => {
-            if (cancelled || !m) return;
-            setHydratedMeta({
-              id: item._id,
-              type: libraryMetaType(item.type),
-              name: m.name?.trim() ? m.name : item.name,
-              poster: m.poster,
-              background: m.background,
-              logo: m.logo,
-            });
-            if (m.logo) setLogo(m.logo);
-            const bg = m.background || (item.background ? undefined : m.poster);
-            if (bg) setMetaBg(bg);
-            if (kitsuThreeSeg) {
-              const vid =
-                m.videos.find((v) => v.id === item.state?.video_id) ??
-                m.videos.find((v) => v.episode === animeEp);
-              if (vid) setKitsuVideo(vid);
-            }
-          })
-          .catch(() => {});
-        return;
-      }
       if (item._id.startsWith("tmdb:")) {
         tmdbLiteMeta(settingsRef.current.tmdbKey, item._id)
           .then((m) => {
@@ -155,11 +113,11 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
           // language preference and falls back to it when nothing else exists.
           const key = settingsRef.current.tmdbKey;
           const cachedLogo = peekCachedLogo(key, full);
-          if (cachedLogo) setLogo(cachedLogo);
+          if (cachedLogo) setLogo(downscaleTmdb(cachedLogo));
           else
             void resolveLogo(key, full)
               .then((l) => {
-                if (!cancelled && l) setLogo(l);
+                if (!cancelled && l) setLogo(downscaleTmdb(l));
               })
               .catch(() => {});
           const bg = full.background || (item.background ? undefined : full.poster);
@@ -185,8 +143,7 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
 
   useEffect(() => {
     setEpTitle(null);
-    if (!ep || kitsuThreeSeg) return;
-    if (/^(kitsu|mal|anilist|anidb):/.test(item._id)) return;
+    if (!ep) return;
     let cancelled = false;
     const epMeta: Meta = { id: item._id, type: "series", name: item.name };
     fetchSeasonEpisodes(epMeta, ep.season, { tmdbKey: settingsRef.current.tmdbKey })
@@ -200,9 +157,9 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item._id, ep?.season, ep?.episode, kitsuThreeSeg]);
+  }, [item._id, ep?.season, ep?.episode]);
 
-  const episodeTitle = epTitle ?? kitsuVideo?.title ?? null;
+  const episodeTitle = epTitle;
 
   const meta: Meta = hydratedMeta
     ? { ...hydratedMeta, id: item._id, type: libraryMetaType(item.type) }
@@ -214,38 +171,87 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
         background: item.background,
       };
 
-  const onClick = () => {
+  /** The title page, which is where a different source is chosen. */
+  const openTitle = () => {
     openMeta(meta, ep ? { episodeHint: ep } : undefined);
   };
 
-  const onPlay = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  /*
+    Pressing the card resumes it.
+
+    A row called Continue Watching is a row of one intention, and pressing it
+    used to open the title page instead — a page the viewer had already read,
+    standing between them and the thing they were half way through. The picker
+    already knows how to resume: given `resume`, it replays the stream this
+    title last used rather than asking again. Choosing a different source is
+    still there, one long press away, along with taking the card out.
+  */
+  const play = () => {
     let episode: PlayEpisode | undefined = item.type === "series" && ep ? ep : undefined;
-    if (!episode && kitsuThreeSeg) {
-      if (kitsuVideo) {
-        episode = {
-          season: kitsuVideo.season || 1,
-          episode: kitsuVideo.episode,
-          name: kitsuVideo.title,
-          still: kitsuVideo.thumbnail,
-          overview: kitsuVideo.overview,
-          kitsuStreamId: kitsuVideo.id,
-          imdbId: kitsuVideo.imdb_id,
-          imdbSeason: kitsuVideo.imdbSeason,
-          imdbEpisode: kitsuVideo.imdbEpisode,
-        };
-      } else {
-        const epNum = Number((item.state?.video_id ?? "").split(":")[2]);
-        if (Number.isFinite(epNum) && epNum > 0) episode = { season: 1, episode: epNum };
-      }
-    }
     playLocalAware({
       meta,
       episode: episode ?? null,
       mode: settings.localPlaybackMode,
       source: "manual",
       resumeId: meta.id,
-      playStream: () => openPicker(meta, episode, { autoPlay: settings.instantPlay, resume: true }),
+      playStream: () => {
+        /*
+          Straight back into the film, not into a list of ways to watch it.
+
+          Asking the picker to resume still meant fetching every stream from
+          every addon first, because it recognised the remembered one by
+          finding it in that list — measured on the emulator, pressing a card
+          showed "Searching streams" and then "336 found across 3 sources"
+          before anything played. But the history entry already holds the link
+          that played last, so when it is a direct one there is nothing to
+          search for: the player can open on it.
+
+          A saved link can go stale, and this cannot know that until the player
+          tries. That is what the long press is for — the title page, and a
+          different source.
+        */
+        const last = settings.rememberLastStream
+          ? readPlayback(meta.id, episode?.season, episode?.episode)
+          : null;
+        if (last?.url) {
+          openPlayer({
+            meta,
+            episode,
+            url: last.url,
+            title: episode ? episode.name || `Episode ${episode.episode}` : meta.name,
+            subtitle: episode
+              ? `${meta.name} · S${episode.imdbSeason ?? episode.season} · E${episode.imdbEpisode ?? episode.episode}`
+              : meta.releaseInfo,
+            resume: true,
+            streamRef: {
+              infoHash: last.infoHash ?? null,
+              fileIdx: last.fileIdx ?? null,
+              addonId: last.addonId ?? null,
+              title: last.title ?? null,
+              parsedTitle: last.parsedTitle ?? null,
+              resolution: last.resolution ?? null,
+              releaseGroup: last.releaseGroup ?? null,
+              source: last.source ?? null,
+              bingeGroup: last.bingeGroup ?? null,
+              size: last.size ?? null,
+            },
+          });
+          return;
+        }
+        /*
+          Nothing remembered, or a torrent that still has to be resolved — and
+          it still plays rather than asking.
+
+          A press here means "carry on watching this", and the only titles with
+          nothing remembered are the ones this app has not played before: the
+          row is built from the Stremio library, so most of what is in it was
+          watched somewhere else. Showing a list of sources on those was the
+          same press meaning two different things depending on history the
+          viewer cannot see. `instantPlay` stays the viewer's setting for
+          everywhere else; from this row the press always plays.
+        */
+        openPicker(meta, episode, { autoPlay: true, resume: true });
+      },
       playLocal: (entry, o) => {
         const s = localPlayerSrc(entry);
         openPlayer({
@@ -263,6 +269,29 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
     });
   };
 
+  /*
+    A hold is not also a press.
+
+    The engine knows to skip its own select once a long press has fired, but the
+    browser does not: releasing Enter on a focused <button> delivers a real
+    click of its own, and nothing was swallowing it. So holding OK opened the
+    menu and started the film underneath it at the same time — which is what the
+    owner saw, a menu sitting over a page he had not asked for.
+  */
+  const heldRef = useRef(false);
+  const onClick = () => {
+    if (heldRef.current) {
+      heldRef.current = false;
+      return;
+    }
+    play();
+  };
+
+  const onPlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    play();
+  };
+
   return (
     <div className="group relative w-full min-w-0">
       <FocusButton
@@ -274,31 +303,33 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
         // has neither, and the ✕ in the corner only exists under a pointer — so
         // there was no way at all to remove something from Continue Watching
         // from the sofa. The menu is opened over the card itself.
-        onLongPress={
-          onDismiss
-            ? () => {
-                const box = cardRef.current?.getBoundingClientRect();
-                openContextMenu(
-                  new MouseEvent("contextmenu", {
-                    clientX: box ? box.left + box.width / 2 : 0,
-                    clientY: box ? box.top + box.height / 2 : 0,
-                  }),
-                  { kind: "continue", label: meta.name, remove: () => onDismiss(item) },
-                );
-              }
-            : undefined
-        }
+        onLongPress={() => {
+          heldRef.current = true;
+          const box = cardRef.current?.getBoundingClientRect();
+          openContextMenu(
+            new MouseEvent("contextmenu", {
+              clientX: box ? box.left + box.width / 2 : 0,
+              clientY: box ? box.top + box.height / 2 : 0,
+            }),
+            {
+              kind: "continue",
+              label: meta.name,
+              remove: onDismiss ? () => onDismiss(item) : undefined,
+              openTitle,
+            },
+          );
+        }}
         onContextMenu={(e) =>
           openContextMenu(
             e,
             onDismiss
-              ? { kind: "continue", label: meta.name, remove: () => onDismiss(item) }
-              : { kind: "meta", meta },
+              ? { kind: "continue", label: meta.name, remove: () => onDismiss(item), openTitle }
+              : { kind: "continue", label: meta.name, openTitle },
           )
         }
         className="flex w-full min-w-0 flex-col gap-2.5 text-start"
       >
-      <div className="harbor-poster relative aspect-[16/9] overflow-hidden rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] will-change-transform [transform:translate3d(0,0,0)] transition-transform duration-[220ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02]">
+      <div data-preview-anchor className="viora-poster relative aspect-[16/9] overflow-hidden rounded-xl bg-elevated shadow-[0_2px_8px_-2px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] will-change-transform [transform:translate3d(0,0,0)] transition-transform duration-[220ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.02]">
         <div className="absolute inset-0 bg-gradient-to-br from-raised via-elevated to-surface" />
         {src && (
           <img
@@ -313,7 +344,7 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
         <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.45)]" />
         {watched && (
           <span
-            className="absolute start-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-400/22 text-emerald-200 ring-1 ring-emerald-400/40 backdrop-blur-sm"
+            className="absolute start-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-400/22 text-emerald-200 ring-1 ring-emerald-400/40"
             title={t("Watched on Trakt")}
           >
             <Check size={12} strokeWidth={3} />
@@ -421,7 +452,7 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
           aria-label={t("Remove from Continue Watching")}
           className="group/x absolute end-0.5 top-0.5 z-10 flex h-11 w-11 items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100 focus-visible:opacity-100"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-canvas/85 text-ink-muted ring-1 ring-white/12 backdrop-blur-sm transition-colors group-hover/x:bg-canvas group-hover/x:text-ink">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-canvas/85 text-ink-muted ring-1 ring-white/12 transition-colors group-hover/x:bg-canvas group-hover/x:text-ink">
             <X size={20} strokeWidth={2.4} />
           </span>
         </FocusButton>
@@ -432,7 +463,15 @@ export const ContinueCard = memo(function ContinueCard({ item, watched = false, 
 
 function downscaleTmdb(url?: string): string | undefined {
   if (!url) return url;
-  return url.replace(/\/t\/p\/(original|w1280|w780|w500)\//, "/t/p/w300/");
+  // This card does not go through `Poster`, so the sizing rule that lives there
+  // has to be repeated. It knew about TMDB and not about Metahub, which is
+  // where a continue card's artwork usually comes from: measured on the device,
+  // six of them were decoding 1920x1080 backgrounds for a 645x363 tile.
+  return url
+    .replace(/\/t\/p\/(original|w1280|w780|w500)\//, "/t/p/w300/")
+    .replace("/background/medium/", "/background/small/")
+    .replace("/logo/medium/", "/logo/small/")
+    .replace("/poster/medium/", "/poster/small/");
 }
 
 function formatRemaining(t: (key: string, vars?: Record<string, string | number>) => string, ms: number) {

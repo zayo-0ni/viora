@@ -33,6 +33,29 @@ class VideoStage(
    */
   private val createView: (Activity) -> SurfaceView = { SurfaceView(it) },
 ) {
+  private companion object {
+    /**
+     * Which stage currently owns the transparent WebView, if any.
+     *
+     * There are two stages — one per engine — and neither knows the other
+     * exists. Both reach for the same two pieces of global state: the WebView's
+     * background, which has to be transparent for a surface underneath to be
+     * seen at all, and the keep-awake flag.
+     *
+     * Switching engines tears the old one down *after* the new one is showing,
+     * because the page asks for the new picture before it lets go of the old
+     * engine. Without this, the teardown's `hide()` painted the WebView black
+     * again — over a surface that was by then drawing the film. The controls
+     * still worked, the audio still played, and the screen was black, which is
+     * exactly the shape of the bug that looks like a broken second player.
+     *
+     * Ownership is claimed on show and released on hide only by the claimant,
+     * so a late teardown can no longer undo a live stage.
+     */
+    @Volatile
+    var chromeOwner: VideoStage? = null
+  }
+
   private var container: FrameLayout? = null
   private var surfaceView: SurfaceView? = null
 
@@ -83,13 +106,20 @@ class VideoStage(
     container?.visibility = View.VISIBLE
     applyLayout()
     // The page is drawn on top of the video from here on, so it must stop
-    // painting its own background over it.
+    // painting its own background over it. Taking ownership here is what stops
+    // the other engine's teardown from painting it back.
+    chromeOwner = this
     webView()?.setBackgroundColor(Color.TRANSPARENT)
     activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
   }
 
   fun hide() {
     container?.visibility = View.GONE
+    // Only the stage that made the page transparent may make it opaque again.
+    // On an engine switch the other stage is already showing by the time this
+    // runs, and restoring the background here would black out its picture.
+    if (chromeOwner !== this) return
+    chromeOwner = null
     webView()?.setBackgroundColor(Color.BLACK)
     activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
   }

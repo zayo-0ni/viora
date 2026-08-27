@@ -35,7 +35,7 @@ function pad(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-function mapCdnItem(item: SimklCdnItem, type: "tv" | "movie", isAnime: boolean): CalendarItem {
+function mapCdnItem(item: SimklCdnItem, type: "tv" | "movie"): CalendarItem {
   const tmdbId = item.ids?.tmdb ? String(item.ids.tmdb) : null;
   const id =
     item.ids?.imdb ??
@@ -60,20 +60,19 @@ function mapCdnItem(item: SimklCdnItem, type: "tv" | "movie", isAnime: boolean):
     poster,
     background: null,
     releaseDate: (item.date ?? "").slice(0, 10),
-    isAnime,
     overview: "",
     voteAverage: item.ratings?.simkl?.rating ?? 0,
   };
 }
 
-export async function fetchSimklCdnRolling(catalog: "tv" | "anime" | "movie"): Promise<CalendarItem[]> {
+export async function fetchSimklCdnRolling(catalog: "tv" | "movie"): Promise<CalendarItem[]> {
   const filename = catalog === "movie" ? "movie_release.json" : `${catalog}.json`;
   try {
     const res = await fetch(cdnUrl(filename), { headers: { "User-Agent": UA } });
     if (!res.ok) return [];
     const data = (await res.json()) as SimklCdnItem[];
     const type = catalog === "movie" ? "movie" : "tv";
-    return data.map((item) => mapCdnItem(item, type, catalog === "anime"));
+    return data.map((item) => mapCdnItem(item, type));
   } catch {
     return [];
   }
@@ -82,7 +81,7 @@ export async function fetchSimklCdnRolling(catalog: "tv" | "anime" | "movie"): P
 export async function fetchSimklCdnArchive(
   year: number,
   month: number,
-  catalog: "tv" | "anime" | "movie",
+  catalog: "tv" | "movie",
 ): Promise<CalendarItem[]> {
   const filename = catalog === "movie" ? "movie_release.json" : `${catalog}.json`;
   const simklMonth = month + 1;
@@ -93,7 +92,7 @@ export async function fetchSimklCdnArchive(
     if (!res.ok) return [];
     const data = (await res.json()) as SimklCdnItem[];
     const type = catalog === "movie" ? "movie" : "tv";
-    return data.map((item) => mapCdnItem(item, type, catalog === "anime"));
+    return data.map((item) => mapCdnItem(item, type));
   } catch {
     return [];
   }
@@ -107,10 +106,9 @@ export function fetchSimklCdnCalendar(year: number, month: number): Promise<Cale
   if (!p) {
     p = Promise.all([
       fetchSimklCdnArchive(year, month, "tv"),
-      fetchSimklCdnArchive(year, month, "anime"),
       fetchSimklCdnArchive(year, month, "movie"),
-    ]).then(([tv, anime, movies]) => {
-      const combined = [...tv, ...anime, ...movies];
+    ]).then(([tv, movies]) => {
+      const combined = [...tv, ...movies];
       combined.sort((a, b) => a.releaseDate.localeCompare(b.releaseDate));
       return combined;
     });
