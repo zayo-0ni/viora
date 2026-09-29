@@ -31,6 +31,8 @@ https://raw.githubusercontent.com/zayo-0ni/viora/main/registry/providers-viora.j
 4. A valid list replaces the active one in a single step. The previous valid list is kept, and if the saved list is ever found damaged, Viora falls back to it or to the built-in one.
 5. A network error, an invalid signature or a damaged file changes nothing: the current list stays active, and the reason is shown.
 
+A newly published list can take up to about five minutes to reach every device, because GitHub caches the file for that long.
+
 The provider list contains data only — addresses, defaults and descriptions. It cannot add program code to the app: logic that a provider needs but the installed app does not have is reported as **Needs an app update** and stays off until a new release brings it.
 
 **File format**
