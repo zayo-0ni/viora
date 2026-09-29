@@ -9,7 +9,7 @@
 <h3 align="center">Movies and series, beautifully presented —<br>played from sources you control.</h3>
 
 <p align="center">
-  <a href="https://github.com/zayo-0ni/viora/releases/latest"><img alt="Latest version" src="https://img.shields.io/github/v/release/zayo-0ni/viora?style=flat-square&label=version&color=C9A44C&labelColor=161616"></a>
+  <!-- viora:version-badge -->
   <img alt="Android 7.0 or newer" src="https://img.shields.io/badge/Android-7.0%2B-C9A44C?style=flat-square&logo=android&logoColor=white&labelColor=161616">
   <a href="LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-C9A44C?style=flat-square&labelColor=161616"></a>
   <a href="docs/UPDATES.md"><img alt="Provider list version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzayo-0ni%2Fviora%2Fmain%2Fregistry%2Fregistry-info.json&query=%24.version&prefix=v&label=provider%20list&style=flat-square&color=C9A44C&labelColor=161616"></a>
@@ -32,7 +32,7 @@
 <br>
 
 <p align="center">
-  <img src="assets/demo/viora-flow.webp" alt="From Home to a title, its sources and the player" width="300">
+  <img src="assets/demo/viora-flow.webp" alt="From Home to a title, its sources and the player" width="100%">
 </p>
 
 <br>
@@ -56,29 +56,35 @@ Your catalogs as artwork-first rows, with **Continue Watching** and **Next Up** 
 <p align="center">
   <img src="assets/screenshots/home.webp" alt="Home" width="30%">
   &nbsp;
-  <img src="assets/screenshots/home-continue.webp" alt="Continue Watching" width="30%">
+  <img src="assets/screenshots/home-rows.webp" alt="Home rows" width="30%">
 </p>
 
 ### Discover
 
-A place to find something new: daily rows, picks shaped by what you watch, a discovery queue, themed **Voyages**, award winners, studios and collections, with filter rails to narrow everything down.
+A place to find something new. Featured picks learn from what you mark as *More like this* or *Not for me*; **Surprise me** picks a random title; a discovery queue, themed **Voyages**, genres and languages, award winners, critics' picks, collections and top studios fill the rest.
 
 <p align="center">
   <img src="assets/screenshots/discover.webp" alt="Discover" width="30%">
   &nbsp;
-  <img src="assets/screenshots/discover-voyages.webp" alt="Voyages" width="30%">
+  <img src="assets/screenshots/discover-voyages.webp" alt="More of Discover" width="30%">
 </p>
 
 ### Search
 
-A dedicated search button sits beside the navigation dock. One query searches TMDB, IMDb and Cinemeta together.
+A dedicated search button sits beside the navigation dock. One query searches TMDB, IMDb and Cinemeta together, and before you type, Search opens on new releases to browse by type and genre.
+
+<p align="center">
+  <img src="assets/screenshots/search.webp" alt="Search" width="30%">
+</p>
 
 ### Rich details
 
-Every title gets a full page: artwork, synopsis, cast and crew, ratings, seasons and episodes, and pages for the people and studios behind it.
+Every title gets a full page: artwork, synopsis, ratings, cast and crew, trailers, seasons and episodes, and pages for the people and studios behind it.
 
 <p align="center">
   <img src="assets/screenshots/details.webp" alt="Title details" width="30%">
+  &nbsp;
+  <img src="assets/screenshots/details-cast.webp" alt="Cast and trailers" width="30%">
   &nbsp;
   <img src="assets/screenshots/episodes.webp" alt="Seasons and episodes" width="30%">
 </p>
@@ -138,12 +144,12 @@ A full-screen player with audio and subtitle track selection and a Sources panel
 
 ### Liquid glass interface
 
-A floating liquid-glass dock for **Home**, **Discover** and **Library**, a separate search button, and accent themes including Gold, Rose Gold, Arctic Blue and Graphite. The interface is available in more than 20 languages, including right-to-left Arabic and Hebrew.
+A floating glass dock for **Home**, **Discover** and **Library** with a separate search button. It adapts its size as you scroll — or stays expanded or compact — with an optional soft glow. Color themes such as Crimson, Ocean, Violet, Emerald, Amber and Rose, an AMOLED black mode and alternative app icons complete the look. The interface is available in more than 20 languages, including right-to-left Arabic and Hebrew.
 
 <p align="center">
   <img src="assets/screenshots/settings.webp" alt="Settings" width="30%">
   &nbsp;
-  <img src="assets/screenshots/appearance.webp" alt="Appearance" width="30%">
+  <img src="assets/screenshots/appearance.webp" alt="Navigation bar settings" width="30%">
 </p>
 
 <br>

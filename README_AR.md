@@ -9,7 +9,7 @@
 <h3 align="center" dir="rtl">أفلامٌ ومسلسلات بعرضٍ يليق بها،<br>تُشغَّل من مصادر تتحكّم بها أنت.</h3>
 
 <p align="center">
-  <a href="https://github.com/zayo-0ni/viora/releases/latest"><img alt="أحدث إصدار" src="https://img.shields.io/github/v/release/zayo-0ni/viora?style=flat-square&label=version&color=C9A44C&labelColor=161616"></a>
+  <!-- viora:version-badge -->
   <img alt="أندرويد 7.0 أو أحدث" src="https://img.shields.io/badge/Android-7.0%2B-C9A44C?style=flat-square&logo=android&logoColor=white&labelColor=161616">
   <a href="LICENSE"><img alt="الترخيص: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-C9A44C?style=flat-square&labelColor=161616"></a>
   <a href="docs/UPDATES_AR.md"><img alt="إصدار قائمة المزوّدين" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzayo-0ni%2Fviora%2Fmain%2Fregistry%2Fregistry-info.json&query=%24.version&prefix=v&label=provider%20list&style=flat-square&color=C9A44C&labelColor=161616"></a>
@@ -32,7 +32,7 @@
 <br>
 
 <p align="center">
-  <img src="assets/demo/viora-flow.webp" alt="من الرئيسية إلى صفحة العمل ثم مصادره ثم المشغّل" width="300">
+  <img src="assets/demo/viora-flow-ar.webp" alt="من الرئيسية إلى صفحة العمل ثم مصادره ثم المشغّل" width="100%">
 </p>
 
 <br>
@@ -60,33 +60,39 @@ Viora تطبيق أندرويد لاكتشاف الأفلام والمسلسلا
 كتالوجاتك في صفوف تتصدّرها الصور، مع **متابعة المشاهدة** و**التالي** اللذين يستأنفان من حيث توقّفت، حتى الحلقة التالية من المسلسل الذي تتابعه.
 
 <p align="center">
-  <img src="assets/screenshots/home.webp" alt="الرئيسية" width="30%">
+  <img src="assets/screenshots/home-ar.webp" alt="الرئيسية" width="30%">
   &nbsp;
-  <img src="assets/screenshots/home-continue.webp" alt="متابعة المشاهدة" width="30%">
+  <img src="assets/screenshots/home-rows.webp" alt="صفوف الرئيسية" width="30%">
 </p>
 
 ### استكشف
 
-مكان تجد فيه ما هو جديد عليك: صفوف يومية، واقتراحات تتشكّل ممّا تشاهده، وقائمة اكتشاف، و**رحلات** موضوعية، وأعمال فائزة بالجوائز، واستوديوهات ومجموعات، مع أشرطة تصفية تضيّق بها النتائج.
+مكان تجد فيه ما هو جديد عليك. تتعلّم الاقتراحات المميّزة ممّا تختاره بـ*المزيد مثل هذا* أو *ليس لي*، ويختار لك زرّ **فاجئني** عملًا عشوائيًّا، وتكمل الصورةَ قائمةُ اكتشاف و**رحلات** موضوعية وتصفّح حسب التصنيف واللغة وأعمال فائزة بالجوائز واختيارات النقّاد والمجموعات وأبرز الاستوديوهات.
 
 <p align="center">
-  <img src="assets/screenshots/discover.webp" alt="استكشف" width="30%">
+  <img src="assets/screenshots/discover-ar.webp" alt="استكشف" width="30%">
   &nbsp;
-  <img src="assets/screenshots/discover-voyages.webp" alt="الرحلات" width="30%">
+  <img src="assets/screenshots/discover-voyages-ar.webp" alt="المزيد من استكشف" width="30%">
 </p>
 
 ### البحث
 
-زرّ بحث مستقل بجانب شريط التنقّل، وبحث واحد يشمل TMDB وIMDb وCinemeta معًا.
+زرّ بحث مستقل بجانب شريط التنقّل، وبحث واحد يشمل TMDB وIMDb وCinemeta معًا. وقبل أن تكتب، تفتح صفحة البحث على أحدث الإصدارات لتتصفّحها حسب النوع والتصنيف.
+
+<p align="center">
+  <img src="assets/screenshots/search-ar.webp" alt="البحث" width="30%">
+</p>
 
 ### صفحات تفاصيل غنية
 
-لكل عمل صفحة كاملة: الصور والملخّص وطاقم التمثيل والعمل والتقييمات والمواسم والحلقات، وصفحات للأشخاص والاستوديوهات الذين يقفون خلفه.
+لكل عمل صفحة كاملة: الصور والملخّص والتقييمات وطاقم التمثيل والعمل والإعلانات التشويقية والمواسم والحلقات، وصفحات للأشخاص والاستوديوهات الذين يقفون خلفه.
 
 <p align="center">
-  <img src="assets/screenshots/details.webp" alt="صفحة العمل" width="30%">
+  <img src="assets/screenshots/details-ar.webp" alt="صفحة العمل" width="30%">
   &nbsp;
-  <img src="assets/screenshots/episodes.webp" alt="المواسم والحلقات" width="30%">
+  <img src="assets/screenshots/details-cast-ar.webp" alt="طاقم العمل والإعلانات" width="30%">
+  &nbsp;
+  <img src="assets/screenshots/episodes-ar.webp" alt="المواسم والحلقات" width="30%">
 </p>
 
 <a id="vip-viora"></a>
@@ -101,7 +107,7 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 - **تثبيت المصدر**: ما إن يبدأ مصدر بالتشغيل أو البثّ إلى التلفاز، لا يبدّله Viora بغيره من دون علمك.
 
 <p align="center">
-  <img src="assets/screenshots/sources.webp" alt="بطاقات مصادر VIP Viora" width="30%">
+  <img src="assets/screenshots/sources-ar.webp" alt="بطاقات مصادر VIP Viora" width="30%">
   &nbsp;
   <img src="assets/screenshots/sources-auto.webp" alt="الاختيار التلقائي للمصدر" width="30%">
 </p>
@@ -111,9 +117,9 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 صورة واضحة لما يعمل الآن. لكل خادم ومستخرِج حالته: يعمل، أو غير قابل للوصول من شبكتك، أو محجوب بحماية المزوّد، أو يحتاج تحديثًا للتطبيق، أو متوقف، ومعها لغات الصوت والترجمة التي رُصدت لديه. ولكل مزوّد مفتاح **تشغيل/إيقاف** خاص به، ونقرة واحدة تعيد فحصها جميعًا.
 
 <p align="center">
-  <img src="assets/screenshots/provider-health.webp" alt="صحة المزوّدين" width="30%">
+  <img src="assets/screenshots/provider-health-ar.webp" alt="صحة المزوّدين" width="30%">
   &nbsp;
-  <img src="assets/screenshots/provider-switches.webp" alt="مفاتيح المزوّدين" width="30%">
+  <img src="assets/screenshots/provider-switches-ar.webp" alt="مفاتيح المزوّدين" width="30%">
 </p>
 
 ### قائمة مزوّدين موقّعة
@@ -125,9 +131,9 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 احفظ الأعمال في مكتبتك، ونزّل الأفلام والحلقات لتشاهدها دون اتصال. وتحتفظ الأعمال المنزَّلة بصفحة تفاصيلها، فتتصفّح ما حفظته بلا إنترنت.
 
 <p align="center">
-  <img src="assets/screenshots/library.webp" alt="المكتبة" width="30%">
+  <img src="assets/screenshots/library-ar.webp" alt="المكتبة" width="30%">
   &nbsp;
-  <img src="assets/screenshots/downloads.webp" alt="التنزيلات" width="30%">
+  <img src="assets/screenshots/downloads-ar.webp" alt="التنزيلات" width="30%">
 </p>
 
 ### البثّ إلى التلفاز
@@ -144,12 +150,12 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 
 ### واجهة زجاجية سائلة
 
-شريط تنقّل عائم بتأثير الزجاج السائل يضمّ **الرئيسية** و**استكشف** و**المكتبة**، وزرّ بحث مستقل، وسمات ألوان منها Gold وRose Gold وArctic Blue وGraphite. والواجهة متاحة بأكثر من 20 لغة، منها العربية والعبرية باتجاه من اليمين إلى اليسار.
+شريط تنقّل زجاجي عائم يضمّ **الرئيسية** و**استكشف** و**المكتبة** مع زرّ بحث مستقل، يتكيّف حجمه مع التمرير أو يبقى موسّعًا أو مضغوطًا، مع توهّج ناعم اختياري. وتكمل المظهرَ سماتُ ألوان مثل القرمزي والمحيطي والبنفسجي والزمرّدي والكهرماني والوردي، ووضع أسود AMOLED، وأيقونات بديلة للتطبيق. والواجهة متاحة بأكثر من 20 لغة، منها العربية والعبرية باتجاه من اليمين إلى اليسار.
 
 <p align="center">
-  <img src="assets/screenshots/settings.webp" alt="الإعدادات" width="30%">
+  <img src="assets/screenshots/settings-ar.webp" alt="الإعدادات" width="30%">
   &nbsp;
-  <img src="assets/screenshots/appearance.webp" alt="المظهر" width="30%">
+  <img src="assets/screenshots/appearance-ar.webp" alt="إعدادات شريط التنقّل" width="30%">
 </p>
 
 <br>
