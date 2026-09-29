@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 108" width="460" height="108" role="img" aria-label="حمّل لأندرويد">
+  <title>حمّل لأندرويد</title>
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0cd7e"/>
+      <stop offset="0.5" stop-color="#d7a449"/>
+      <stop offset="1" stop-color="#b8832f"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="pill"><rect x="4" y="4" width="452" height="100" rx="50"/></clipPath>
+  </defs>
+  <rect x="4" y="4" width="452" height="100" rx="50" fill="url(#gold)"/>
+  <rect x="4" y="4" width="452" height="50" fill="url(#shine)" clip-path="url(#pill)"/>
+  <rect x="4.75" y="4.75" width="450.5" height="98.5" rx="49.25" fill="none" stroke="#6b4a14" stroke-opacity="0.35" stroke-width="1.5"/>
+  <g transform="translate(380 32)" fill="none" stroke="#161310" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 2 V30"/>
+    <path d="M6 19 L18 31 L30 19"/>
+    <path d="M2 42 H34"/>
+  </g>
+  <text x="356" y="56" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Noto Sans', 'Noto Sans Arabic', Tahoma, Arial, sans-serif" font-size="30" font-weight="700" fill="#161310">حمّل لأندرويد</text>
+  <text x="356" y="84" text-anchor="end" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Noto Sans', 'Noto Sans Arabic', Tahoma, Arial, sans-serif" font-size="19" font-weight="600" fill="#161310" fill-opacity="0.72">ملف APK · إصدارات GitHub</text>
+</svg>

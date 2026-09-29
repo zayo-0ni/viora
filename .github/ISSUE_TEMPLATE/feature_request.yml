@@ -1,0 +1,43 @@
+name: Feature request · اقتراح ميزة
+description: An idea to make Viora better.
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [Coming to Viora](https://github.com/zayo-0ni/viora#coming-to-viora) first — your idea may already be planned.
+        يمكنك الكتابة بالعربية أو الإنجليزية.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do?
+      description: Describe what you are trying to do, or what feels missing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: How could Viora help? A sketch or screenshot is welcome.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Home
+        - Discover
+        - Search
+        - Title details
+        - Sources (VIP Viora)
+        - Player
+        - Subtitles
+        - Downloads & Library
+        - Casting
+        - Appearance
+        - Other

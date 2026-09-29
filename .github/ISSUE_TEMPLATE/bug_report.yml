@@ -1,0 +1,89 @@
+name: Bug report · بلاغ عن مشكلة
+description: Something in Viora does not work as it should.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this.
+        **Never include passwords, account details, access tokens, personal information, or full stream links** (they can contain private tokens).
+        يمكنك الكتابة بالعربية أو الإنجليزية. لا تضع كلمات مرور أو بيانات حسابات أو رموز وصول أو معلومات شخصية أو روابط بثّ كاملة.
+
+  - type: input
+    id: version
+    attributes:
+      label: Viora version
+      description: "Shown at the bottom of Settings. Example: 1.0.0 (135)"
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device and Android version
+      description: "Example: Samsung Galaxy S24, Android 15"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where does it happen?
+      options:
+        - Home
+        - Discover
+        - Search
+        - Title details
+        - Sources (VIP Viora)
+        - Provider Health
+        - Player
+        - Subtitles
+        - Downloads
+        - Library
+        - Casting
+        - Settings
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Tap …
+        3. …
+    validations:
+      required: true
+
+  - type: input
+    id: title
+    attributes:
+      label: Movie or episode (if relevant)
+      description: The title, and season/episode for a series. Helps when the problem is with a specific title's sources.
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or screen recording
+      description: Optional. Please check they show no personal information.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I am using the latest release from this repository's Releases page.
+          required: true
+        - label: This report contains no passwords, tokens, account details or other private information.
+          required: true
