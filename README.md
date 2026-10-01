@@ -181,7 +181,7 @@ The first public release is being prepared. When it is published, this section l
 ## Updates
 
 - **Provider updates** arrive on their own: Viora downloads the signed provider list, verifies it and activates it without a new app version.
-- **App releases** are published on [Releases](https://github.com/zayo-0ni/viora/releases), each described in `updates/latest.json` (version, date, APK link and checksum). An in-app update check that reads this file is on the way.
+- **App releases** are published on [Releases](https://github.com/zayo-0ni/viora/releases), each described in `updates/latest.json` (version, date, APK link and checksum). Viora reads this file to offer new releases in **Settings → App updates**, and installs one only after verifying its checksum and signing key.
 
 Details: [docs/UPDATES.md](docs/UPDATES.md)
 
