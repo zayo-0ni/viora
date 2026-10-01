@@ -196,7 +196,7 @@ Details: [docs/UPDATES.md](docs/UPDATES.md)
 
 ## Privacy
 
-Viora has no Viora account, no analytics and no advertising SDKs. Your library, watch progress, downloads and settings stay on your device. Viora contacts the metadata services and providers needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
+A Viora account is optional: signing in with Google keeps your settings in sync across devices and unlocks VIP Viora for members. Viora has no analytics and no advertising SDKs. Your library, watch progress and downloads stay on your device. Viora contacts the metadata services and providers needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
 
 <br>
 
@@ -205,9 +205,7 @@ Viora has no Viora account, no analytics and no advertising SDKs. Your library, 
 These are planned and **not part of the current release**:
 
 - **Music** — a unified Music section based on BitChord, in the same app
-- **Google sign-in** and a Viora account
-- **Sync** for playlists, the library and settings across devices
-- **In-app app updates** from the published update manifest
+- **Sync** for playlists and the library across devices (settings already sync with a Viora account)
 - Further **Discover** improvements
 
 <br>
