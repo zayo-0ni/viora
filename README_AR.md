@@ -9,7 +9,7 @@
 <h3 align="center" dir="rtl">أفلامٌ ومسلسلات بعرضٍ يليق بها،<br>تُشغَّل من مصادر تتحكّم بها أنت.</h3>
 
 <p align="center">
-  <!-- viora:version-badge -->
+  <a href="https://github.com/zayo-0ni/viora/releases/latest"><img alt="Latest version" src="https://img.shields.io/github/v/release/zayo-0ni/viora?style=flat-square&label=version&color=C9A44C&labelColor=161616"></a>
   <img alt="أندرويد 7.0 أو أحدث" src="https://img.shields.io/badge/Android-7.0%2B-C9A44C?style=flat-square&logo=android&logoColor=white&labelColor=161616">
   <a href="LICENSE"><img alt="الترخيص: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-C9A44C?style=flat-square&labelColor=161616"></a>
   <a href="docs/UPDATES_AR.md"><img alt="إصدار قائمة المزوّدين" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzayo-0ni%2Fviora%2Fmain%2Fregistry%2Fregistry-info.json&query=%24.version&prefix=v&label=provider%20list&style=flat-square&color=C9A44C&labelColor=161616"></a>
@@ -165,7 +165,14 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 ## حمّل Viora
 
 <!-- viora:release-ar:start -->
-يجري إعداد أول إصدار عام. وعند نشره يعرض هذا القسم رقم الإصدار وتاريخه وبصمة SHA-256 ورابطًا مباشرًا لملف APK، وتضمّ صفحة [الإصدارات](https://github.com/zayo-0ni/viora/releases) ملف APK مع الشيفرة المصدرية المقابلة له.
+| | |
+| --- | --- |
+| **أحدث إصدار** | **1.0.0** (البناء 135) · صدر في 2026-10-01 |
+| **التنزيل** | [**Viora-1.0.0.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk) · 119 MB · يعمل على كل الأجهزة المدعومة |
+| **تنزيلات أصغر** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk) (لمعظم الهواتف) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk) (للهواتف الأقدم بنظام 32 بت) |
+| **SHA-256** | `ee7f7bcb4798c6d181e15c6f8f8a0c8cab095401c0f6fe68754b5776889c2dbf` |
+| **الشيفرة المصدرية** | [Viora-1.0.0-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip) |
+| **ملاحظات الإصدار** | [Viora 1.0.0](https://github.com/zayo-0ni/viora/releases/tag/v1.0.0) |
 <!-- viora:release-ar:end -->
 
 | | |

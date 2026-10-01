@@ -9,7 +9,7 @@
 <h3 align="center">Movies and series, beautifully presented —<br>played from sources you control.</h3>
 
 <p align="center">
-  <!-- viora:version-badge -->
+  <a href="https://github.com/zayo-0ni/viora/releases/latest"><img alt="Latest version" src="https://img.shields.io/github/v/release/zayo-0ni/viora?style=flat-square&label=version&color=C9A44C&labelColor=161616"></a>
   <img alt="Android 7.0 or newer" src="https://img.shields.io/badge/Android-7.0%2B-C9A44C?style=flat-square&logo=android&logoColor=white&labelColor=161616">
   <a href="LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-C9A44C?style=flat-square&labelColor=161616"></a>
   <a href="docs/UPDATES.md"><img alt="Provider list version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fzayo-0ni%2Fviora%2Fmain%2Fregistry%2Fregistry-info.json&query=%24.version&prefix=v&label=provider%20list&style=flat-square&color=C9A44C&labelColor=161616"></a>
@@ -157,7 +157,14 @@ A floating glass dock for **Home**, **Discover** and **Library** with a separate
 ## Download Viora
 
 <!-- viora:release:start -->
-The first public release is being prepared. When it is published, this section lists its version, release date, SHA-256 checksum and a direct APK link, and the [Releases](https://github.com/zayo-0ni/viora/releases) page carries the APK together with its corresponding source code.
+| | |
+| --- | --- |
+| **Latest version** | **1.0.0** (build 135) · released 2026-10-01 |
+| **Download** | [**Viora-1.0.0.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk) · 119 MB · works on every supported device |
+| **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk) (older 32-bit phones) |
+| **SHA-256** | `ee7f7bcb4798c6d181e15c6f8f8a0c8cab095401c0f6fe68754b5776889c2dbf` |
+| **Source code** | [Viora-1.0.0-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip) |
+| **Release notes** | [Viora 1.0.0](https://github.com/zayo-0ni/viora/releases/tag/v1.0.0) |
 <!-- viora:release:end -->
 
 | | |

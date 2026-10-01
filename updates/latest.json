@@ -1,0 +1,60 @@
+{
+ "schema": 1,
+ "versionName": "1.0.0",
+ "versionCode": 135,
+ "releaseDate": "2026-10-01",
+ "minAndroid": "7.0",
+ "minSdk": 24,
+ "apk": {
+  "name": "Viora-1.0.0.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk",
+  "size": 118959807,
+  "sha256": "ee7f7bcb4798c6d181e15c6f8f8a0c8cab095401c0f6fe68754b5776889c2dbf"
+ },
+ "abiApks": [
+  {
+   "abi": "arm64-v8a",
+   "name": "Viora-1.0.0-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk",
+   "size": 48443394,
+   "sha256": "2329e6b0972e9f5799d3ce98bda43fab5b9811502c375c3f01de7ccfae234d0a"
+  },
+  {
+   "abi": "armeabi-v7a",
+   "name": "Viora-1.0.0-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk",
+   "size": 46705900,
+   "sha256": "c5a957e37571b5790a4c5b39fc58fe2880a777a878a494192576b11b594f31ab"
+  }
+ ],
+ "source": {
+  "name": "Viora-1.0.0-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip",
+  "sha256": "fbf2e669c99bf1c6334de79448748ceabbcdc1f73a7398a6a5845ae0cb6e0ab1"
+ },
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.0.0",
+ "changes": {
+  "en": [
+   "The first public release of Viora: movies and series on a TMDB-based catalog, played through VIP Viora, which checks every source before listing it.",
+   "An optional Viora account with Google sign-in: your settings follow you between devices, and VIP Viora opens for members.",
+   "Viora updates itself: Settings → App updates finds new releases, downloads them and verifies each one before Android installs it.",
+   "Home, Discover, Search and full pages for movies, series, people and studios.",
+   "Source cards with resolution, HDR, codecs, audio and subtitle languages; Auto picks the best source for your device and network, and the source you start is never switched behind your back.",
+   "Provider Health with an on/off switch for every provider, and a signed provider list that updates without a new app version.",
+   "Downloads and Library, with title pages that work offline.",
+   "Casting to Chromecast and DLNA TVs, with subtitles.",
+   "A liquid glass interface with color themes, alternative icons and more than 20 languages, including right-to-left Arabic and Hebrew."
+  ],
+  "ar": [
+   "أول إصدار عام من Viora: أفلام ومسلسلات بكتالوج مبني على TMDB، تُشغَّل عبر VIP Viora الذي يفحص كل مصدر قبل أن يعرضه.",
+   "حساب Viora اختياري بتسجيل الدخول عبر Google: تنتقل إعداداتك معك بين أجهزتك، ويُفتح VIP Viora للمشتركين.",
+   "Viora يحدّث نفسه: الإعدادات ← تحديثات التطبيق تجد الإصدارات الجديدة وتنزّلها وتتحقق من كل واحد منها قبل أن يثبّته أندرويد.",
+   "الرئيسية واستكشف والبحث، وصفحات كاملة للأفلام والمسلسلات والأشخاص والاستوديوهات.",
+   "بطاقات مصادر فيها الدقة وHDR والترميز ولغات الصوت والترجمة؛ يختار «تلقائي» أفضل مصدر لجهازك وشبكتك، ولا يُبدَّل المصدر الذي بدأته من خلف ظهرك.",
+   "صحة المزوّدين مع مفتاح تشغيل وإيقاف لكل مزوّد، وقائمة مزوّدين موقّعة تتحدث دون إصدار جديد من التطبيق.",
+   "التنزيلات والمكتبة، مع صفحات عناوين تعمل دون اتصال.",
+   "البث إلى Chromecast وتلفزيونات DLNA مع الترجمة.",
+   "واجهة زجاجية بألوان متعددة وأيقونات بديلة وأكثر من 20 لغة، منها العربية والعبرية من اليمين إلى اليسار."
+  ]
+ }
+}

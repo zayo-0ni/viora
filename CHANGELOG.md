@@ -4,6 +4,7 @@ Each Viora release is listed here with a link to its full notes on [Releases](ht
 
 ## Releases
 
-*No public release has been published yet.*
-
 <!-- viora:changelog:next -->
+
+### [Viora 1.0.0](https://github.com/zayo-0ni/viora/releases/tag/v1.0.0) — 2026-10-01
+
