@@ -167,10 +167,10 @@ VIP Viora محرّك المصادر الخاص بـViora. لكل فيلم أو �
 <!-- viora:release-ar:start -->
 | | |
 | --- | --- |
-| **أحدث إصدار** | **1.0.0** (البناء 135) · صدر في 2026-10-01 |
+| **أحدث إصدار** | **1.0.0** (البناء 136) · صدر في 2026-10-01 |
 | **التنزيل** | [**Viora-1.0.0.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk) · 119 MB · يعمل على كل الأجهزة المدعومة |
 | **تنزيلات أصغر** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk) (لمعظم الهواتف) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk) (للهواتف الأقدم بنظام 32 بت) |
-| **SHA-256** | `ee7f7bcb4798c6d181e15c6f8f8a0c8cab095401c0f6fe68754b5776889c2dbf` |
+| **SHA-256** | `6c9ee11e011722ef7e0bccff9e78e8c454623171a2c89fbb7939a9707b060718` |
 | **الشيفرة المصدرية** | [Viora-1.0.0-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip) |
 | **ملاحظات الإصدار** | [Viora 1.0.0](https://github.com/zayo-0ni/viora/releases/tag/v1.0.0) |
 <!-- viora:release-ar:end -->

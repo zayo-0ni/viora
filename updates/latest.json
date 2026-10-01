@@ -1,58 +1,58 @@
 {
  "schema": 1,
  "versionName": "1.0.0",
- "versionCode": 135,
+ "versionCode": 136,
  "releaseDate": "2026-10-01",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
   "name": "Viora-1.0.0.apk",
   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk",
-  "size": 118959807,
-  "sha256": "ee7f7bcb4798c6d181e15c6f8f8a0c8cab095401c0f6fe68754b5776889c2dbf"
+  "size": 118984175,
+  "sha256": "6c9ee11e011722ef7e0bccff9e78e8c454623171a2c89fbb7939a9707b060718"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
    "name": "Viora-1.0.0-arm64-v8a.apk",
    "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk",
-   "size": 48443394,
-   "sha256": "2329e6b0972e9f5799d3ce98bda43fab5b9811502c375c3f01de7ccfae234d0a"
+   "size": 48467762,
+   "sha256": "6797f9f033ba58587ddf1ed9cab1d592f94e10ad273b96072fdacb5b4bdc76f3"
   },
   {
    "abi": "armeabi-v7a",
    "name": "Viora-1.0.0-armeabi-v7a.apk",
    "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk",
-   "size": 46705900,
-   "sha256": "c5a957e37571b5790a4c5b39fc58fe2880a777a878a494192576b11b594f31ab"
+   "size": 46730268,
+   "sha256": "b9ec455a1d85dc537214a28d79b538b76ffcb4c214736f3ec0107fb81ecb5ec2"
   }
  ],
  "source": {
   "name": "Viora-1.0.0-source.zip",
   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip",
-  "sha256": "fbf2e669c99bf1c6334de79448748ceabbcdc1f73a7398a6a5845ae0cb6e0ab1"
+  "sha256": "6f2635b82df8203225e8e1e9970d1e2e8985d1b205e619211dcbc621f0e180e5"
  },
  "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.0.0",
  "changes": {
   "en": [
-   "The first public release of Viora: movies and series on a TMDB-based catalog, played through VIP Viora, which checks every source before listing it.",
+   "The first public release of Viora: movies and series from IMDb and Cinemeta, and from TMDB with your own free TMDB key, played through VIP Viora, which checks every source before listing it.",
    "An optional Viora account with Google sign-in: your settings follow you between devices, and VIP Viora opens for members.",
    "Viora updates itself: Settings → App updates finds new releases, downloads them and verifies each one before Android installs it.",
    "Home, Discover, Search and full pages for movies, series, people and studios.",
    "Source cards with resolution, HDR, codecs, audio and subtitle languages; Auto picks the best source for your device and network, and the source you start is never switched behind your back.",
    "Provider Health with an on/off switch for every provider, and a signed provider list that updates without a new app version.",
-   "Downloads and Library, with title pages that work offline.",
+   "Downloads and Library, with title pages that work offline. Download from the player's top bar, or by holding a source; torrent results download too, with P2P streaming on.",
    "Casting to Chromecast and DLNA TVs, with subtitles.",
    "A liquid glass interface with color themes, alternative icons and more than 20 languages, including right-to-left Arabic and Hebrew."
   ],
   "ar": [
-   "أول إصدار عام من Viora: أفلام ومسلسلات بكتالوج مبني على TMDB، تُشغَّل عبر VIP Viora الذي يفحص كل مصدر قبل أن يعرضه.",
+   "أول إصدار عام من Viora: أفلام ومسلسلات من IMDb وCinemeta، ومن TMDB بمفتاحك المجاني الخاص، تُشغَّل عبر VIP Viora الذي يفحص كل مصدر قبل أن يعرضه.",
    "حساب Viora اختياري بتسجيل الدخول عبر Google: تنتقل إعداداتك معك بين أجهزتك، ويُفتح VIP Viora للمشتركين.",
    "Viora يحدّث نفسه: الإعدادات ← تحديثات التطبيق تجد الإصدارات الجديدة وتنزّلها وتتحقق من كل واحد منها قبل أن يثبّته أندرويد.",
    "الرئيسية واستكشف والبحث، وصفحات كاملة للأفلام والمسلسلات والأشخاص والاستوديوهات.",
    "بطاقات مصادر فيها الدقة وHDR والترميز ولغات الصوت والترجمة؛ يختار «تلقائي» أفضل مصدر لجهازك وشبكتك، ولا يُبدَّل المصدر الذي بدأته من خلف ظهرك.",
    "صحة المزوّدين مع مفتاح تشغيل وإيقاف لكل مزوّد، وقائمة مزوّدين موقّعة تتحدث دون إصدار جديد من التطبيق.",
-   "التنزيلات والمكتبة، مع صفحات عناوين تعمل دون اتصال.",
+   "التنزيلات والمكتبة، مع صفحات عناوين تعمل دون اتصال. نزّل من الشريط العلوي في المشغّل أو بالضغط المطوّل على المصدر، وتُنزَّل نتائج التورنت أيضًا عند تفعيل بثّ P2P.",
    "البث إلى Chromecast وتلفزيونات DLNA مع الترجمة.",
    "واجهة زجاجية بألوان متعددة وأيقونات بديلة وأكثر من 20 لغة، منها العربية والعبرية من اليمين إلى اليسار."
   ]
