@@ -1,60 +1,66 @@
 {
  "schema": 1,
- "versionName": "1.0.0",
- "versionCode": 136,
- "releaseDate": "2026-10-01",
+ "versionName": "1.1.0",
+ "versionCode": 137,
+ "releaseDate": "2026-10-05",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.0.0.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0.apk",
-  "size": 118984175,
-  "sha256": "6c9ee11e011722ef7e0bccff9e78e8c454623171a2c89fbb7939a9707b060718"
+  "name": "Viora-1.1.0.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0.apk",
+  "size": 168278577,
+  "sha256": "8cf3c451f8b36610703794e18e7dfb2e2af4498038ec68f63c9bac7ea4d91a62"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.0.0-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-arm64-v8a.apk",
-   "size": 48467762,
-   "sha256": "6797f9f033ba58587ddf1ed9cab1d592f94e10ad273b96072fdacb5b4bdc76f3"
+   "name": "Viora-1.1.0-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-arm64-v8a.apk",
+   "size": 63066174,
+   "sha256": "72bb9f7cef9083a79cc9bad50ca4584315b6cf8372555f590e8374e4811186de"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.0.0-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-armeabi-v7a.apk",
-   "size": 46730268,
-   "sha256": "b9ec455a1d85dc537214a28d79b538b76ffcb4c214736f3ec0107fb81ecb5ec2"
+   "name": "Viora-1.1.0-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-armeabi-v7a.apk",
+   "size": 60353528,
+   "sha256": "329326076538f94a40453a525e5b86958e75012205f0a758a8e6c373c4a53fb5"
   }
  ],
  "source": {
-  "name": "Viora-1.0.0-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.0.0/Viora-1.0.0-source.zip",
-  "sha256": "6f2635b82df8203225e8e1e9970d1e2e8985d1b205e619211dcbc621f0e180e5"
+  "name": "Viora-1.1.0-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-source.zip",
+  "sha256": "fc1a2fd68779753b52ab1672f8ea20701bafe8b40b7efc40adb08c95855f6f0f"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.0.0",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.0",
  "changes": {
   "en": [
-   "The first public release of Viora: movies and series from IMDb and Cinemeta, and from TMDB with your own free TMDB key, played through VIP Viora, which checks every source before listing it.",
-   "An optional Viora account with Google sign-in: your settings follow you between devices, and VIP Viora opens for members.",
-   "Viora updates itself: Settings → App updates finds new releases, downloads them and verifies each one before Android installs it.",
-   "Home, Discover, Search and full pages for movies, series, people and studios.",
-   "Source cards with resolution, HDR, codecs, audio and subtitle languages; Auto picks the best source for your device and network, and the source you start is never switched behind your back.",
-   "Provider Health with an on/off switch for every provider, and a signed provider list that updates without a new app version.",
-   "Downloads and Library, with title pages that work offline. Download from the player's top bar, or by holding a source; torrent results download too, with P2P streaming on.",
-   "Casting to Chromecast and DLNA TVs, with subtitles.",
-   "A liquid glass interface with color themes, alternative icons and more than 20 languages, including right-to-left Arabic and Hebrew."
+   "Viora Music: a full music section beside Movies, switched from the top of the app. Home, Discovery, search, albums, artists and playlists from YouTube Music, Apple Music, Deezer and ListenBrainz, with your YouTube Music account if you sign in.",
+   "Downloads you can keep: VIP Viora streams can now be downloaded for offline viewing, and downloaded songs are complete files with their tags and cover, ready to share or save.",
+   "A source's original audio plays first, and the audio picker names every track clearly.",
+   "Music Home keeps its sections in place: a refresh only updates what they hold, and your own YouTube Music shelves show straight away.",
+   "Music Library is what is downloaded on your device: it opens without the network, and songs played from it stay on the device.",
+   "Save a downloaded playlist or album straight into Music/Viora on your phone, or share songs to another app.",
+   "Play and Discovery are grouped by source (YouTube Music, Apple, Deezer, ListenBrainz), each loaded when you reach it; playlists open about three times faster.",
+   "VIP Viora downloads: choose quality, audio and subtitles; pause, resume and play them offline.",
+   "Audio: the original language is picked when the source has it, never a dub just because it comes first.",
+   "Your settings and Movies watch history follow your Viora account between devices.",
+   "A new About Viora page in Settings: the creator, the official accounts and how to subscribe.",
+   "The welcome animation and the moving posters of streaming services are back; motion and blur settings now apply to the whole app."
   ],
   "ar": [
-   "أول إصدار عام من Viora: أفلام ومسلسلات من IMDb وCinemeta، ومن TMDB بمفتاحك المجاني الخاص، تُشغَّل عبر VIP Viora الذي يفحص كل مصدر قبل أن يعرضه.",
-   "حساب Viora اختياري بتسجيل الدخول عبر Google: تنتقل إعداداتك معك بين أجهزتك، ويُفتح VIP Viora للمشتركين.",
-   "Viora يحدّث نفسه: الإعدادات ← تحديثات التطبيق تجد الإصدارات الجديدة وتنزّلها وتتحقق من كل واحد منها قبل أن يثبّته أندرويد.",
-   "الرئيسية واستكشف والبحث، وصفحات كاملة للأفلام والمسلسلات والأشخاص والاستوديوهات.",
-   "بطاقات مصادر فيها الدقة وHDR والترميز ولغات الصوت والترجمة؛ يختار «تلقائي» أفضل مصدر لجهازك وشبكتك، ولا يُبدَّل المصدر الذي بدأته من خلف ظهرك.",
-   "صحة المزوّدين مع مفتاح تشغيل وإيقاف لكل مزوّد، وقائمة مزوّدين موقّعة تتحدث دون إصدار جديد من التطبيق.",
-   "التنزيلات والمكتبة، مع صفحات عناوين تعمل دون اتصال. نزّل من الشريط العلوي في المشغّل أو بالضغط المطوّل على المصدر، وتُنزَّل نتائج التورنت أيضًا عند تفعيل بثّ P2P.",
-   "البث إلى Chromecast وتلفزيونات DLNA مع الترجمة.",
-   "واجهة زجاجية بألوان متعددة وأيقونات بديلة وأكثر من 20 لغة، منها العربية والعبرية من اليمين إلى اليسار."
+   "Viora Music: قسم موسيقى كامل بجانب الأفلام، تنتقل إليه من أعلى التطبيق. الرئيسية والاكتشاف والبحث والألبومات والفنانون وقوائم التشغيل من YouTube Music وApple Music وDeezer وListenBrainz، مع حسابك في YouTube Music إن سجّلت الدخول.",
+   "تنزيلات تبقى معك: صار بالإمكان تنزيل بث VIP Viora للمشاهدة دون اتصال، والأغاني المنزّلة ملفات كاملة بمعلوماتها وغلافها، جاهزة للمشاركة أو الحفظ.",
+   "يبدأ الصوت الأصلي للمصدر أولًا، ويسمّي منتقي الصوت كل مسار بوضوح.",
+   "رئيسية الموسيقى تحافظ على أقسامها في مكانها: التحديث يغيّر محتواها فقط، وتظهر أقسامك الخاصة في YouTube Music فورًا.",
+   "مكتبة الموسيقى هي ما نزّلته على جهازك: تفتح دون إنترنت، والأغاني التي تشغّلها منها تبقى على الجهاز.",
+   "احفظ قائمة تشغيل أو ألبومًا منزّلًا مباشرة في Music/Viora على هاتفك، أو شارك الأغاني مع تطبيق آخر.",
+   "صفحتا التشغيل والاكتشاف مرتّبتان حسب المصدر (YouTube Music وApple وDeezer وListenBrainz)، ويُحمَّل كل مصدر عندما تصل إليه؛ وتفتح قوائم التشغيل أسرع بنحو ثلاث مرات.",
+   "تنزيلات VIP Viora: اختر الجودة والصوت والترجمة، وأوقف التنزيل واستأنفه، وشغّله دون اتصال.",
+   "الصوت: تُختار اللغة الأصلية عندما يحتويها المصدر، ولا تُختار الدبلجة لمجرد أنها الأولى.",
+   "إعداداتك وسجل مشاهدة الأفلام ينتقلان مع حساب Viora بين أجهزتك.",
+   "صفحة جديدة «حول Viora» في الإعدادات: المطوّر والحسابات الرسمية وطريقة الاشتراك.",
+   "عادت حركة الافتتاحية والبوسترات المتحركة لخدمات البث، وصارت إعدادات الحركة والتمويه تشمل التطبيق كله."
   ]
  }
 }
