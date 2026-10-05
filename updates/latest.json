@@ -1,66 +1,52 @@
 {
  "schema": 1,
- "versionName": "1.1.0",
- "versionCode": 137,
+ "versionName": "1.1.1",
+ "versionCode": 138,
  "releaseDate": "2026-10-05",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.1.0.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0.apk",
-  "size": 168278577,
-  "sha256": "8cf3c451f8b36610703794e18e7dfb2e2af4498038ec68f63c9bac7ea4d91a62"
+  "name": "Viora-1.1.1.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1.apk",
+  "size": 168313053,
+  "sha256": "b4779717be459567db7f13f92fc2becc5cbc81008dbeb4fd9f142a3e25be067f"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.1.0-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-arm64-v8a.apk",
-   "size": 63066174,
-   "sha256": "72bb9f7cef9083a79cc9bad50ca4584315b6cf8372555f590e8374e4811186de"
+   "name": "Viora-1.1.1-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-arm64-v8a.apk",
+   "size": 63100650,
+   "sha256": "826569c14aeec481a7abebe492fe8637abfac2d6a8379fb678e849f96c957c9a"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.1.0-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-armeabi-v7a.apk",
-   "size": 60353528,
-   "sha256": "329326076538f94a40453a525e5b86958e75012205f0a758a8e6c373c4a53fb5"
+   "name": "Viora-1.1.1-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-armeabi-v7a.apk",
+   "size": 60388008,
+   "sha256": "44598571aff5da2573291030137e21b6014f02f8ec7df0a09827e85866053a84"
   }
  ],
  "source": {
-  "name": "Viora-1.1.0-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.0/Viora-1.1.0-source.zip",
-  "sha256": "fc1a2fd68779753b52ab1672f8ea20701bafe8b40b7efc40adb08c95855f6f0f"
+  "name": "Viora-1.1.1-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-source.zip",
+  "sha256": "abdbb961e1e0375f83695b179ced81f006225af760aaf5edcdc5dea077fde082"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.0",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.1",
  "changes": {
   "en": [
-   "Viora Music: a full music section beside Movies, switched from the top of the app. Home, Discovery, search, albums, artists and playlists from YouTube Music, Apple Music, Deezer and ListenBrainz, with your YouTube Music account if you sign in.",
-   "Downloads you can keep: VIP Viora streams can now be downloaded for offline viewing, and downloaded songs are complete files with their tags and cover, ready to share or save.",
-   "A source's original audio plays first, and the audio picker names every track clearly.",
-   "Music Home keeps its sections in place: a refresh only updates what they hold, and your own YouTube Music shelves show straight away.",
-   "Music Library is what is downloaded on your device: it opens without the network, and songs played from it stay on the device.",
-   "Save a downloaded playlist or album straight into Music/Viora on your phone, or share songs to another app.",
-   "Play and Discovery are grouped by source (YouTube Music, Apple, Deezer, ListenBrainz), each loaded when you reach it; playlists open about three times faster.",
-   "VIP Viora downloads: choose quality, audio and subtitles; pause, resume and play them offline.",
-   "Audio: the original language is picked when the source has it, never a dub just because it comes first.",
-   "Your settings and Movies watch history follow your Viora account between devices.",
-   "A new About Viora page in Settings: the creator, the official accounts and how to subscribe.",
-   "The welcome animation and the moving posters of streaming services are back; motion and blur settings now apply to the whole app."
+   "Discover works without a TMDB key: its rows and pages now come from IMDb data, so the Movies Discover tab is full even before you add your own key.",
+   "Without a TMDB key, Discover shows Featured, Trending, Top rated, rows by genre, year and country, Voyages, Surprise me, the watch queue and award winners, all from IMDb data.",
+   "Sections that only TMDB can answer (languages, studios, networks, collections and people) appear once you add your key, so no tile opens an empty page.",
+   "With a TMDB key, Discover is unchanged.",
+   "Added direct Share/Save actions to downloaded songs in Music Library grid view."
   ],
   "ar": [
-   "Viora Music: قسم موسيقى كامل بجانب الأفلام، تنتقل إليه من أعلى التطبيق. الرئيسية والاكتشاف والبحث والألبومات والفنانون وقوائم التشغيل من YouTube Music وApple Music وDeezer وListenBrainz، مع حسابك في YouTube Music إن سجّلت الدخول.",
-   "تنزيلات تبقى معك: صار بالإمكان تنزيل بث VIP Viora للمشاهدة دون اتصال، والأغاني المنزّلة ملفات كاملة بمعلوماتها وغلافها، جاهزة للمشاركة أو الحفظ.",
-   "يبدأ الصوت الأصلي للمصدر أولًا، ويسمّي منتقي الصوت كل مسار بوضوح.",
-   "رئيسية الموسيقى تحافظ على أقسامها في مكانها: التحديث يغيّر محتواها فقط، وتظهر أقسامك الخاصة في YouTube Music فورًا.",
-   "مكتبة الموسيقى هي ما نزّلته على جهازك: تفتح دون إنترنت، والأغاني التي تشغّلها منها تبقى على الجهاز.",
-   "احفظ قائمة تشغيل أو ألبومًا منزّلًا مباشرة في Music/Viora على هاتفك، أو شارك الأغاني مع تطبيق آخر.",
-   "صفحتا التشغيل والاكتشاف مرتّبتان حسب المصدر (YouTube Music وApple وDeezer وListenBrainz)، ويُحمَّل كل مصدر عندما تصل إليه؛ وتفتح قوائم التشغيل أسرع بنحو ثلاث مرات.",
-   "تنزيلات VIP Viora: اختر الجودة والصوت والترجمة، وأوقف التنزيل واستأنفه، وشغّله دون اتصال.",
-   "الصوت: تُختار اللغة الأصلية عندما يحتويها المصدر، ولا تُختار الدبلجة لمجرد أنها الأولى.",
-   "إعداداتك وسجل مشاهدة الأفلام ينتقلان مع حساب Viora بين أجهزتك.",
-   "صفحة جديدة «حول Viora» في الإعدادات: المطوّر والحسابات الرسمية وطريقة الاشتراك.",
-   "عادت حركة الافتتاحية والبوسترات المتحركة لخدمات البث، وصارت إعدادات الحركة والتمويه تشمل التطبيق كله."
+   "صفحة «استكشف» تعمل دون مفتاح TMDB: صفوفها وصفحاتها تأتي الآن من بيانات IMDb، فتظهر ممتلئة حتى قبل أن تضيف مفتاحك.",
+   "دون مفتاح TMDB تعرض «استكشف» المميّز والشائع والأعلى تقييمًا وصفوفًا حسب النوع والسنة والبلد والرحلات و«فاجئني» وقائمة المشاهدة والأعمال الحائزة على جوائز، كلها من بيانات IMDb.",
+   "الأقسام التي لا يجيب عنها إلا TMDB (اللغات والاستوديوهات والشبكات والمجموعات والأشخاص) تظهر عندما تضيف مفتاحك، فلا يفتح أي مربع صفحة فارغة.",
+   "مع مفتاح TMDB تبقى «استكشف» كما هي.",
+   "أُضيف زر مشاركة وحفظ مباشر للأغاني المنزّلة في مكتبة الموسيقى بعرض الشبكة."
   ]
  }
 }
