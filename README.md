@@ -231,7 +231,7 @@ Details: [docs/UPDATES.md](docs/UPDATES.md)
 
 ## Privacy
 
-A Viora account is optional: signing in with Google keeps your settings in sync across devices and unlocks VIP Viora for members. Viora has no analytics and no advertising SDKs. Your library, watch progress and downloads stay on your device, and signing in to YouTube Music in Viora Music is optional and stays on your device too. Viora contacts the metadata services and providers needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
+A Viora account is optional. Signed in with Google, your account keeps your settings, the service keys and add-on configuration you set up (stored encrypted), your Movies watch history and playback progress, and your VIP Viora membership. Downloads, your Movies library, Viora Music's library and listening history, your YouTube Music sign-in (separate from the Viora account), caches and this device's own settings stay only on your device. Viora has no analytics, no advertising SDKs and no crash reporting. It contacts the metadata, music and provider services needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
 
 <br>
 
@@ -239,7 +239,7 @@ A Viora account is optional: signing in with Google keeps your settings in sync 
 
 These are planned and **not part of the current release**:
 
-- **Sync** for playlists and the library across devices (settings already sync with a Viora account)
+- **Sync** for playlists and the library across devices (settings and Movies watch history already sync with a Viora account)
 - Further **Discover** improvements
 
 <br>
