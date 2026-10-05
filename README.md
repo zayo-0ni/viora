@@ -159,12 +159,12 @@ A floating glass dock for **Home**, **Discover** and **Library** with a separate
 <!-- viora:release:start -->
 | | |
 | --- | --- |
-| **Latest version** | **1.1.1** (build 138) · released 2026-10-05 |
-| **Download** | [**Viora-1.1.1.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1.apk) · 168 MB · works on every supported device |
-| **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-armeabi-v7a.apk) (older 32-bit phones) |
-| **SHA-256** | `b4779717be459567db7f13f92fc2becc5cbc81008dbeb4fd9f142a3e25be067f` |
-| **Source code** | [Viora-1.1.1-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-source.zip) |
-| **Release notes** | [Viora 1.1.1](https://github.com/zayo-0ni/viora/releases/tag/v1.1.1) |
+| **Latest version** | **1.1.2** (build 139) · released 2026-10-06 |
+| **Download** | [**Viora-1.1.2.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2.apk) · 168 MB · works on every supported device |
+| **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-armeabi-v7a.apk) (older 32-bit phones) |
+| **SHA-256** | `7e7191bed143378044f9e637e395fb0b00450a8822462af53ec628d0257e6094` |
+| **Source code** | [Viora-1.1.2-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-source.zip) |
+| **Release notes** | [Viora 1.1.2](https://github.com/zayo-0ni/viora/releases/tag/v1.1.2) |
 <!-- viora:release:end -->
 
 | | |

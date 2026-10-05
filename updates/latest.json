@@ -1,52 +1,56 @@
 {
  "schema": 1,
- "versionName": "1.1.1",
- "versionCode": 138,
- "releaseDate": "2026-10-05",
+ "versionName": "1.1.2",
+ "versionCode": 139,
+ "releaseDate": "2026-10-06",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.1.1.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1.apk",
-  "size": 168313053,
-  "sha256": "b4779717be459567db7f13f92fc2becc5cbc81008dbeb4fd9f142a3e25be067f"
+  "name": "Viora-1.1.2.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2.apk",
+  "size": 168333757,
+  "sha256": "7e7191bed143378044f9e637e395fb0b00450a8822462af53ec628d0257e6094"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.1.1-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-arm64-v8a.apk",
-   "size": 63100650,
-   "sha256": "826569c14aeec481a7abebe492fe8637abfac2d6a8379fb678e849f96c957c9a"
+   "name": "Viora-1.1.2-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-arm64-v8a.apk",
+   "size": 63121358,
+   "sha256": "eebd95a44281463c2397489164e231d2860950bb916fdfaf731cb4346282307d"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.1.1-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-armeabi-v7a.apk",
-   "size": 60388008,
-   "sha256": "44598571aff5da2573291030137e21b6014f02f8ec7df0a09827e85866053a84"
+   "name": "Viora-1.1.2-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-armeabi-v7a.apk",
+   "size": 60408712,
+   "sha256": "f7ae8c1858c0b03a5ba69532f37589adb1c72435bb6aaf29ee9cfba26ab29f25"
   }
  ],
  "source": {
-  "name": "Viora-1.1.1-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.1/Viora-1.1.1-source.zip",
-  "sha256": "abdbb961e1e0375f83695b179ced81f006225af760aaf5edcdc5dea077fde082"
+  "name": "Viora-1.1.2-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-source.zip",
+  "sha256": "c11844080f8016ba49712245c70c5828fe2567b3ae61da32c105f76247e955d8"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.1",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.2",
  "changes": {
   "en": [
-   "Discover works without a TMDB key: its rows and pages now come from IMDb data, so the Movies Discover tab is full even before you add your own key.",
-   "Without a TMDB key, Discover shows Featured, Trending, Top rated, rows by genre, year and country, Voyages, Surprise me, the watch queue and award winners, all from IMDb data.",
-   "Sections that only TMDB can answer (languages, studios, networks, collections and people) appear once you add your key, so no tile opens an empty page.",
-   "With a TMDB key, Discover is unchanged.",
-   "Added direct Share/Save actions to downloaded songs in Music Library grid view."
+   "Share, save or delete many downloaded songs at once in Music Library: a whole tab, or just the songs, artists, albums and playlists you select.",
+   "Every Library tab (Songs, Artists, Albums, Playlists) has a ⋮ next to its count: Select, Select all, Share downloaded files, Save to Files and Delete downloads, with the real number of files shown.",
+   "Long-press a song, artist, album or playlist to start selecting, then use the ⋮ in the selection bar to share, save or delete only what you selected.",
+   "Sharing sends the downloaded audio files themselves, with their title, artist, album and cover, never a link. Nothing is downloaded again, and a missing file never stops the rest.",
+   "Save to Files puts each album in Music/Viora/Albums, each playlist in its own folder under Music/Viora, and single songs in Music/Viora/Songs.",
+   "Deleting several downloads asks you to tap again to confirm.",
+   "Fix: the Playlists tab name in Arabic no longer breaks over two lines."
   ],
   "ar": [
-   "صفحة «استكشف» تعمل دون مفتاح TMDB: صفوفها وصفحاتها تأتي الآن من بيانات IMDb، فتظهر ممتلئة حتى قبل أن تضيف مفتاحك.",
-   "دون مفتاح TMDB تعرض «استكشف» المميّز والشائع والأعلى تقييمًا وصفوفًا حسب النوع والسنة والبلد والرحلات و«فاجئني» وقائمة المشاهدة والأعمال الحائزة على جوائز، كلها من بيانات IMDb.",
-   "الأقسام التي لا يجيب عنها إلا TMDB (اللغات والاستوديوهات والشبكات والمجموعات والأشخاص) تظهر عندما تضيف مفتاحك، فلا يفتح أي مربع صفحة فارغة.",
-   "مع مفتاح TMDB تبقى «استكشف» كما هي.",
-   "أُضيف زر مشاركة وحفظ مباشر للأغاني المنزّلة في مكتبة الموسيقى بعرض الشبكة."
+   "شارك الأغاني المنزّلة أو احفظها أو احذفها دفعة واحدة في مكتبة الموسيقى: قسم كامل، أو فقط الأغاني والفنانين والألبومات وقوائم التشغيل التي تحددها.",
+   "في كل قسم من المكتبة (الأغاني والفنانون والألبومات وقوائم التشغيل) زر ⋮ بجانب العدد: تحديد، تحديد الكل، مشاركة الملفات المنزّلة، حفظ في الملفات، وحذف التنزيلات، مع عدد الملفات الحقيقي.",
+   "اضغط مطوّلًا على أغنية أو فنان أو ألبوم أو قائمة تشغيل لبدء التحديد، ثم استخدم ⋮ في شريط التحديد لمشاركة ما حددته فقط أو حفظه أو حذفه.",
+   "المشاركة ترسل ملفات الصوت المنزّلة نفسها بعنوانها وفنانها وألبومها وغلافها، وليس رابطًا. لا يُعاد تنزيل أي شيء، والملف المفقود لا يوقف البقية.",
+   "الحفظ في الملفات يضع كل ألبوم في Music/Viora/Albums، وكل قائمة تشغيل في مجلد خاص بها داخل Music/Viora، والأغاني المفردة في Music/Viora/Songs.",
+   "حذف عدة تنزيلات يطلب منك الضغط مرة أخرى للتأكيد.",
+   "إصلاح: اسم قسم «قوائم التشغيل» لم يعد ينقسم على سطرين."
   ]
  }
 }
