@@ -159,10 +159,10 @@ A floating glass dock for **Home**, **Discover** and **Library** with a separate
 <!-- viora:release:start -->
 | | |
 | --- | --- |
-| **Latest version** | **1.1.2** (build 139) · released 2026-10-06 |
+| **Latest version** | **1.1.2** (build 140) · released 2026-10-06 |
 | **Download** | [**Viora-1.1.2.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2.apk) · 168 MB · works on every supported device |
 | **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-armeabi-v7a.apk) (older 32-bit phones) |
-| **SHA-256** | `7e7191bed143378044f9e637e395fb0b00450a8822462af53ec628d0257e6094` |
+| **SHA-256** | `01274d91f8d1ca3090eb69c20820c8d851d758100eae8155aabc57943e013051` |
 | **Source code** | [Viora-1.1.2-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-source.zip) |
 | **Release notes** | [Viora 1.1.2](https://github.com/zayo-0ni/viora/releases/tag/v1.1.2) |
 <!-- viora:release:end -->
