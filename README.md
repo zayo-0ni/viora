@@ -6,7 +6,7 @@
   <img src="assets/branding/viora-hero.svg" alt="Viora" width="100%">
 </p>
 
-<h3 align="center">Movies and series, beautifully presented —<br>played from sources you control.</h3>
+<h3 align="center">Movies, series and music, beautifully presented —<br>all in one app.</h3>
 
 <p align="center">
   <a href="https://github.com/zayo-0ni/viora/releases/latest"><img alt="Latest version" src="https://img.shields.io/github/v/release/zayo-0ni/viora?style=flat-square&label=version&color=C9A44C&labelColor=161616"></a>
@@ -23,6 +23,7 @@
   <a href="#meet-viora">Overview</a> &nbsp;·&nbsp;
   <a href="#features">Features</a> &nbsp;·&nbsp;
   <a href="#vip-viora">VIP Viora</a> &nbsp;·&nbsp;
+  <a href="#viora-music">Viora Music</a> &nbsp;·&nbsp;
   <a href="#download-viora">Download</a> &nbsp;·&nbsp;
   <a href="#updates">Updates</a> &nbsp;·&nbsp;
   <a href="#privacy">Privacy</a> &nbsp;·&nbsp;
@@ -39,11 +40,11 @@
 
 ## Meet Viora
 
-Viora is an Android app for discovering and watching movies and TV series.
+Viora is an Android app for discovering and watching movies and TV series, and for listening to music: two sections in one app, switched from the top of the screen.
 
 It pairs a rich catalog built on TMDB, IMDb and Cinemeta data with **VIP Viora**, a playback engine that checks every source before showing it — and a source list that tells you exactly what you are about to watch: resolution, HDR, codecs, audio and subtitle languages, and size or bitrate when the source reports them.
 
-Viora is being built as one entertainment app. Music is planned as its next part — see [Coming to Viora](#coming-to-viora).
+**Viora Music** is the other half of the app: Home, Explore, search, albums, artists and playlists from YouTube Music, Apple Music, Deezer and ListenBrainz, a full player with lyrics, and a Library of the songs you download — see [Viora Music](#viora-music).
 
 <br>
 
@@ -100,6 +101,8 @@ VIP Viora is Viora's own source engine. For each movie or episode it asks the pr
 - **Manual choice** — every checked source stays in the list, so you can pick one yourself at any time.
 - **Source lock** — once a source starts playing or casting, Viora never switches to another one behind your back.
 
+VIP Viora is a membership for signed-in Viora accounts. Everything else in Viora, Viora Music included, is free.
+
 <p align="center">
   <img src="assets/screenshots/sources.webp" alt="VIP Viora source cards" width="30%">
   &nbsp;
@@ -154,6 +157,38 @@ A floating glass dock for **Home**, **Discover** and **Library** with a separate
 
 <br>
 
+<a id="viora-music"></a>
+
+## Viora Music
+
+A full music section beside Movies, opened from the switch at the top of the app. It is free: no VIP needed.
+
+### Home & Explore
+
+Home opens on a large hero and rows to play from. Sign in to YouTube Music and your own shelves show straight away, and stay where they are when the page refreshes. **Explore** searches YouTube Music, Apple Music, Deezer and ListenBrainz, together or one at a time, with new albums and singles, top artists by country, and moods and genres.
+
+<p align="center">
+  <img src="assets/screenshots/music-home.webp" alt="Viora Music Home" width="30%">
+  &nbsp;
+  <img src="assets/screenshots/music-explore.webp" alt="Explore" width="30%">
+  &nbsp;
+  <img src="assets/screenshots/music-moods.webp" alt="Moods and moments" width="30%">
+</p>
+
+### Player
+
+A full-screen player in the colours of the artwork, with lyrics, the queue, shuffle, repeat, autoplay and a sleep timer.
+
+<p align="center">
+  <img src="assets/screenshots/music-player.webp" alt="Music player" width="30%">
+</p>
+
+### Library & downloads
+
+The Library is what is on your phone: the songs, artists, albums and playlists you downloaded, opened without the network. Downloads are complete audio files with their title, artist, album and cover. Share them to another app, save them into Music/Viora on your phone, or delete them: one song, a selection, or a whole tab at once. Your YouTube Music library (playlists, liked songs, history and Replay) has a page of its own.
+
+<br>
+
 ## Download Viora
 
 <!-- viora:release:start -->
@@ -196,7 +231,7 @@ Details: [docs/UPDATES.md](docs/UPDATES.md)
 
 ## Privacy
 
-A Viora account is optional: signing in with Google keeps your settings in sync across devices and unlocks VIP Viora for members. Viora has no analytics and no advertising SDKs. Your library, watch progress and downloads stay on your device. Viora contacts the metadata services and providers needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
+A Viora account is optional: signing in with Google keeps your settings in sync across devices and unlocks VIP Viora for members. Viora has no analytics and no advertising SDKs. Your library, watch progress and downloads stay on your device, and signing in to YouTube Music in Viora Music is optional and stays on your device too. Viora contacts the metadata services and providers needed to show and play what you choose. The full statement: [PRIVACY.md](PRIVACY.md)
 
 <br>
 
@@ -204,7 +239,6 @@ A Viora account is optional: signing in with Google keeps your settings in sync 
 
 These are planned and **not part of the current release**:
 
-- **Music** — a unified Music section based on BitChord, in the same app
 - **Sync** for playlists and the library across devices (settings already sync with a Viora account)
 - Further **Discover** improvements
 
@@ -232,7 +266,7 @@ Viora is free software under the [GNU General Public License v3.0](LICENSE). It 
 
 ## Content & responsibility
 
-Viora does not host, store or distribute any media. It shows metadata from TMDB, IMDb and Cinemeta and connects to third-party services that you enable and control. What is available depends entirely on those services. Please respect the laws of your country and the rights of content owners.
+Viora does not host, store or distribute any media. It shows metadata from TMDB, IMDb and Cinemeta and from music services such as YouTube Music, Apple Music, Deezer and ListenBrainz, and connects to third-party services that you enable and control. What is available depends entirely on those services. Please respect the laws of your country and the rights of content owners.
 
 <sub>This product uses the TMDB API but is not endorsed or certified by TMDB.</sub>
 
