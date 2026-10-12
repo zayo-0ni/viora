@@ -1,58 +1,54 @@
 {
  "schema": 1,
- "versionName": "1.1.2",
- "versionCode": 140,
- "releaseDate": "2026-10-06",
+ "versionName": "1.1.3",
+ "versionCode": 141,
+ "releaseDate": "2026-10-13",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.1.2.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2.apk",
-  "size": 168332785,
-  "sha256": "01274d91f8d1ca3090eb69c20820c8d851d758100eae8155aabc57943e013051"
+  "name": "Viora-1.1.3.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.3/Viora-1.1.3.apk",
+  "size": 167812851,
+  "sha256": "a1f1f3023763547d5619b00a076bd700c9a1a3dd1d430e1e64d92b5f06807551"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.1.2-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-arm64-v8a.apk",
-   "size": 63120386,
-   "sha256": "7fadcfa379ab4abf76a6b76b7b459722aab9e067ed39b870e8cde94ef8e24189"
+   "name": "Viora-1.1.3-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.3/Viora-1.1.3-arm64-v8a.apk",
+   "size": 62600448,
+   "sha256": "0a7fb86264157cc2ce858ee882a4f7dfa796a2b51aefa4baceeb102a9d655188"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.1.2-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-armeabi-v7a.apk",
-   "size": 60407740,
-   "sha256": "cec681255c8915bf6e808bc1d9c1ebb3bc802d1fc9516a84717d2c9d9518cf1b"
+   "name": "Viora-1.1.3-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.3/Viora-1.1.3-armeabi-v7a.apk",
+   "size": 59887802,
+   "sha256": "c8303ae0c27a3341c8fd5c48a7e4320136f6f97a3ba8b8d2a927a71b46d64475"
   }
  ],
  "source": {
-  "name": "Viora-1.1.2-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.2/Viora-1.1.2-source.zip",
-  "sha256": "70bb1ee4deb2ea81e694821b072b5102753fd648355fe8126d301ac615fc83ee"
+  "name": "Viora-1.1.3-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.1.3/Viora-1.1.3-source.zip",
+  "sha256": "23b560e49fd2d440ab8bd2d01deb72d339c38c560a5a61a4801860507a5adda9"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.2",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.1.3",
  "changes": {
   "en": [
-   "Share, save or delete many downloaded songs at once in Music Library: a whole tab, or just the songs, artists, albums and playlists you select.",
-   "Every Library tab (Songs, Artists, Albums, Playlists) has a ⋮ next to its count: Select, Select all, Share downloaded files, Save to Files and Delete downloads, with the real number of files shown.",
-   "Long-press a song, artist, album or playlist to start selecting, then use the ⋮ in the selection bar to share, save or delete only what you selected.",
-   "Sharing sends the downloaded audio files themselves, with their title, artist, album and cover, never a link. Nothing is downloaded again, and a missing file never stops the rest.",
-   "Save to Files puts each album in Music/Viora/Albums, each playlist in its own folder under Music/Viora, and single songs in Music/Viora/Songs.",
-   "Deleting several downloads asks you to tap again to confirm.",
-   "Fix: the Playlists tab name in Arabic no longer breaks over two lines.",
-   "If you installed Viora 1.1.2 before October 6 and it closed when Music opened, install this APK over it: your library and settings stay."
+   "Your Viora account stays signed in, and VIP Viora and sync keep working, when Viora goes to the background or the network drops.",
+   "Viora renews your account session before it runs out and reconnects on its own after a network drop. You are signed out only when the account really ended.",
+   "VIP Viora no longer shows as unverified after you come back to the app; a short connection problem keeps a recent confirmation instead of locking VIP.",
+   "Settings and watch history sync start again on their own when you come back to the app or the network returns.",
+   "VIP Viora finds more free and legal sources for films and series, beside the ones it already had: the Internet Archive's public-domain collections, Wikimedia Commons, and films Wikidata records as free.",
+   "Fix: Viora could close when a video stopped right after it started."
   ],
   "ar": [
-   "شارك الأغاني المنزّلة أو احفظها أو احذفها دفعة واحدة في مكتبة الموسيقى: قسم كامل، أو فقط الأغاني والفنانين والألبومات وقوائم التشغيل التي تحددها.",
-   "في كل قسم من المكتبة (الأغاني والفنانون والألبومات وقوائم التشغيل) زر ⋮ بجانب العدد: تحديد، تحديد الكل، مشاركة الملفات المنزّلة، حفظ في الملفات، وحذف التنزيلات، مع عدد الملفات الحقيقي.",
-   "اضغط مطوّلًا على أغنية أو فنان أو ألبوم أو قائمة تشغيل لبدء التحديد، ثم استخدم ⋮ في شريط التحديد لمشاركة ما حددته فقط أو حفظه أو حذفه.",
-   "المشاركة ترسل ملفات الصوت المنزّلة نفسها بعنوانها وفنانها وألبومها وغلافها، وليس رابطًا. لا يُعاد تنزيل أي شيء، والملف المفقود لا يوقف البقية.",
-   "الحفظ في الملفات يضع كل ألبوم في Music/Viora/Albums، وكل قائمة تشغيل في مجلد خاص بها داخل Music/Viora، والأغاني المفردة في Music/Viora/Songs.",
-   "حذف عدة تنزيلات يطلب منك الضغط مرة أخرى للتأكيد.",
-   "إصلاح: اسم قسم «قوائم التشغيل» لم يعد ينقسم على سطرين.",
-   "إذا ثبّتّ Viora 1.1.2 قبل 6 أكتوبر وكان يُغلق عند فتح الموسيقى، ثبّت ملف APK هذا فوقه، وستبقى مكتبتك وإعداداتك."
+   "يبقى حساب Viora مسجَّل الدخول، ويستمر VIP Viora والمزامنة بالعمل، عندما يعمل Viora في الخلفية أو ينقطع الاتصال.",
+   "يجدّد Viora جلسة حسابك قبل انتهائها ويعيد الاتصال وحده بعد انقطاع الشبكة. لا يُسجَّل خروجك إلا إذا انتهى الحساب فعلًا.",
+   "لم يعد VIP Viora يظهر غير مؤكَّد بعد العودة إلى التطبيق؛ مشكلة الاتصال القصيرة تُبقي التأكيد الحديث بدل قفل VIP.",
+   "مزامنة الإعدادات وسجل المشاهدة تعود وحدها عند الرجوع إلى التطبيق أو عودة الشبكة.",
+   "يجد VIP Viora مصادر مجانية وقانونية أكثر للأفلام والمسلسلات بجانب مصادره الحالية: مجموعات الملكية العامة في Internet Archive، وWikimedia Commons، والأفلام التي يسجّلها Wikidata مجانية.",
+   "إصلاح: كان Viora قد يُغلق عندما يتوقف المقطع مباشرة بعد بدئه."
   ]
  }
 }
