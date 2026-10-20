@@ -1,66 +1,66 @@
 {
  "schema": 1,
- "versionName": "1.2.0",
- "versionCode": 142,
- "releaseDate": "2026-10-17",
+ "versionName": "1.3.0",
+ "versionCode": 143,
+ "releaseDate": "2026-10-20",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.2.0.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.2.0/Viora-1.2.0.apk",
-  "size": 168239012,
-  "sha256": "0500de487e0a1acd15b97a7533c27a662b0743ac78e9188240c2ec99f0bdf673"
+  "name": "Viora-1.3.0.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.0/Viora-1.3.0.apk",
+  "size": 197027197,
+  "sha256": "b552cee544ac3be5585bac72ef21ed06b768faa00fc85e37f07dbc5f003610d0"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.2.0-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.2.0/Viora-1.2.0-arm64-v8a.apk",
-   "size": 63026613,
-   "sha256": "f632406fa929b734601f2bd9a72f723ebb0d70d4a0f2e0c6d30c98adaca42d84"
+   "name": "Viora-1.3.0-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.0/Viora-1.3.0-arm64-v8a.apk",
+   "size": 69976176,
+   "sha256": "096abe6e0c9dc80b8c06c2cd93064203b8ccf3987bb39e22aa94c7ba9deb841d"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.2.0-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.2.0/Viora-1.2.0-armeabi-v7a.apk",
-   "size": 60313967,
-   "sha256": "4b5091dbe224cb6348e5c92324b737ffab5cdb2cdbc9cbb10b34e3e412776c96"
+   "name": "Viora-1.3.0-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.0/Viora-1.3.0-armeabi-v7a.apk",
+   "size": 66389594,
+   "sha256": "4df377b0f33f6aaf53a714f6a4a8d6ec5d968151a841480ed597f127d96774cd"
   }
  ],
  "source": {
-  "name": "Viora-1.2.0-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.2.0/Viora-1.2.0-source.zip",
-  "sha256": "eca90a1d5efbb5f3f9492e234ce00521dc04e76f460d11a4bcbb7e0472f18b46"
+  "name": "Viora-1.3.0-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.0/Viora-1.3.0-source.zip",
+  "sha256": "6da344de72cb76bf4006039495f214898572f578a78807a8362bcc2da3501624"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.2.0",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.3.0",
  "changes": {
   "en": [
-   "Casting that stays with your TV: pick the TV once and control it from anywhere in Viora until you disconnect, even after Viora is closed and opened again.",
-   "A new cast bar above the bottom bar, made of the same material as the dock, that opens the full TV remote.",
-   "Netflix, Disney+, Prime Video and the other streaming services open without a TMDB key.",
-   "The cast bar shows what plays on the TV and takes the bottom bar's look (Liquid Glass, frosted or classic), changing whenever you change it. It moves aside while you scroll down and comes back when you scroll up or stop.",
-   "The full remote: play and pause, seek, back and forward 10 seconds, the TV's volume, subtitles switched on the TV, switch device, stop casting, and Next episode at any point of an episode.",
-   "The next episode follows on the same TV with every kind of receiver (Google Cast, DLNA TVs such as Samsung and LG, Roku, AirPlay), queued on the TV itself where the TV supports it.",
-   "Control the TV from the lock screen and the notification, and change the TV's volume with the phone's volume keys.",
-   "Open Viora again after it was closed and it reconnects to the same TV, with the same video, position, pause and subtitle, without reloading it.",
-   "A link that expires while the TV plays is renewed from the same source, never another one.",
-   "Torrent sources can play on the TV when P2P Streaming is on.",
-   "Better casting to DLNA TVs: seeking and pausing on TVs that need the phone for it, busy TVs and slow networks.",
-   "A video that stops on a Google Cast TV mid-way (its stream stalls, or its link expires) goes on from the same minute and the same source instead of ending the cast, and pressing Play after the TV stopped no longer ends it."
+   "Subtitles that fix their own timing: every subtitle is retimed to one known to be in sync with the video, and you can mark the one that is right for you as the reference.",
+   "Translate subtitles into your language on the device, or with AI using your own free Gemini key.",
+   "Sources are found with or without a TMDB key, and each source shows whether it works: a green check when it answers quickly, a clock when it is slow, a red mark when it fails.",
+   "A subtitle's match is measured from its timing against a subtitle known to fit the video, instead of guessed from its name, and the best fitting subtitle is chosen for you.",
+   "Subtitles that are out of sync are corrected: a constant delay, a different frame rate, or a different cut of the film. The corrected copy plays on the phone and on the TV. Settings → Playback → Subtitle sources → Correct subtitle timing.",
+   "\"Use as reference\" on the subtitle you are watching makes it the one every other subtitle is corrected to.",
+   "Subtitles inside the video are always listed, even when only preferred languages are shown.",
+   "Subtitle translation: choose the device or Gemini (with your own free key from Google AI Studio), the language, and whether to translate automatically. It also works while casting.",
+   "SubDL subtitles with your own free key, entered in Settings → Playback → Subtitle sources.",
+   "Addons that read only IMDb ids or only TMDB ids now get every title in the form they read, instead of being left out.",
+   "Plugins receive the title's TMDB id even when the title was opened by its IMDb id.",
+   "Without a TMDB key, titles are matched through Wikidata in both directions and remembered on the device."
   ],
   "ar": [
-   "بث يبقى مع تلفازك: اختر التلفاز مرة واحدة وتحكّم به من أي مكان في Viora حتى تقطع الاتصال، حتى بعد إغلاق Viora وفتحه من جديد.",
-   "شريط بث جديد فوق الشريط السفلي، من نفس مادة الدوك، يفتح جهاز التحكم الكامل بالتلفاز.",
-   "نتفلكس وديزني+ وبرايم فيديو وباقي خدمات البث تُفتح من دون مفتاح TMDB.",
-   "شريط البث يعرض ما يعمل على التلفاز ويأخذ شكل الشريط السفلي (Liquid Glass أو المصنفر أو الكلاسيكي)، ويتغير كلما غيّرته. يبتعد عن الطريق عند النزول في الصفحة ويعود عند الصعود أو التوقف.",
-   "جهاز التحكم الكامل: تشغيل وإيقاف مؤقت، التنقل في المقطع، رجوع وتقديم 10 ثوانٍ، صوت التلفاز، تبديل الترجمة على التلفاز، تبديل الجهاز، إيقاف البث، والحلقة التالية في أي وقت من الحلقة.",
-   "الحلقة التالية تكمل على نفس التلفاز مع كل أنواع الأجهزة (Google Cast وتلفزيونات DLNA مثل سامسونج وLG وRoku وAirPlay)، وتُجهَّز على التلفاز نفسه حيث يدعم ذلك.",
-   "تحكّم بالتلفاز من شاشة القفل ومن الإشعار، وغيّر صوت التلفاز بأزرار الصوت في الهاتف.",
-   "افتح Viora مجددًا بعد إغلاقه فيعود للاتصال بنفس التلفاز، بنفس المقطع والموضع والإيقاف المؤقت والترجمة، من دون إعادة تحميله.",
-   "الرابط الذي تنتهي صلاحيته أثناء التشغيل على التلفاز يُجدَّد من نفس المصدر، ولا يُستبدل بمصدر آخر أبدًا.",
-   "مصادر التورنت تعمل على التلفاز عند تفعيل البث عبر P2P.",
-   "بث أفضل إلى تلفزيونات DLNA: التنقل والإيقاف المؤقت على التلفزيونات التي تحتاج الهاتف لذلك، والتلفزيونات المشغولة والشبكات البطيئة.",
-   "المقطع الذي يتوقف على تلفاز Google Cast في منتصفه (يتعثر بثه أو تنتهي صلاحية رابطه) يكمل من نفس الدقيقة ومن نفس المصدر بدل أن ينتهي البث، والضغط على تشغيل بعد توقف التلفاز لم يعد ينهيه."
+   "ترجمات تُصحّح توقيتها بنفسها: كل ترجمة يُعاد ضبط توقيتها على ترجمة معروف أنها مضبوطة مع الفيديو، ويمكنك أن تعتمد الترجمة المناسبة لك مرجعًا.",
+   "ترجمة الترجمات إلى لغتك على الجهاز، أو بالذكاء الاصطناعي بمفتاح Gemini المجاني الخاص بك.",
+   "العثور على المصادر بمفتاح TMDB أو من دونه، وكل مصدر يبيّن حالته: علامة صح خضراء عندما يستجيب بسرعة، وساعة عندما يكون بطيئًا، وعلامة حمراء عندما لا يعمل.",
+   "نسبة تطابق الترجمة تُقاس من توقيتها مقارنةً بترجمة معروف أنها تطابق الفيديو بدل تخمينها من اسمها، وتُختار لك الترجمة الأكثر تطابقًا.",
+   "الترجمات غير المضبوطة تُصحَّح: تأخير ثابت، أو سرعة إطارات مختلفة، أو نسخة مختلفة من الفيلم. النسخة المصحّحة تعمل على الهاتف وعلى التلفاز. الإعدادات ← التشغيل ← مصادر الترجمة ← تصحيح توقيت الترجمات.",
+   "زر «اعتمدها مرجعًا» على الترجمة التي تشاهدها يجعلها المرجع الذي تُصحَّح عليه باقي الترجمات.",
+   "الترجمات المدمجة في الفيديو تظهر دائمًا، حتى عند عرض اللغات المفضلة فقط.",
+   "ترجمة الترجمات: اختر الجهاز أو Gemini (بمفتاحك المجاني من Google AI Studio)، واللغة، والترجمة التلقائية. وتعمل أيضًا أثناء البث إلى التلفاز.",
+   "ترجمات SubDL بمفتاحك المجاني، تُدخله في الإعدادات ← التشغيل ← مصادر الترجمة.",
+   "الإضافات التي تقرأ معرّفات IMDb فقط أو TMDB فقط تأخذ الآن كل عنوان بالصيغة التي تقرؤها بدل استبعادها.",
+   "الملحقات تستلم معرّف TMDB للعنوان حتى لو فُتح العنوان بمعرّف IMDb.",
+   "من دون مفتاح TMDB تُطابَق العناوين عبر Wikidata في الاتجاهين وتُحفظ على الجهاز."
   ]
  }
 }
