@@ -1,66 +1,48 @@
 {
  "schema": 1,
- "versionName": "1.3.1",
- "versionCode": 144,
+ "versionName": "1.3.2",
+ "versionCode": 145,
  "releaseDate": "2026-10-21",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.3.1.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1.apk",
-  "size": 197728555,
-  "sha256": "40f65c480a1260ba9ba95dff6392aecaa72334710e55254e52a4227489acb0bc"
+  "name": "Viora-1.3.2.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2.apk",
+  "size": 197728311,
+  "sha256": "dc6efa980e7bee3ec1689c6413c7209ea60e8678fbf148d339f70b6e20eab17d"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.3.1-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-arm64-v8a.apk",
-   "size": 70677534,
-   "sha256": "fa17f29a084470c2c65008f9b1943fbf81c15a7d531e015c4aef6c92e668e820"
+   "name": "Viora-1.3.2-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-arm64-v8a.apk",
+   "size": 70677290,
+   "sha256": "35961c2351e3c7ff28ee1ee1c0ee3bb6d92e582a95efec02e262e5467cfea3c8"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.3.1-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-armeabi-v7a.apk",
-   "size": 67090952,
-   "sha256": "a60fbce8265a7ee7040908cecbfdd5598e339f4369fb611313410e23a8f54e46"
+   "name": "Viora-1.3.2-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-armeabi-v7a.apk",
+   "size": 67090708,
+   "sha256": "73edc4f4cb902d79d530cc56ac2a97b24efbc7d9eee5b6bd2a4aafe433ee56f9"
   }
  ],
  "source": {
-  "name": "Viora-1.3.1-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-source.zip",
-  "sha256": "aecd13865881a6352ac4c01ce25309eb498a12e41c80b019b0ac5603e0f8aac1"
+  "name": "Viora-1.3.2-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-source.zip",
+  "sha256": "26b9a6f9f8bb657ed0845d350aef7464687cb329167683b6520b651a8d4bceb1"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.3.1",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.3.2",
  "changes": {
   "en": [
-   "Tonight's movie: answer two questions, how much time you have and what you are in the mood for, and choose one of three well-liked movies.",
-   "Release calendar: the movies that are not out at home yet, with the date they arrive, and a bell to be told when they are out.",
-   "Search by description: describe a movie, a series or an episode in your own words and find it, with your own free Gemini key.",
-   "Sources you can trust more: results for another film are hidden, and the marks check what a source really plays.",
-   "Tonight's movie, on the Discover page: pick the time and a mood, get three movies you have not seen, pick again or change mood.",
-   "Release calendar (the calendar at the top of Discover): upcoming movies with their cinema and home dates, movies in cinemas now with their home date when it is known, new series and season premieres. Movies already out at home are not listed.",
-   "Notify me when it is out: on a movie that is only in cinemas, and on every movie in the calendar; Viora tells you when it can be watched at home.",
-   "Soundtrack: from a movie's page, open its soundtrack album in Music.",
-   "Search by description: the sparkle button in Search sends what you wrote to Gemini with your own key (the one used for subtitle translation) and shows the titles it names.",
-   "Discover without a TMDB key now also fills the language, network and people pages.",
-   "The theme's colour now reaches section titles, buttons, choices and the selected tab of the bottom bar.",
-   "Sources: a result that names another film, another year or another episode is hidden; without a TMDB key a result must name the title."
+   "Translating a description or a subtitle on the device works again. In 1.3.1 the Translate button did not appear and on-device subtitle translation failed.",
+   "On-device translation (descriptions and subtitles) works in this release build again.",
+   "If on-device translation fails, the reason is written to the device log, to find it faster."
   ],
   "ar": [
-   "فيلم السهرة: أجب عن سؤالين، كم لديك من الوقت وما الذي تحب أن تشاهده، واختر واحدًا من ثلاثة أفلام محبوبة.",
-   "تقويم الإصدارات: الأفلام التي لم تصدر للمشاهدة المنزلية بعد، مع موعد صدورها، وجرس لتنبيهك عند صدورها.",
-   "البحث بالوصف: صف فيلمًا أو مسلسلًا أو حلقة بكلماتك واعثر عليه، بمفتاح Gemini المجاني الخاص بك.",
-   "مصادر أدق: نتائج الأفلام الأخرى تُخفى، والعلامات تفحص ما يعرضه المصدر فعلًا.",
-   "فيلم السهرة في صفحة الاكتشاف: اختر الوقت والمزاج، واحصل على ثلاثة أفلام لم تشاهدها، واختر غيرها أو غيّر المزاج.",
-   "تقويم الإصدارات (التقويم أعلى صفحة الاكتشاف): الأفلام القادمة بموعدها في السينما وفي المنزل، والأفلام المعروضة في السينما الآن مع موعدها المنزلي إن كان معروفًا، والمسلسلات الجديدة وبدايات المواسم. الأفلام الصادرة للمنزل لا تظهر فيه.",
-   "نبّهني عند صدوره: على الفيلم المعروض في السينما فقط، وعلى كل فيلم في التقويم؛ ينبّهك Viora عندما يصبح متاحًا للمشاهدة في المنزل.",
-   "الموسيقى التصويرية: من صفحة الفيلم افتح ألبوم موسيقاه في قسم الموسيقى.",
-   "البحث بالوصف: زر النجوم في البحث يرسل ما كتبته إلى Gemini بمفتاحك (نفس مفتاح ترجمة الترجمات) ويعرض العناوين التي يذكرها.",
-   "الاكتشاف من دون مفتاح TMDB يملأ الآن صفحات اللغات والشبكات والأشخاص أيضًا.",
-   "لون السمة يظهر الآن على عناوين الأقسام والأزرار والاختيارات والتبويب المحدد في الشريط السفلي.",
-   "المصادر: النتيجة التي تذكر فيلمًا آخر أو سنة أخرى أو حلقة أخرى تُخفى؛ ومن دون مفتاح TMDB يجب أن تذكر النتيجة اسم العنوان."
+   "ترجمة الوصف أو الترجمات على الجهاز تعمل من جديد. في الإصدار 1.3.1 لم يكن زر الترجمة يظهر وكانت ترجمة الترجمات على الجهاز تفشل.",
+   "الترجمة على الجهاز (الوصف والترجمات) تعمل من جديد في نسخة الإصدار.",
+   "إذا فشلت الترجمة على الجهاز يُكتب السبب في سجل الجهاز لإيجاده أسرع."
   ]
  }
 }

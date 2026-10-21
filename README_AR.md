@@ -202,12 +202,12 @@ VIP Viora اشتراك لحسابات Viora المسجَّلة، وكل ما ع�
 <!-- viora:release-ar:start -->
 | | |
 | --- | --- |
-| **أحدث إصدار** | **1.3.1** (البناء 144) · صدر في 2026-10-21 |
-| **التنزيل** | [**Viora-1.3.1.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1.apk) · 198 MB · يعمل على كل الأجهزة المدعومة |
-| **تنزيلات أصغر** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-arm64-v8a.apk) (لمعظم الهواتف) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-armeabi-v7a.apk) (للهواتف الأقدم بنظام 32 بت) |
-| **SHA-256** | `40f65c480a1260ba9ba95dff6392aecaa72334710e55254e52a4227489acb0bc` |
-| **الشيفرة المصدرية** | [Viora-1.3.1-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.3.1/Viora-1.3.1-source.zip) |
-| **ملاحظات الإصدار** | [Viora 1.3.1](https://github.com/zayo-0ni/viora/releases/tag/v1.3.1) |
+| **أحدث إصدار** | **1.3.2** (البناء 145) · صدر في 2026-10-21 |
+| **التنزيل** | [**Viora-1.3.2.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2.apk) · 198 MB · يعمل على كل الأجهزة المدعومة |
+| **تنزيلات أصغر** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-arm64-v8a.apk) (لمعظم الهواتف) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-armeabi-v7a.apk) (للهواتف الأقدم بنظام 32 بت) |
+| **SHA-256** | `dc6efa980e7bee3ec1689c6413c7209ea60e8678fbf148d339f70b6e20eab17d` |
+| **الشيفرة المصدرية** | [Viora-1.3.2-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-source.zip) |
+| **ملاحظات الإصدار** | [Viora 1.3.2](https://github.com/zayo-0ni/viora/releases/tag/v1.3.2) |
 <!-- viora:release-ar:end -->
 
 | | |
