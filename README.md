@@ -194,12 +194,12 @@ The Library is what is on your phone: the songs, artists, albums and playlists y
 <!-- viora:release:start -->
 | | |
 | --- | --- |
-| **Latest version** | **1.3.2** (build 145) · released 2026-10-21 |
-| **Download** | [**Viora-1.3.2.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2.apk) · 198 MB · works on every supported device |
-| **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-armeabi-v7a.apk) (older 32-bit phones) |
-| **SHA-256** | `dc6efa980e7bee3ec1689c6413c7209ea60e8678fbf148d339f70b6e20eab17d` |
-| **Source code** | [Viora-1.3.2-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-source.zip) |
-| **Release notes** | [Viora 1.3.2](https://github.com/zayo-0ni/viora/releases/tag/v1.3.2) |
+| **Latest version** | **1.3.3** (build 146) · released 2026-10-21 |
+| **Download** | [**Viora-1.3.3.apk**](https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3.apk) · 198 MB · works on every supported device |
+| **Smaller downloads** | [arm64-v8a](https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-arm64-v8a.apk) (most phones) · [armeabi-v7a](https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-armeabi-v7a.apk) (older 32-bit phones) |
+| **SHA-256** | `41c752337c2cb705cca6922d9b9dc0fb23d5de57434c468db133a32f7cb34664` |
+| **Source code** | [Viora-1.3.3-source.zip](https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-source.zip) |
+| **Release notes** | [Viora 1.3.3](https://github.com/zayo-0ni/viora/releases/tag/v1.3.3) |
 <!-- viora:release:end -->
 
 | | |

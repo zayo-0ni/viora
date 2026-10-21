@@ -1,48 +1,56 @@
 {
  "schema": 1,
- "versionName": "1.3.2",
- "versionCode": 145,
+ "versionName": "1.3.3",
+ "versionCode": 146,
  "releaseDate": "2026-10-21",
  "minAndroid": "7.0",
  "minSdk": 24,
  "apk": {
-  "name": "Viora-1.3.2.apk",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2.apk",
-  "size": 197728311,
-  "sha256": "dc6efa980e7bee3ec1689c6413c7209ea60e8678fbf148d339f70b6e20eab17d"
+  "name": "Viora-1.3.3.apk",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3.apk",
+  "size": 197730355,
+  "sha256": "41c752337c2cb705cca6922d9b9dc0fb23d5de57434c468db133a32f7cb34664"
  },
  "abiApks": [
   {
    "abi": "arm64-v8a",
-   "name": "Viora-1.3.2-arm64-v8a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-arm64-v8a.apk",
-   "size": 70677290,
-   "sha256": "35961c2351e3c7ff28ee1ee1c0ee3bb6d92e582a95efec02e262e5467cfea3c8"
+   "name": "Viora-1.3.3-arm64-v8a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-arm64-v8a.apk",
+   "size": 70679334,
+   "sha256": "4122bd7cab99353431d1994c38b03a081e74328b038e60bd7ebfc6c24b636558"
   },
   {
    "abi": "armeabi-v7a",
-   "name": "Viora-1.3.2-armeabi-v7a.apk",
-   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-armeabi-v7a.apk",
-   "size": 67090708,
-   "sha256": "73edc4f4cb902d79d530cc56ac2a97b24efbc7d9eee5b6bd2a4aafe433ee56f9"
+   "name": "Viora-1.3.3-armeabi-v7a.apk",
+   "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-armeabi-v7a.apk",
+   "size": 67092752,
+   "sha256": "f7fc8f63110710fc991b862fd1fb590d6c901412de66d0a34debabf2ded18507"
   }
  ],
  "source": {
-  "name": "Viora-1.3.2-source.zip",
-  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.2/Viora-1.3.2-source.zip",
-  "sha256": "26b9a6f9f8bb657ed0845d350aef7464687cb329167683b6520b651a8d4bceb1"
+  "name": "Viora-1.3.3-source.zip",
+  "url": "https://github.com/zayo-0ni/viora/releases/download/v1.3.3/Viora-1.3.3-source.zip",
+  "sha256": "b07b6a85108c690f82a2d86f1566657446e90e633797e4c5f498be83028e44de"
  },
- "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.3.2",
+ "releaseNotes": "https://github.com/zayo-0ni/viora/releases/tag/v1.3.3",
  "changes": {
   "en": [
-   "Translating a description or a subtitle on the device works again. In 1.3.1 the Translate button did not appear and on-device subtitle translation failed.",
-   "On-device translation (descriptions and subtitles) works in this release build again.",
-   "If on-device translation fails, the reason is written to the device log, to find it faster."
+   "Auto-play picks a source for you, on by default: it tests your internet speed every time you play, waits for the sources, and plays the best quality your connection carries, from the fastest server.",
+   "Under the title, the player shows the source in a few words: provider, resolution, HDR, origin, codec, audio and size.",
+   "Auto-play is on by default and waits for the sources (10 seconds at most by default), showing \"Choosing the best source…\".",
+   "A quick internet speed test runs with every playback; on a weak line it plays 720p, on a fast one 4K, never more than the line carries.",
+   "Within the quality your line allows, the fastest server is chosen; sources that do not work, or that are another film, are skipped.",
+   "Torrents played peer to peer come only after every direct source.",
+   "The player's sources list opens with the sources already found, without searching again, and marks the one playing."
   ],
   "ar": [
-   "ترجمة الوصف أو الترجمات على الجهاز تعمل من جديد. في الإصدار 1.3.1 لم يكن زر الترجمة يظهر وكانت ترجمة الترجمات على الجهاز تفشل.",
-   "الترجمة على الجهاز (الوصف والترجمات) تعمل من جديد في نسخة الإصدار.",
-   "إذا فشلت الترجمة على الجهاز يُكتب السبب في سجل الجهاز لإيجاده أسرع."
+   "التشغيل التلقائي يختار المصدر عنك، ومفعّل افتراضيًا: يختبر سرعة الإنترنت في كل تشغيل، وينتظر المصادر، ويشغّل أعلى جودة يتحملها اتصالك من أسرع خادم.",
+   "تحت العنوان يعرض المشغّل المصدر باختصار: المزوّد والدقة وHDR والنوع والترميز والصوت والحجم.",
+   "التشغيل التلقائي مفعّل افتراضيًا وينتظر المصادر (10 ثوانٍ كحد أقصى افتراضيًا) مع رسالة «جارٍ اختيار أفضل مصدر…».",
+   "اختبار سريع لسرعة الإنترنت مع كل تشغيل؛ على اتصال ضعيف يشغّل 720p، وعلى اتصال سريع 4K، ولا يتجاوز ما يتحمله الاتصال.",
+   "ضمن الجودة التي يسمح بها اتصالك يُختار أسرع خادم، وتُتخطى المصادر التي لا تعمل أو التي تحمل فيلمًا آخر.",
+   "التورنت الذي يعمل عبر الأقران يأتي بعد كل المصادر المباشرة.",
+   "قائمة المصادر في المشغّل تفتح بالمصادر التي وُجدت مسبقًا دون بحث جديد، وتبيّن المصدر الذي يعمل."
   ]
  }
 }
